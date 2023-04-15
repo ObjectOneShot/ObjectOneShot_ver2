@@ -7,5 +7,5 @@
     <string name="title_key_result_add">Key Results를 설정해주세요</string>
 
     <string name="item_date_string_format">마감일 : %d</string>
-    <string name="item_progress_string_format">%d %%</string>
+    <string name="item_progress_string_format">%.0f %%</string>
 </resources>

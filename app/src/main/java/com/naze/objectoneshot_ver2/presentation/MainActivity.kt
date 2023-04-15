@@ -5,7 +5,9 @@ import androidx.fragment.app.Fragment
 import com.naze.objectoneshot_ver2.R
 import com.naze.objectoneshot_ver2.databinding.ActivityMainBinding
 import com.naze.objectoneshot_ver2.util.BindingActivity
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main) {
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.Theme_ObjectOneShot_ver2)
