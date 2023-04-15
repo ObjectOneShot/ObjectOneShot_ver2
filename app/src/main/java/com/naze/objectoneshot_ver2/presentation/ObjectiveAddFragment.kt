@@ -8,6 +8,7 @@ import com.naze.objectoneshot_ver2.R
 import com.naze.objectoneshot_ver2.databinding.FragmentObjectiveAddBinding
 import com.naze.objectoneshot_ver2.domain.viewmodel.ObjectiveViewModel
 import com.naze.objectoneshot_ver2.util.BindingFragment
+import com.naze.objectoneshot_ver2.util.showToast
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -27,7 +28,10 @@ class ObjectiveAddFragment: BindingFragment<FragmentObjectiveAddBinding>(R.layou
                 objectiveViewModel.setObjectiveTitle(binding.etObjectiveName.text.toString())
             }
         }
-        binding
+/*        binding.btnObjectiveDate.setOnClickListener {
+            requireContext().showToast("테스트")
+            //editText에 focus 있을 때, 다른 위치 터치 시 키보드 종료 but 해당 위치에 touchEvent가 있을 경우 해당 touchEvent 실행 용 테스트 코드
+        }*/
     }
 
 }
