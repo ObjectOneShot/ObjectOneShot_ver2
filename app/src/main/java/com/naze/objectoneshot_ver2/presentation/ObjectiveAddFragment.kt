@@ -23,10 +23,8 @@ class ObjectiveAddFragment: BindingFragment<FragmentObjectiveAddBinding>(R.layou
     }
 
     private fun init() {
-        binding.etObjectiveName.setOnFocusChangeListener { v, hasFocus ->
-            if (!hasFocus) {
-                objectiveViewModel.setObjectiveTitle(binding.etObjectiveName.text.toString())
-            }
+        binding.btnAddObjective.setOnClickListener {
+            objectiveViewModel.insertObjective()
         }
 /*        binding.btnObjectiveDate.setOnClickListener {
             requireContext().showToast("테스트")

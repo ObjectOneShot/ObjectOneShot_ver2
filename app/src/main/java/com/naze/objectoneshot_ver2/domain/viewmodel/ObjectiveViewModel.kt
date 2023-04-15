@@ -31,15 +31,12 @@ class ObjectiveViewModel @Inject constructor(
 
     }
 
-    fun insertObjectiveData() {
-
+    fun insertObjective() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val id = _objective.value?.let { objectiveRepository.insert(it) }
+            Log.d("TEST_ObjectiveViewModel","insertObjective $id")
+        }
     }
-
-    fun setObjectiveTitle(title: String) {
-        _objective.value = _objective.value?.copy(title = title)
-        Log.d("TEST_ObjectiveViewModel","${_objective.value}")
-    } //EditText 의 값을 받아오는 메소드
-    //EditText 는 DataBinding 으로 할 경우 무한루프 발생 가능성이 있어 허용되지 않음
 
     fun setObjectiveDateRange(startDate: Long, endDate: Long) {
         _objective.value?.copy(startDate = startDate, endDate = endDate)

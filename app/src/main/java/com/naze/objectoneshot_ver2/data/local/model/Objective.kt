@@ -5,12 +5,12 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "objectives")
 data class Objective(
-    val title: String,
-    val startDate: Long,
-    val endDate: Long,
-    val progress: Double,
-    val complete: Boolean,
+    var title: String = "",
+    var startDate: Long,
+    var endDate: Long,
+    var progress: Double,
+    var complete: Boolean,
     @PrimaryKey(autoGenerate = true)
-    val id: Int = 0
+    val id: Long = 0
 ) {
 }

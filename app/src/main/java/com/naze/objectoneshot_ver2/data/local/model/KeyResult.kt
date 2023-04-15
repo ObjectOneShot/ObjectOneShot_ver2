@@ -16,11 +16,11 @@ import androidx.room.PrimaryKey
     ]
 )
 data class KeyResult(
-    val title: String,
-    val progress: Double,
+    var title: String,
+    var progress: Double,
     val objective_id: Int,
     @PrimaryKey(autoGenerate = true)
-    val id: Int
+    val id: Long
 ) {
 
 }

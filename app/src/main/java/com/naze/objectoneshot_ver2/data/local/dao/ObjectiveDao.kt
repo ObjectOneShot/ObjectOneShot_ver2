@@ -5,8 +5,8 @@ import com.naze.objectoneshot_ver2.data.local.model.Objective
 
 @Dao
 interface ObjectiveDao {
-    @Insert
-    suspend fun insert(objective: Objective)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(objective: Objective): Long
 
     @Update
     suspend fun update(objective: Objective)

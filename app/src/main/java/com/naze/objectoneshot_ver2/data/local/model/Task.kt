@@ -16,9 +16,9 @@ import androidx.room.PrimaryKey
     ]
 )
 data class Task(
-    val content: String,
-    val check: Boolean,
+    var content: String,
+    var check: Boolean = false,
     val key_result_id: Int,
     @PrimaryKey(autoGenerate = true)
-    val id : Int = 0
+    val id : Long = 0
 )
