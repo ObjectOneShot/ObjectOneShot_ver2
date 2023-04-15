@@ -12,6 +12,12 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorSecondary</item>
         <!-- Customize your theme here. -->
+        <item name="imageButtonStyle">@style/defaultImageButtonStyle</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+    </style>
+
+    <style name="defaultImageButtonStyle" parent="Widget.AppCompat.ImageButton">
+        <item name="android:background">@null</item>
     </style>
 
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
