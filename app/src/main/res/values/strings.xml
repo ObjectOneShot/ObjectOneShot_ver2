@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">ObjectOneShot_ver2</string>
+
+    <string name="title_objective_list">Objective를 설정해주세요</string>
+
+    <string name="title_objective_add">Objective를 설정해주세요</string>
+    <string name="title_key_result_add">Key Results를 설정해주세요</string>
+
+    <string name="item_date_string_format">마감일 : %d</string>
+    <string name="item_progress_string_format">%d %%</string>
 </resources>
