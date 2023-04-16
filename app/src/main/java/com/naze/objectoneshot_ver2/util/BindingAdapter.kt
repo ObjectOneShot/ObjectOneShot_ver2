@@ -71,7 +71,7 @@ fun setTextDate(view: TextView, date: Long) {
     Log.d("TEST_objective_item","$daysLeft")
 
     val spannableString =
-        SpannableString("D -$daysLeft / ${dateFormat.format(date)}")
+        SpannableString("D-$daysLeft / ${dateFormat.format(date)}")
 
     spannableString.setSpan(
         ForegroundColorSpan(ContextCompat.getColor(view.context, R.color.error)),

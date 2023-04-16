@@ -79,13 +79,15 @@ class ObjectiveViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.Main) {
             _objectiveList.value = objectiveRepository.getObjective()
         }
-    }
+    } //ObjectiveList 가져오기 추후 변경 예정
 
     fun getObjectiveAchieveList() {
         viewModelScope.launch(Dispatchers.Main) {
             _objectiveList.value = objectiveRepository.getAchieveObjective()
         }
-    }
+    } //ObjectiveAchieveList 가져오기 추후 변경 예정
+
+
 
     /***
      * 데이터 초기화
@@ -142,10 +144,10 @@ class ObjectiveViewModel @Inject constructor(
 
     private fun setKeyResultStateByProgress(progress: Double) {
         _keyResultState.value = when (progress) {
-            in 0.0..30.0 -> {
+            0.0 -> {
                 KeyResultState.BEFORE_PROGRESS
             }
-            in 30.1..60.0 -> {
+            in 0.1..99.9 -> {
                 KeyResultState.ON_PROGRESS
             }
             else -> {
@@ -159,8 +161,14 @@ class ObjectiveViewModel @Inject constructor(
         Log.d("TEST_ObjectiveViewModel","${_objective.value}")
     } //TextView 이기 때문에 입력값이 없어서 직접 메소드로 입력
 
-    fun setObjectiveProgress() {
-        //KeyResult 데이터를 가지고 계산
+    private fun setObjectiveProgress() {
+        val list = _keyResultList.value ?: mutableListOf()
+        var sum = 0.0
+        for (i in list) {
+            sum += i.progress
+        }
+        sum/list.size
+        _objective.value = _objective.value?.copy(progress = if (list.isNotEmpty()) sum/list.size else 0.0)
     } //KeyResult 데이터를 가지고 계산해야 하기에 처리
 
     fun addKeyResultList() {
@@ -171,16 +179,9 @@ class ObjectiveViewModel @Inject constructor(
         _keyResultList.value = newList
         Log.d("TEST_ObjectiveViewModel","KeyResultList : ${_keyResultList.value}")
         setKeyResultStateByProgress(_keyResult.value?.progress?:0.0)
+        setObjectiveProgress()
         //TODO(List에 추가된 경우 -> Objective 의 Progress가 변한다)
     } //init 한 KeyResult 를 가지고 List 에 추가
-
-    fun updateKeyResultList() {
-
-    }
-
-    fun initTaskData() {
-
-    }
 
     fun addOrUpdateTaskData(task: Task) {
         val currentList = _taskList.value ?: mutableListOf()
@@ -210,14 +211,15 @@ class ObjectiveViewModel @Inject constructor(
      * @param id = key_result_id
      */
     fun changeKeyResultListProgress(id: String){
+        Log.d("TEST_changeKey","id: $id")
         val list = _taskList.value ?: mutableListOf()
-        list.filter { it.key_result_id == id }
-        val progress = if (list.isNotEmpty()) {
+        val newList = list.filter { it.key_result_id == id }
+        val progress = if (newList.isNotEmpty()) {
             var cnt = 0 //check 된 개수
-            for (i in list) {
+            for (i in newList) {
                 if (i.check) cnt ++
             }
-            100 * cnt / list.size
+            100 * cnt / newList.size
         } else { 0 }.toDouble()
 
         val currentList = _keyResultList.value ?: mutableListOf()
@@ -229,6 +231,8 @@ class ObjectiveViewModel @Inject constructor(
             }
         }
         _keyResultList.value = updatedList
+        setKeyResultStateByProgress(progress)
+        setObjectiveProgress()
     } //KeyResultList Progress 변경
 
     /**
