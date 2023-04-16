@@ -138,10 +138,17 @@ class ObjectiveViewModel @Inject constructor(
      * 하단 미분류
      */
 
+    /**
+     * view 에서 button 으로 state 변경할 때 사용
+     */
     fun setKeyResultState(keyResultState: KeyResultState) {
         _keyResultState.value = keyResultState
     }
 
+    /**
+     * @param progress KeyResult의 Progress 값
+     * KeyResult Progress 값을 통하여 KeyResultState 변경
+     */
     private fun setKeyResultStateByProgress(progress: Double) {
         _keyResultState.value = when (progress) {
             0.0 -> {
@@ -156,11 +163,19 @@ class ObjectiveViewModel @Inject constructor(
         }
     }
 
+    /**
+     * @param startDate 시작일
+     * @param endDate 종료일
+     * Objective 의 Date Range 설정
+     */
     fun setObjectiveDateRange(startDate: Long, endDate: Long) {
         _objective.value = _objective.value?.copy(startDate = startDate, endDate = endDate)
         Log.d("TEST_ObjectiveViewModel","${_objective.value}")
     } //TextView 이기 때문에 입력값이 없어서 직접 메소드로 입력
 
+    /**
+     * Objective Progress 설정
+     */
     private fun setObjectiveProgress() {
         val list = _keyResultList.value ?: mutableListOf()
         var sum = 0.0
@@ -171,6 +186,9 @@ class ObjectiveViewModel @Inject constructor(
         _objective.value = _objective.value?.copy(progress = if (list.isNotEmpty()) sum/list.size else 0.0)
     } //KeyResult 데이터를 가지고 계산해야 하기에 처리
 
+    /**
+     * init 한 KeyResult 를 가지고 List 에 추가
+     */
     fun addKeyResultList() {
         val currentList = _keyResultList.value ?: mutableListOf()
         val newList = currentList.toMutableList().apply {
@@ -183,6 +201,10 @@ class ObjectiveViewModel @Inject constructor(
         //TODO(List에 추가된 경우 -> Objective 의 Progress가 변한다)
     } //init 한 KeyResult 를 가지고 List 에 추가
 
+    /**
+     * Task 를 Add 나 Update 할 때 사용
+     * viewModel 내부 TaskList
+     */
     fun addOrUpdateTaskData(task: Task) {
         val currentList = _taskList.value ?: mutableListOf()
         val index = currentList.indexOfFirst { it.id == task.id }
@@ -197,6 +219,9 @@ class ObjectiveViewModel @Inject constructor(
         Log.d("TEST_ObjectiveViewModel","taskList Add or Update: ${_taskList.value}")
     }
 
+    /**
+     * Task 삭제
+     */
     fun deleteTaskData(task: Task) {
         val currentList = _taskList.value ?: mutableListOf()
         val index = currentList.indexOfFirst { it.id == task.id }
@@ -251,6 +276,10 @@ class ObjectiveViewModel @Inject constructor(
         _keyResult.value = _keyResult.value?.copy(progress = progress)
     } //KeyResult Progress (등록하기 전, state 안바꾸는게 맞을듯)
 
+    /**
+     * @param id KeyResultId
+     * KeyResultId 로 해당하는 TaskList 가져오기
+     */
     fun getTaskList(id: String): List<Task>? {
         return _taskList.value?.filter { it.key_result_id == id }
     }
