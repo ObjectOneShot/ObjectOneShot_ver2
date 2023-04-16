@@ -9,6 +9,7 @@ import androidx.fragment.app.activityViewModels
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.naze.objectoneshot_ver2.R
 import com.naze.objectoneshot_ver2.databinding.FragmentObjectiveAddBinding
+import com.naze.objectoneshot_ver2.domain.viewmodel.KeyResultViewModel
 import com.naze.objectoneshot_ver2.domain.viewmodel.ObjectiveViewModel
 import com.naze.objectoneshot_ver2.util.BindingFragment
 import com.naze.objectoneshot_ver2.util.showToast
@@ -19,6 +20,7 @@ import java.util.*
 class ObjectiveAddFragment: BindingFragment<FragmentObjectiveAddBinding>(R.layout.fragment_objective_add) {
 
     private val objectiveViewModel: ObjectiveViewModel by activityViewModels()
+    private val keyResultViewModel: KeyResultViewModel by activityViewModels()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -48,6 +50,7 @@ class ObjectiveAddFragment: BindingFragment<FragmentObjectiveAddBinding>(R.layou
 
         setCalendar() //달력 설정
     }
+
     private fun setBtnEnable(isEnabled: Boolean) {
         binding.btnAddObjective.isEnabled = isEnabled
         binding.btnAddKeyResult.isEnabled = isEnabled
@@ -67,8 +70,24 @@ class ObjectiveAddFragment: BindingFragment<FragmentObjectiveAddBinding>(R.layou
             }
         }
     }
-    private fun addKeySetting () {
 
+    private fun addKeySetting () {
+        val adapterTask = TaskAddAdapter()
+        binding.btnAddKeyResult.setOnClickListener {
+
+            if (binding.keyAddItem.layoutKeyAdd.visibility == View.VISIBLE) {
+
+            } else if (binding.keyAddItem.layoutKeyAdd.visibility == View.GONE) {
+                binding.keyAddItem.layoutKeyAdd.visibility = View.VISIBLE
+
+                binding.keyAddItem.etKeyName.text.clear()
+                binding.keyAddItem.rvTaskList.apply {
+                    adapterTask.submitList(null)
+                    adapter = adapterTask
+                    layoutManager
+                }
+            }
+        }
     }
 
 }

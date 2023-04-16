@@ -303,7 +303,7 @@
 
                     <include
                         android:id="@+id/key_add_item"
-                        layout="@layout/item_key_add" />
+                        layout="@layout/item_key_result_add" />
 
                     <androidx.constraintlayout.utils.widget.ImageFilterButton
                         android:id="@+id/btn_add_key_result"

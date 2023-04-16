@@ -3,6 +3,7 @@ package com.naze.objectoneshot_ver2.data.local.model
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import java.util.UUID
 
 @Entity(
     tableName = "tasks",
@@ -18,7 +19,7 @@ import androidx.room.PrimaryKey
 data class Task(
     var content: String,
     var check: Boolean = false,
-    val key_result_id: Int,
-    @PrimaryKey(autoGenerate = true)
-    val id : Long = 0
+    val key_result_id: String,
+    @PrimaryKey
+    val id : String = UUID.randomUUID().toString()
 )
