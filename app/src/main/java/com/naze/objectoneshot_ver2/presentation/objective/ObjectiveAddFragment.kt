@@ -1,9 +1,8 @@
-package com.naze.objectoneshot_ver2.presentation
+package com.naze.objectoneshot_ver2.presentation.objective
 
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,8 +11,8 @@ import com.naze.objectoneshot_ver2.R
 import com.naze.objectoneshot_ver2.databinding.FragmentObjectiveAddBinding
 import com.naze.objectoneshot_ver2.domain.viewmodel.KeyResultViewModel
 import com.naze.objectoneshot_ver2.domain.viewmodel.ObjectiveViewModel
+import com.naze.objectoneshot_ver2.presentation.task.TaskAddAdapter
 import com.naze.objectoneshot_ver2.util.BindingFragment
-import com.naze.objectoneshot_ver2.util.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 

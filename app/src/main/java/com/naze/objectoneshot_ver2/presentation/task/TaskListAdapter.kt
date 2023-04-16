@@ -1,13 +1,11 @@
-package com.naze.objectoneshot_ver2.presentation
+package com.naze.objectoneshot_ver2.presentation.task
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.naze.objectoneshot_ver2.data.local.model.KeyResult
 import com.naze.objectoneshot_ver2.data.local.model.Task
 import com.naze.objectoneshot_ver2.databinding.ItemTaskBinding
-import com.naze.objectoneshot_ver2.domain.viewmodel.KeyResultViewModel
 import com.naze.objectoneshot_ver2.util.ItemDiffCallback
 
 class TaskListAdapter(

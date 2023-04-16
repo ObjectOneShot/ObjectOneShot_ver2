@@ -1,16 +1,13 @@
-package com.naze.objectoneshot_ver2.presentation
+package com.naze.objectoneshot_ver2.presentation.keyresult
 
-import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.naze.objectoneshot_ver2.data.local.model.KeyResult
-import com.naze.objectoneshot_ver2.databinding.ItemKeyResultAddBinding
 import com.naze.objectoneshot_ver2.databinding.ItemKeyResultBinding
-import com.naze.objectoneshot_ver2.domain.viewmodel.KeyResultViewModel
+import com.naze.objectoneshot_ver2.presentation.task.TaskListAdapter
 import com.naze.objectoneshot_ver2.util.ItemDiffCallback
 
 

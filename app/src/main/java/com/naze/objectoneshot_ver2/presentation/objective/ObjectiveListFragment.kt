@@ -1,4 +1,4 @@
-package com.naze.objectoneshot_ver2.presentation
+package com.naze.objectoneshot_ver2.presentation.objective
 
 import android.os.Bundle
 import android.view.View
