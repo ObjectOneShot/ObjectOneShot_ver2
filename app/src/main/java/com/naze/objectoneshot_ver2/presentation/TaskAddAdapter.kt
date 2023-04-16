@@ -1,21 +1,24 @@
 package com.naze.objectoneshot_ver2.presentation
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.naze.objectoneshot_ver2.data.local.model.Task
 import com.naze.objectoneshot_ver2.databinding.ItemTaskBinding
+import com.naze.objectoneshot_ver2.domain.viewmodel.ObjectiveViewModel
 import com.naze.objectoneshot_ver2.util.ItemDiffCallback
 
 class TaskAddAdapter(
+    private val keyResultId: String,
+    private val objectiveViewModel: ObjectiveViewModel
 ): ListAdapter<Task, RecyclerView.ViewHolder>(
     ItemDiffCallback<Task> (
         onContentsTheSame = {old, new -> old == new},
         onItemsTheSame = {old, new -> old.id == new.id}
     )
 ) {
-
 
     inner class TaskAddViewHolder(
         private val binding: ItemTaskBinding,
@@ -26,6 +29,17 @@ class TaskAddAdapter(
 
         fun bind(item: Task) {
             binding.task = item
+            Log.d("TEST_TaskAddAdapter", "Key_result_id: ${item.key_result_id}")
+            binding.etTaskName.setOnFocusChangeListener { v, hasFocus ->
+                if (!hasFocus) {
+                    objectiveViewModel.addOrUpdateTaskData(Task(
+                        item.content,
+                        item.check,
+                        item.key_result_id,
+                        item.id
+                    ))
+                }
+            }
         }
     }
 
@@ -42,7 +56,11 @@ class TaskAddAdapter(
         }
     }
 
-    private fun addItem() {
-
+    override fun submitList(list: List<Task>?) {
+        if (list.isNullOrEmpty()) {
+            super.submitList(listOf(Task("", key_result_id = keyResultId)))
+        } else {
+            super.submitList(list)
+        }
     }
 }

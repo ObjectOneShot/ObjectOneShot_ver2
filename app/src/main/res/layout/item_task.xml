@@ -6,6 +6,9 @@
         <variable
             name="task"
             type="com.naze.objectoneshot_ver2.data.local.model.Task" />
+        <variable
+            name="viewmodel"
+            type="com.naze.objectoneshot_ver2.domain.viewmodel.ObjectiveViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

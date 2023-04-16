@@ -1,6 +1,7 @@
 package com.naze.objectoneshot_ver2.presentation
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
@@ -26,11 +27,9 @@ class KeyResultAdapter(
         fun bind(keyResult: KeyResult) {
             binding.keyResult = keyResult
             binding.executePendingBindings()
-
-            val taskListAdapter = TaskListAdapter()
+            Log.d("TEST_KeyResultAdapter","KeyResult $keyResult")
+            val taskListAdapter = TaskListAdapter(keyResult.id)
             binding.rvTaskList.adapter = taskListAdapter
-
-
         }
     }
 

@@ -4,20 +4,20 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.naze.objectoneshot_ver2.data.local.model.KeyResult
 import com.naze.objectoneshot_ver2.data.local.model.Task
 import com.naze.objectoneshot_ver2.databinding.ItemTaskBinding
 import com.naze.objectoneshot_ver2.domain.viewmodel.KeyResultViewModel
 import com.naze.objectoneshot_ver2.util.ItemDiffCallback
 
 class TaskListAdapter(
+    private val keyResultId: String
 ): ListAdapter<Task, RecyclerView.ViewHolder>(
     ItemDiffCallback<Task> (
         onContentsTheSame = {old, new -> old == new},
         onItemsTheSame = {old, new -> old.id == new.id}
     )
 ) {
-
-
     inner class TaskAddViewHolder(
         private val binding: ItemTaskBinding,
     ): RecyclerView.ViewHolder(binding.root) {
@@ -43,7 +43,11 @@ class TaskListAdapter(
         }
     }
 
-    private fun addItem() {
-
+    override fun submitList(list: List<Task>?) {
+        if (list.isNullOrEmpty()) {
+            super.submitList(listOf(Task("", key_result_id = keyResultId)))
+        } else {
+            super.submitList(list)
+        }
     }
 }

@@ -6,6 +6,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.naze.objectoneshot_ver2.R
 import com.naze.objectoneshot_ver2.databinding.FragmentObjectiveAddBinding
@@ -49,6 +50,7 @@ class ObjectiveAddFragment: BindingFragment<FragmentObjectiveAddBinding>(R.layou
         } //Objective 등록
 
         setCalendar() //달력 설정
+        setAddKeyResult()
     }
 
     private fun setBtnEnable(isEnabled: Boolean) {
@@ -70,22 +72,29 @@ class ObjectiveAddFragment: BindingFragment<FragmentObjectiveAddBinding>(R.layou
             }
         }
     }
-
-    private fun addKeySetting () {
-        val adapterTask = TaskAddAdapter()
+    private lateinit var adapterTask: TaskAddAdapter
+    private fun setAddKeyResult () {
         binding.btnAddKeyResult.setOnClickListener {
 
             if (binding.keyAddItem.layoutKeyAdd.visibility == View.VISIBLE) {
+                //데이터 입력이지 뭐
+                //KeyResult 에 입력이야
+                binding.keyAddItem.layoutKeyAdd.visibility = View.GONE
+                binding.btnAddKeyResult.setImageResource(R.drawable.ic_text_key_result_add)
+                objectiveViewModel.addKeyResultList() //데이터 입력
 
             } else if (binding.keyAddItem.layoutKeyAdd.visibility == View.GONE) {
                 binding.keyAddItem.layoutKeyAdd.visibility = View.VISIBLE
 
-                binding.keyAddItem.etKeyName.text.clear()
+                objectiveViewModel.initKeyResultData() //신규 데이터 생성
+                adapterTask = TaskAddAdapter(objectiveViewModel.keyResult.value?.id?:"", objectiveViewModel)
+
                 binding.keyAddItem.rvTaskList.apply {
                     adapterTask.submitList(null)
                     adapter = adapterTask
-                    layoutManager
+                    layoutManager = LinearLayoutManager(requireContext())
                 }
+                binding.btnAddKeyResult.setImageResource(R.drawable.ic_text_keyresult_save)
             }
         }
     }
