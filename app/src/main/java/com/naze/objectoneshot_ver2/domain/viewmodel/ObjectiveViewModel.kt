@@ -81,9 +81,9 @@ class ObjectiveViewModel @Inject constructor(
         }
     }
 
-    fun getCompleteObjectiveList() {
+    fun getObjectiveAchieveList() {
         viewModelScope.launch(Dispatchers.Main) {
-            _objectiveList.value = objectiveRepository.getCompleteObjective()
+            _objectiveList.value = objectiveRepository.getAchieveObjective()
         }
     }
 

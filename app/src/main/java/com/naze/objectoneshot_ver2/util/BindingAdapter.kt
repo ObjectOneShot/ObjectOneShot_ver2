@@ -71,7 +71,7 @@ fun setTextDate(view: TextView, date: Long) {
     Log.d("TEST_objective_item","$daysLeft")
 
     val spannableString =
-        SpannableString("D-$daysLeft / ${dateFormat.format(date)}")
+        SpannableString("D -$daysLeft / ${dateFormat.format(date)}")
 
     spannableString.setSpan(
         ForegroundColorSpan(ContextCompat.getColor(view.context, R.color.error)),
@@ -91,10 +91,11 @@ fun setTextDate(view: TextView, date: Long) {
         spannableString.length,
         Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
     )
+    view.text = spannableString
 }
 
 @BindingAdapter("complete","date")
-fun TextView.setTextDateComplete( complete:Boolean, date: Long ) {
+fun TextView.setTextDateComplete(complete:Boolean, date: Long ) {
     val dateFormat = SimpleDateFormat("yy-MM-dd", Locale.getDefault())
     val timeDiffInMillis = getCurrentDate() - date
     val daysLeft = TimeUnit.MILLISECONDS.toDays(timeDiffInMillis)
@@ -123,6 +124,7 @@ fun TextView.setTextDateComplete( complete:Boolean, date: Long ) {
             spannableString.length,
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         )
+        this.text = spannableString
     } else {
         val spannableString =
             SpannableString("미달성 / ${dateFormat.format(date)}")
@@ -145,7 +147,9 @@ fun TextView.setTextDateComplete( complete:Boolean, date: Long ) {
             spannableString.length,
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         )
+        this.text = spannableString
     }
+
 }
 
 @BindingAdapter("app:setRoundProgress")

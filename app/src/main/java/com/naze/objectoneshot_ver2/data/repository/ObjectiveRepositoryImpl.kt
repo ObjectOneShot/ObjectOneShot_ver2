@@ -31,8 +31,8 @@ class ObjectiveRepositoryImpl @Inject constructor(
         return objectiveDao.getObjectives(getCurrentDate())
     } //TODO (추후 변경 : KeyResult 데이터를 포함한 구조로 변경 필요)
 
-    override suspend fun getCompleteObjective(): List<Objective> {
-        return objectiveDao.getCompletedObjectives(getCurrentDate())
+    override suspend fun getAchieveObjective(): List<Objective> {
+        return objectiveDao.getAchieveObjectives(getCurrentDate())
     } //TODO (추후 변경 : KeyResult 데이터를 포함한 구조로 변경 필요)
 
 }

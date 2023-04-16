@@ -32,7 +32,9 @@ class ObjectiveListFragment: BindingFragment<FragmentObjectiveListBinding>(R.lay
         }
         binding.btnAchieve.setOnClickListener {
             parentFragmentManager.beginTransaction().apply {
-
+                replace(R.id.fl_main, ObjectiveAchieveFragment(),"Achieve")
+                addToBackStack(null)
+                commit()
             }
         }
         setRecyclerView()
@@ -40,12 +42,6 @@ class ObjectiveListFragment: BindingFragment<FragmentObjectiveListBinding>(R.lay
 
     private fun setRecyclerView() {
         val adapterObjective = ObjectiveListAdapter(ObjectiveListAdapter.ItemClickListener {
-/*            parentFragmentManager.beginTransaction().apply {
-                objectiveViewModel.getModifyObjective(it)
-                replace(R.id.fl_main, ObjectiveModifyFragment(),"KeyResultModify")
-                addToBackStack(null)
-                commit()
-            }*/
             //TODO(미구현)
             requireContext().showToast("클릭")
         } )

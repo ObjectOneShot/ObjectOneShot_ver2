@@ -10,6 +10,6 @@ interface ObjectiveRepository {
     suspend fun insertTask(task: Task)
 
     suspend fun getObjective(): List<Objective>
-    suspend fun getCompleteObjective(): List<Objective>
+    suspend fun getAchieveObjective(): List<Objective>
 
 }

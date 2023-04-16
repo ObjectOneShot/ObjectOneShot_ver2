@@ -9,7 +9,7 @@
             type="com.naze.objectoneshot_ver2.data.local.model.Objective" />
         <variable
             name="clickListener"
-            type="com.naze.objectoneshot_ver2.presentation.objective.ObjectiveListAdapter.ItemClickListener" />
+            type="com.naze.objectoneshot_ver2.presentation.objective.ObjectiveAchieveListAdapter.ItemClickListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
