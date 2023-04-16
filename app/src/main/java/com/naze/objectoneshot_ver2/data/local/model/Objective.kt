@@ -1,5 +1,6 @@
 package com.naze.objectoneshot_ver2.data.local.model
 
+import android.util.Log
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.UUID

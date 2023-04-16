@@ -7,7 +7,7 @@ import com.naze.objectoneshot_ver2.data.local.model.Task
 
 @Dao
 interface TaskDao {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(task: Task)
 
     @Update

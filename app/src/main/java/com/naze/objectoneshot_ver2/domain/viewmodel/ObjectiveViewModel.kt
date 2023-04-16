@@ -26,8 +26,8 @@ class ObjectiveViewModel @Inject constructor(
     private val _objective = MutableLiveData<Objective>()
     val objective: LiveData<Objective> get() = _objective
 
-    private val _keyResultList = MutableLiveData<List<KeyResult>>()
-    val keyResultList: LiveData<List<KeyResult>> get() = _keyResultList
+    private val _keyResultList = MutableLiveData<List<KeyResult>?>()
+    val keyResultList: LiveData<List<KeyResult>?> get() = _keyResultList
 
     private val _keyResult = MutableLiveData<KeyResult>()
     val keyResult: LiveData<KeyResult> get() = _keyResult //KeyList 추가할 때 쓰는 아이템
@@ -41,21 +41,41 @@ class ObjectiveViewModel @Inject constructor(
     private val _keyResultState = MutableLiveData<KeyResultState>()
     val keyResultState: LiveData<KeyResultState> get() = _keyResultState
 
+    /***
+     * 데이터 Insert
+     */
+    //insert
     fun insertObjective() {
         viewModelScope.launch(Dispatchers.IO) {
-            val id = _objective.value?.let { objectiveRepository.insert(it) }
-            Log.d("TEST_ObjectiveViewModel","insertObjective $id")
+            _objective.value?.let { objectiveRepository.insertObjective(it) }
+            Log.d("TEST_Insert","insertObjective ${_objective.value?.id}")
+            insertKeyResult()
         }
     }
 
-    fun setObjectiveDateRange(startDate: Long, endDate: Long) {
-        _objective.value = _objective.value?.copy(startDate = startDate, endDate = endDate)
-        Log.d("TEST_ObjectiveViewModel","${_objective.value}")
-    } //TextView 이기 때문에 입력값이 없어서 직접 메소드로 입력
+    private fun insertKeyResult() {
+        Log.d("TEST_Insert","objective id = ${_keyResultList.value?.get(0)?.objective_id}")
+        Log.d("TEST_Insert","key_result id = ${_keyResultList.value?.get(0)?.id}")
+        viewModelScope.launch(Dispatchers.IO) {
+            _keyResultList.value?.let { objectiveRepository.insertKeyResult(it)}
+            insertTask()
+        }
+    }
 
-    fun setObjectiveProgress() {
-        //KeyResult 데이터를 가지고 계산
-    } //KeyResult 데이터를 가지고 계산해야 하기에 처리
+    private fun insertTask() {
+        viewModelScope.launch(Dispatchers.IO) {
+            _taskList.value?.let {
+                for(i in it) {
+                    Log.d("TEST_insert", "key_result_id = ${i.key_result_id}")
+                    objectiveRepository.insertTask(i)
+                }
+            }
+        }
+    }
+
+    /***
+     * 데이터 초기화
+     */
 
     fun initObjectiveData() {
         _objective.value = Objective(
@@ -75,22 +95,32 @@ class ObjectiveViewModel @Inject constructor(
                 set(Calendar.MILLISECOND, 0)
             }.timeInMillis,
             progress = 0.0,
-            complete = false
+            complete = false,
         )
-        Log.d("TEST_ObjectiveViewModel","Init ObjectiveData ${objective.value}")
+        Log.d("TEST_initObjective","id = ${_objective.value?.id}")
+        initKeyResultList()
     } //ObjectiveData Add 위해 초기값 설정
 
     fun initKeyResultData() {
         _keyResult.value = KeyResult(
             title = "",
             progress = 0.0,
-            objective_id = _objective.value!!.id
+            objective_id = _objective.value!!.id,
         )
+        Log.d("TEST_initKeyResult","objective id = ${_objective.value?.id}")
+        Log.d("TEST_initKeyResult","keyResult id = ${_keyResult.value?.id}")
     }//objective_id를 가지고 새로운 KeyResult 를 추가
 
+    fun initKeyResultList() {
+        _keyResultList.value = null
+    }
     fun initKeyResultState() {
         _keyResultState.value = KeyResultState.BEFORE_PROGRESS //시작할 땐 _keyResultState를 BEFORE로 초기화
     }
+
+    /***
+     * 하단 미분류
+     */
 
     fun setKeyResultState(keyResultState: KeyResultState) {
         _keyResultState.value = keyResultState
@@ -109,6 +139,15 @@ class ObjectiveViewModel @Inject constructor(
             }
         }
     }
+
+    fun setObjectiveDateRange(startDate: Long, endDate: Long) {
+        _objective.value = _objective.value?.copy(startDate = startDate, endDate = endDate)
+        Log.d("TEST_ObjectiveViewModel","${_objective.value}")
+    } //TextView 이기 때문에 입력값이 없어서 직접 메소드로 입력
+
+    fun setObjectiveProgress() {
+        //KeyResult 데이터를 가지고 계산
+    } //KeyResult 데이터를 가지고 계산해야 하기에 처리
 
     fun addKeyResultList() {
         val currentList = _keyResultList.value ?: mutableListOf()

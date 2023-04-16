@@ -2,6 +2,7 @@ package com.naze.objectoneshot_ver2.data.local.model
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import java.util.UUID
 
@@ -14,7 +15,8 @@ import java.util.UUID
             childColumns = ["key_result_id"],
             onDelete = ForeignKey.CASCADE
         )
-    ]
+    ],
+    indices = [Index("key_result_id")]
 )
 data class Task(
     var content: String,

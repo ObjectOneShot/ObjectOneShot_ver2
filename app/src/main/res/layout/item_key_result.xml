@@ -5,9 +5,6 @@
 
     <data>
         <variable
-            name="viewmodel"
-            type="com.naze.objectoneshot_ver2.domain.viewmodel.KeyResultViewModel" />
-        <variable
             name="keyResult"
             type="com.naze.objectoneshot_ver2.data.local.model.KeyResult" />
     </data>

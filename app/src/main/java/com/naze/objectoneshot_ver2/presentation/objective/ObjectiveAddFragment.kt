@@ -13,11 +13,9 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.naze.objectoneshot_ver2.R
 import com.naze.objectoneshot_ver2.databinding.FragmentObjectiveAddBinding
 import com.naze.objectoneshot_ver2.domain.type.KeyResultState
-import com.naze.objectoneshot_ver2.domain.viewmodel.KeyResultViewModel
 import com.naze.objectoneshot_ver2.domain.viewmodel.ObjectiveViewModel
 import com.naze.objectoneshot_ver2.presentation.keyresult.KeyResultListFragment
 import com.naze.objectoneshot_ver2.presentation.task.TaskAddAdapter
-import com.naze.objectoneshot_ver2.presentation.task.TaskListAdapter
 import com.naze.objectoneshot_ver2.util.BindingFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -28,7 +26,6 @@ import java.util.*
 class ObjectiveAddFragment: BindingFragment<FragmentObjectiveAddBinding>(R.layout.fragment_objective_add) {
 
     private val objectiveViewModel: ObjectiveViewModel by activityViewModels()
-    private val keyResultViewModel: KeyResultViewModel by activityViewModels()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
