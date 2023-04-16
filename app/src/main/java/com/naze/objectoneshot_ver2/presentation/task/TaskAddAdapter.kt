@@ -74,8 +74,12 @@ class TaskAddAdapter(
                 }
             }
             binding.cbTaskComplete.setOnClickListener {
-                addOrUpdateTaskList(item)
-                objectiveViewModel.changeKeyResultProgress(keyResultId)
+                if (binding.etTaskName.text.isNotEmpty()) {
+                    addOrUpdateTaskList(item)
+                    objectiveViewModel.changeKeyResultProgress(keyResultId)
+                } else {
+                    binding.cbTaskComplete.isChecked = !binding.cbTaskComplete.isChecked
+                }
             }
 
         }

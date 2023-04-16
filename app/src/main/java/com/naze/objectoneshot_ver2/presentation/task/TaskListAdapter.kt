@@ -1,5 +1,7 @@
 package com.naze.objectoneshot_ver2.presentation.task
 
+import android.content.Context
+import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +13,7 @@ import com.naze.objectoneshot_ver2.data.local.model.Task
 import com.naze.objectoneshot_ver2.databinding.ItemTaskBinding
 import com.naze.objectoneshot_ver2.domain.viewmodel.ObjectiveViewModel
 import com.naze.objectoneshot_ver2.util.ItemDiffCallback
+import com.naze.objectoneshot_ver2.util.showKeyboard
 
 class TaskListAdapter(
     private val keyResultId: String,
@@ -29,6 +32,7 @@ class TaskListAdapter(
 
             binding.btnAddTask.setOnClickListener {
                 if (binding.etTaskName.text.toString().isNotEmpty()) {
+                    binding.btnAddTask.visibility = View.GONE
                     addItem()
                 }
             }
@@ -41,26 +45,35 @@ class TaskListAdapter(
             binding.task = item
             Log.d("TEST_TaskListAdapter", "Key_result_id: ${item.key_result_id}")
 
+            if (adapterPosition == itemCount - 1) {
+                binding.btnAddTask.visibility = View.VISIBLE
+            } else {
+                binding.btnAddTask.visibility = View.GONE
+            }
+            binding.cbTaskComplete.setOnClickListener {
+                if (binding.etTaskName.text.isNotEmpty()) {
+                    addOrUpdateTaskList(item)
+                    objectiveViewModel.changeKeyResultProgress(keyResultId)
+                } else {
+                    binding.cbTaskComplete.isChecked = !binding.cbTaskComplete.isChecked
+                }
+            }
+
             binding.etTaskName.setOnFocusChangeListener { v, hasFocus ->
                 val text = binding.etTaskName.text.toString()
                 if (!hasFocus) {//focus 가 해제 될 때
                     if (text.isNotEmpty()) {
                         addOrUpdateTaskList(item)
                         objectiveViewModel.changeKeyResultListProgress(keyResultId)
-                        if (adapterPosition == itemCount - 1) { //마지막 아이템이면 아이템 추가
-                            addItem()
+                        if (adapterPosition == itemCount - 1) {
+                            binding.btnAddTask.visibility = View.VISIBLE
                         }
                     } else {
-                        if (adapterPosition != itemCount - 1) { //마지막 아이템이 아니라면 삭제
-                            deleteItem()
-                        } else if (adapterPosition == itemCount - 1) { //마지막 아이템이라면 + 버튼 활성화
-                            binding.btnAddTask.visibility = View.VISIBLE
-
-                        }
+                        deleteItem()
                     }
                     binding.btnDeleteTask.visibility = View.GONE
                 } else { //focus가 들어올 때
-                    binding.btnAddTask.visibility = View.GONE
+                    if (binding.btnAddTask.visibility == View.VISIBLE) binding.btnAddTask.visibility = View.GONE
                     binding.btnDeleteTask.visibility = View.VISIBLE
                 }
             }
@@ -72,10 +85,7 @@ class TaskListAdapter(
                     return@setOnEditorActionListener false
                 }
             }
-            binding.cbTaskComplete.setOnClickListener {
-                addOrUpdateTaskList(item)
-                objectiveViewModel.changeKeyResultListProgress(keyResultId)
-            }
+
 
         }
         private fun addItem() {

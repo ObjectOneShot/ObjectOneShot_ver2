@@ -23,7 +23,7 @@ class KeyResultListFragment(val state: KeyResultState): BindingFragment<Fragment
     }
 
     private fun setList() {
-        val adapterKeyResult = KeyResultAdapter(objectiveViewModel)
+        val adapterKeyResult = KeyResultAdapter(objectiveViewModel,viewLifecycleOwner)
 
         binding.rvKeyList.apply {
             adapter = adapterKeyResult
