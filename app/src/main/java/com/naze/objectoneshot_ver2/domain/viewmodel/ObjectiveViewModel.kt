@@ -9,6 +9,7 @@ import com.naze.objectoneshot_ver2.data.local.model.KeyResult
 import com.naze.objectoneshot_ver2.data.local.model.Objective
 import com.naze.objectoneshot_ver2.data.local.model.Task
 import com.naze.objectoneshot_ver2.domain.repository.ObjectiveRepository
+import com.naze.objectoneshot_ver2.domain.type.KeyResultState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -36,6 +37,9 @@ class ObjectiveViewModel @Inject constructor(
 
     private val _task = MutableLiveData<Task>()
     val task: LiveData<Task> get() = _task
+
+    private val _keyResultState = MutableLiveData<KeyResultState>()
+    val keyResultState: LiveData<KeyResultState> get() = _keyResultState
 
     fun insertObjective() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -84,6 +88,28 @@ class ObjectiveViewModel @Inject constructor(
         )
     }//objective_id를 가지고 새로운 KeyResult 를 추가
 
+    fun initKeyResultState() {
+        _keyResultState.value = KeyResultState.BEFORE_PROGRESS //시작할 땐 _keyResultState를 BEFORE로 초기화
+    }
+
+    fun setKeyResultState(keyResultState: KeyResultState) {
+        _keyResultState.value = keyResultState
+    }
+
+    private fun setKeyResultStateByProgress(progress: Double) {
+        _keyResultState.value = when (progress) {
+            in 0.0..30.0 -> {
+                KeyResultState.BEFORE_PROGRESS
+            }
+            in 30.1..60.0 -> {
+                KeyResultState.ON_PROGRESS
+            }
+            else -> {
+                KeyResultState.COMPLETE
+            }
+        }
+    }
+
     fun addKeyResultList() {
         val currentList = _keyResultList.value ?: mutableListOf()
         val newList = currentList.toMutableList().apply {
@@ -91,11 +117,11 @@ class ObjectiveViewModel @Inject constructor(
         }
         _keyResultList.value = newList
         Log.d("TEST_ObjectiveViewModel","KeyResultList : ${_keyResultList.value}")
-
+        setKeyResultStateByProgress(_keyResult.value?.progress?:0.0)
         //TODO(List에 추가된 경우 -> Objective 의 Progress가 변한다)
     } //init 한 KeyResult 를 가지고 List 에 추가
 
-    fun modifyKeyResultList() {
+    fun updateKeyResultList() {
 
     }
 
@@ -139,12 +165,12 @@ class ObjectiveViewModel @Inject constructor(
                 if (i.check) cnt ++
             }
             100 * cnt / list.size
-        } else { 0 }
+        } else { 0 }.toDouble()
 
         val currentList = _keyResultList.value ?: mutableListOf()
         val updatedList = currentList.map {
             if (it.id == id) {
-                it.copy(progress = progress.toDouble())
+                it.copy(progress = progress)
             } else {
                 it
             }
@@ -157,16 +183,18 @@ class ObjectiveViewModel @Inject constructor(
      */
     fun changeKeyResultProgress(id: String) {
         val list = _taskList.value ?: mutableListOf()
-        list.filter { it.key_result_id == id }
-        val progress = if (list.isNotEmpty()) {
+        val newList = list.filter { it.key_result_id == id }
+        val progress = if (newList.isNotEmpty()) {
             var cnt = 0 //check 된 개수
-            for (i in list) {
+            for (i in newList) {
                 if (i.check) cnt ++
             }
-            100 * cnt / list.size
-        } else { 0 }
+            100 * cnt / newList.size
+        } else { 0 }.toDouble()
+        _keyResult.value = _keyResult.value?.copy(progress = progress)
+    } //KeyResult Progress (등록하기 전, state 안바꾸는게 맞을듯)
 
-        _keyResult.value = _keyResult.value?.copy(progress = progress.toDouble())
-        Log.d("TEST_ObjectiveViewModel","keyResult progress : ${_keyResult.value?.progress}")
-    } //KeyResult Progress (등록하기 전)
+    fun getTaskList(id: String): List<Task>? {
+        return _taskList.value?.filter { it.key_result_id == id }
+    }
 }
