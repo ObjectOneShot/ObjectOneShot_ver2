@@ -48,6 +48,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 date="@{objective.endDate}"
+                complete="@{objective.complete}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
 
@@ -105,7 +106,7 @@
             android:layout_marginVertical="8dp"
             app:rpbBackgroundColor="@color/grey_300"
             app:rpbCornerRadius="8dp"
-            app:setRoundProgressDrawableColor="@{objective.progress}"
+            app:setRoundProgressDrawableColorComplete="@{objective.progress}"
             app:setRoundProgress="@{objective.progress}"
             app:rpbShowProgressText="false"
             app:layout_constraintTop_toTopOf="@+id/view_divider"

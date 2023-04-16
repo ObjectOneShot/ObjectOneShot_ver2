@@ -9,4 +9,7 @@ interface ObjectiveRepository {
     suspend fun insertKeyResult(keyResult: List<KeyResult>)
     suspend fun insertTask(task: Task)
 
+    suspend fun getObjective(): List<Objective>
+    suspend fun getCompleteObjective(): List<Objective>
+
 }

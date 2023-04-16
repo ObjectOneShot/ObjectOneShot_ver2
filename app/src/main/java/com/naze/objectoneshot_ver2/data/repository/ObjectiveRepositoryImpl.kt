@@ -7,6 +7,7 @@ import com.naze.objectoneshot_ver2.data.local.model.KeyResult
 import com.naze.objectoneshot_ver2.data.local.model.Objective
 import com.naze.objectoneshot_ver2.data.local.model.Task
 import com.naze.objectoneshot_ver2.domain.repository.ObjectiveRepository
+import com.naze.objectoneshot_ver2.util.getCurrentDate
 import javax.inject.Inject
 
 class ObjectiveRepositoryImpl @Inject constructor(
@@ -25,5 +26,13 @@ class ObjectiveRepositoryImpl @Inject constructor(
     override suspend fun insertTask(task: Task) {
         taskDao.insert(task)
     }
+
+    override suspend fun getObjective(): List<Objective> {
+        return objectiveDao.getObjectives(getCurrentDate())
+    } //TODO (추후 변경 : KeyResult 데이터를 포함한 구조로 변경 필요)
+
+    override suspend fun getCompleteObjective(): List<Objective> {
+        return objectiveDao.getCompletedObjectives(getCurrentDate())
+    } //TODO (추후 변경 : KeyResult 데이터를 포함한 구조로 변경 필요)
 
 }

@@ -2,6 +2,11 @@ package com.naze.objectoneshot_ver2.util
 
 import android.annotation.SuppressLint
 import android.graphics.Paint
+import android.graphics.Typeface
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
 import android.util.Log
 import android.view.View
 import android.widget.EditText
@@ -12,6 +17,9 @@ import androidx.databinding.BindingAdapter
 import com.mackhartley.roundedprogressbar.RoundedProgressBar
 import com.naze.objectoneshot_ver2.R
 import java.sql.Date
+import java.text.SimpleDateFormat
+import java.util.*
+import java.util.concurrent.TimeUnit
 
 
 @BindingAdapter("android:progressDouble")
@@ -42,6 +50,101 @@ fun setColorProgressBar(view: RoundedProgressBar, value: Double) {
         in 61.0..100.0 -> {
             view.setProgressDrawableColor(ContextCompat.getColor(view.context,R.color.point3))
         }
+    }
+}
+
+@BindingAdapter("app:setRoundProgressDrawableColorComplete")
+fun setColorCompleteProgressBar(view: RoundedProgressBar, value: Double) {
+    if (value == 100.0) {
+        view.setProgressDrawableColor(ContextCompat.getColor(view.context,R.color.point3))
+    } else {
+        view.setProgressDrawableColor(ContextCompat.getColor(view.context,R.color.grey_400))
+    }
+}
+
+@BindingAdapter("date")
+fun setTextDate(view: TextView, date: Long) {
+    val dateFormat = SimpleDateFormat("yy-MM-dd", Locale.getDefault())
+    val timeDiffInMillis = getCurrentDate() - date
+    val daysLeft = TimeUnit.MILLISECONDS.toDays(timeDiffInMillis)
+
+    Log.d("TEST_objective_item","$daysLeft")
+
+    val spannableString =
+        SpannableString("D-$daysLeft / ${dateFormat.format(date)}")
+
+    spannableString.setSpan(
+        ForegroundColorSpan(ContextCompat.getColor(view.context, R.color.error)),
+        0,
+        "D-$daysLeft".length,
+        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+    )
+    spannableString.setSpan(
+        StyleSpan(Typeface.BOLD),
+        0,
+        "D-$daysLeft".length,
+        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+    )
+    spannableString.setSpan(
+        ForegroundColorSpan(ContextCompat.getColor(view.context, R.color.grey_600)),
+        "D-$daysLeft".length + 3,
+        spannableString.length,
+        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+    )
+}
+
+@BindingAdapter("complete","date")
+fun TextView.setTextDateComplete( complete:Boolean, date: Long ) {
+    val dateFormat = SimpleDateFormat("yy-MM-dd", Locale.getDefault())
+    val timeDiffInMillis = getCurrentDate() - date
+    val daysLeft = TimeUnit.MILLISECONDS.toDays(timeDiffInMillis)
+
+    Log.d("TEST_objective_item","$daysLeft")
+
+    if (complete) {
+        val spannableString =
+            SpannableString("달성 / ${dateFormat.format(date)}")
+
+        spannableString.setSpan(
+            ForegroundColorSpan(ContextCompat.getColor(this.context, R.color.error)),
+            0,
+            2,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        spannableString.setSpan(
+            StyleSpan(Typeface.BOLD),
+            0,
+            2,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        spannableString.setSpan(
+            ForegroundColorSpan(ContextCompat.getColor(this.context, R.color.grey_600)),
+            5,
+            spannableString.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+    } else {
+        val spannableString =
+            SpannableString("미달성 / ${dateFormat.format(date)}")
+
+        spannableString.setSpan(
+            ForegroundColorSpan(ContextCompat.getColor(this.context, R.color.secondary)),
+            0,
+            3,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        spannableString.setSpan(
+            StyleSpan(Typeface.BOLD),
+            0,
+            3,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        spannableString.setSpan(
+            ForegroundColorSpan(ContextCompat.getColor(this.context, R.color.grey_600)),
+            6,
+            spannableString.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
     }
 }
 

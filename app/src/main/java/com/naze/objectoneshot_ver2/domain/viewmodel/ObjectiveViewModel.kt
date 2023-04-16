@@ -72,6 +72,20 @@ class ObjectiveViewModel @Inject constructor(
             }
         }
     }
+    /***
+     * 데이터 SELECT (GET)
+     */
+    fun getObjectiveList() {
+        viewModelScope.launch(Dispatchers.Main) {
+            _objectiveList.value = objectiveRepository.getObjective()
+        }
+    }
+
+    fun getCompleteObjectiveList() {
+        viewModelScope.launch(Dispatchers.Main) {
+            _objectiveList.value = objectiveRepository.getCompleteObjective()
+        }
+    }
 
     /***
      * 데이터 초기화
