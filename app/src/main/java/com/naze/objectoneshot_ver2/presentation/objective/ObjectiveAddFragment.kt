@@ -1,5 +1,6 @@
 package com.naze.objectoneshot_ver2.presentation.objective
 
+import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -17,6 +18,7 @@ import com.naze.objectoneshot_ver2.domain.viewmodel.ObjectiveViewModel
 import com.naze.objectoneshot_ver2.presentation.keyresult.KeyResultListFragment
 import com.naze.objectoneshot_ver2.presentation.task.TaskAddAdapter
 import com.naze.objectoneshot_ver2.util.BindingFragment
+import com.naze.objectoneshot_ver2.util.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -79,31 +81,47 @@ class ObjectiveAddFragment: BindingFragment<FragmentObjectiveAddBinding>(R.layou
         }
     }
 
+    /**  Add Key Result   */
     private lateinit var adapterTask: TaskAddAdapter
     private fun setAddKeyResult () {
-        binding.btnAddKeyResult.setOnClickListener {
-
-            if (binding.keyAddItem.layoutKeyAdd.visibility == View.VISIBLE) {
-                //데이터 입력이지 뭐
-                //KeyResult 에 입력이야
-                binding.keyAddItem.layoutKeyAdd.visibility = View.GONE
-                binding.btnAddKeyResult.setImageResource(R.drawable.ic_text_key_result_add)
-                objectiveViewModel.addKeyResultList() //데이터 입력
+        binding.btnAddKeyResult.setOnClickListener { //Add btn 을 눌렀을 때
+            if (binding.keyAddItem.layoutKeyAdd.visibility == View.VISIBLE) { //추가 상태일 때
+                if (binding.keyAddItem.etKeyName.text.toString().isNotEmpty()) { //KeyResult 명이 비어있지 않으면
+                    if (adapterTask.currentList[0].content.isNotEmpty() || adapterTask.currentList.size > 1) {
+                        objectiveViewModel.addKeyResultList() //데이터 입력
+                        setVisibleKeyResult(false)
+                        binding.keyAddItem.etKeyName.setHintTextColor(Color.parseColor("#FF808080"))
+                    } else {
+                        requireContext().showToast("Task를 1개 이상 입력해주세요.")
+                    }
+                } else {
+                    binding.keyAddItem.etKeyName.setHintTextColor(Color.parseColor("#80FF0000"))
+                }
 
             } else if (binding.keyAddItem.layoutKeyAdd.visibility == View.GONE) {
-                binding.keyAddItem.layoutKeyAdd.visibility = View.VISIBLE
-
                 objectiveViewModel.initKeyResultData() //신규 데이터 생성
-                Log.d("TEST_AddFragment","${objectiveViewModel.keyResult.value}")
-                adapterTask = TaskAddAdapter(objectiveViewModel.keyResult.value?.id?:"", objectiveViewModel)
 
+                setVisibleKeyResult(true)
+                adapterTask = TaskAddAdapter(objectiveViewModel.keyResult.value?.id?:"", objectiveViewModel)
                 binding.keyAddItem.rvTaskList.apply {
                     adapterTask.submitList(null)
                     adapter = adapterTask
                     layoutManager = LinearLayoutManager(requireContext())
                 }
-                binding.btnAddKeyResult.setImageResource(R.drawable.ic_text_keyresult_save)
             }
+        }
+        binding.keyAddItem.btnDeleteKey.setOnClickListener {
+            setVisibleKeyResult(false)
+        }
+
+    }
+    private fun setVisibleKeyResult(isAdd: Boolean) { //추가인지 저장인지
+        if (isAdd) {
+            binding.keyAddItem.layoutKeyAdd.visibility = View.VISIBLE
+            binding.btnAddKeyResult.setImageResource(R.drawable.ic_text_keyresult_save)
+        } else {
+            binding.keyAddItem.layoutKeyAdd.visibility = View.GONE
+            binding.btnAddKeyResult.setImageResource(R.drawable.ic_text_key_result_add)
         }
     }
 
