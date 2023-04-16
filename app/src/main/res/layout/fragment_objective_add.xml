@@ -7,6 +7,9 @@
         <variable
             name="objective"
             type="com.naze.objectoneshot_ver2.data.local.model.Objective" />
+        <variable
+            name="viewmodel"
+            type="com.naze.objectoneshot_ver2.domain.viewmodel.ObjectiveViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -104,7 +107,7 @@
                     android:textColor="@color/grey_900"
                     android:textSize="14sp"
                     android:textStyle="bold"
-                    android:text="@={objective.title}"
+                    android:text="@={viewmodel.objective.title}"
                     android:background="@drawable/shape_rectangle_under_bar_black"
                     android:hint="목표를 입력해주세요"/>
 
@@ -146,8 +149,8 @@
                     android:textColor="@color/grey_900"
                     android:textSize="14sp"
                     android:textStyle="bold"
-                    startDate="@{objective.startDate}"
-                    endDate="@{objective.endDate}"
+                    startDate="@{viewmodel.objective.startDate}"
+                    endDate="@{viewmodel.objective.endDate}"
                     android:background="@drawable/shape_rectangle_under_bar_black"
                     tools:text="23.04.08 ~ 23.04.08"/>
             </RelativeLayout>
@@ -189,8 +192,8 @@
                     android:layout_marginVertical="8dp"
                     app:rpbBackgroundColor="@color/grey_300"
                     app:rpbCornerRadius="8dp"
-                    app:setRoundProgressDrawableColor="@{objective.progress}"
-                    app:setRoundProgress="@{objective.progress}"
+                    app:setRoundProgressDrawableColor="@{viewmodel.objective.progress}"
+                    app:setRoundProgress="@{viewmodel.objective.progress}"
                     app:rpbShowProgressText="false"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -204,7 +207,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="10dp"
                     android:gravity="end"
-                    android:text="@{@string/item_progress_string_format(objective.progress)}"
+                    android:text="@{@string/item_progress_string_format(viewmodel.objective.progress)}"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -303,11 +306,11 @@
                         layout="@layout/item_key_add" />
 
                     <androidx.constraintlayout.utils.widget.ImageFilterButton
-                        android:id="@+id/btn_add_key"
+                        android:id="@+id/btn_add_key_result"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:background="@drawable/selector_key_result_btn"
-                        android:enabled="true"
+                        android:enabled="false"
                         android:src="@drawable/ic_text_key_result_add"
                         android:layout_marginHorizontal="16dp"
                         android:layout_marginVertical="10dp"

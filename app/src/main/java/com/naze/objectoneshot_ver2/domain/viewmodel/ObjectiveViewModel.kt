@@ -39,7 +39,7 @@ class ObjectiveViewModel @Inject constructor(
     }
 
     fun setObjectiveDateRange(startDate: Long, endDate: Long) {
-        _objective.value?.copy(startDate = startDate, endDate = endDate)
+        _objective.value = _objective.value?.copy(startDate = startDate, endDate = endDate)
         Log.d("TEST_ObjectiveViewModel","${_objective.value}")
     } //TextView 이기 때문에 입력값이 없어서 직접 메소드로 입력
 
