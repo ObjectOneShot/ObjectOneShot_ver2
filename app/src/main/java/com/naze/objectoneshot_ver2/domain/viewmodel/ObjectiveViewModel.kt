@@ -114,6 +114,59 @@ class ObjectiveViewModel @Inject constructor(
             }
             _taskList.value = newList
         }
-        Log.d("TEST_ObjectiveViewModel","taskList : ${_taskList.value}")
+        Log.d("TEST_ObjectiveViewModel","taskList Add or Update: ${_taskList.value}")
     }
+
+    fun deleteTaskData(task: Task) {
+        val currentList = _taskList.value ?: mutableListOf()
+        val index = currentList.indexOfFirst { it.id == task.id }
+        if (index != -1) {
+            Log.d("TEST_ObjectiveViewModel","taskList Delete : ${currentList[index]}")
+            _taskList.value = currentList.filterNot { it.id == task.id }
+        }
+        Log.d("TEST_ObjectiveViewModel","taskList Delete : ${_taskList.value}")
+    }
+
+    /**
+     * @param id = key_result_id
+     */
+    fun changeKeyResultListProgress(id: String){
+        val list = _taskList.value ?: mutableListOf()
+        list.filter { it.key_result_id == id }
+        val progress = if (list.isNotEmpty()) {
+            var cnt = 0 //check 된 개수
+            for (i in list) {
+                if (i.check) cnt ++
+            }
+            100 * cnt / list.size
+        } else { 0 }
+
+        val currentList = _keyResultList.value ?: mutableListOf()
+        val updatedList = currentList.map {
+            if (it.id == id) {
+                it.copy(progress = progress.toDouble())
+            } else {
+                it
+            }
+        }
+        _keyResultList.value = updatedList
+    } //KeyResultList Progress 변경
+
+    /**
+     * @param id = key_result_id
+     */
+    fun changeKeyResultProgress(id: String) {
+        val list = _taskList.value ?: mutableListOf()
+        list.filter { it.key_result_id == id }
+        val progress = if (list.isNotEmpty()) {
+            var cnt = 0 //check 된 개수
+            for (i in list) {
+                if (i.check) cnt ++
+            }
+            100 * cnt / list.size
+        } else { 0 }
+
+        _keyResult.value = _keyResult.value?.copy(progress = progress.toDouble())
+        Log.d("TEST_ObjectiveViewModel","keyResult progress : ${_keyResult.value?.progress}")
+    } //KeyResult Progress (등록하기 전)
 }

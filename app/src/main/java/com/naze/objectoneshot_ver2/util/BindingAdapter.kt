@@ -1,8 +1,10 @@
 package com.naze.objectoneshot_ver2.util
 
 import android.annotation.SuppressLint
+import android.graphics.Paint
 import android.util.Log
 import android.view.View
+import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -55,3 +57,14 @@ fun setTextDateRange(view: TextView, startDate: Long, endDate: Long) {
     view.text = "${Date(startDate)} ~ ${Date(endDate)}"
 }
 
+@BindingAdapter("enableEdit")
+fun EditText.enableEdit(enable: Boolean) {
+    Log.d("TEST_BindingAdapter","enable: $enable")
+    isEnabled = !enable
+    isFocusable = !enable
+    if (enable) {
+        this.paintFlags = this.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+    } else {
+        this.paintFlags = this.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+    }
+}
