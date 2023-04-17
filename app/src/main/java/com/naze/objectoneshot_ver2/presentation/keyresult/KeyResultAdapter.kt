@@ -4,9 +4,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.naze.objectoneshot_ver2.R
 import com.naze.objectoneshot_ver2.data.local.model.KeyResult
 import com.naze.objectoneshot_ver2.databinding.ItemKeyResultBinding
 import com.naze.objectoneshot_ver2.domain.viewmodel.ObjectiveViewModel
@@ -40,8 +42,10 @@ class KeyResultAdapter(
             binding.btnExpand.setOnClickListener {
                 if (binding.rvTaskList.visibility == View.GONE) { //안 보일 때 보이게 하기
                     binding.rvTaskList.visibility = View.VISIBLE
+                    binding.btnExpand.rotation = 180f
                 } else {
                     binding.rvTaskList.visibility = View.GONE
+                    binding.btnExpand.rotation = 360f
                 }
             }
         }
