@@ -2,7 +2,9 @@ package com.naze.objectoneshot_ver2.data.local.model
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
+import java.util.UUID
 
 @Entity(
     tableName = "tasks",
@@ -13,12 +15,13 @@ import androidx.room.PrimaryKey
             childColumns = ["key_result_id"],
             onDelete = ForeignKey.CASCADE
         )
-    ]
+    ],
+    indices = [Index("key_result_id")]
 )
 data class Task(
-    val content: String,
-    val check: Boolean,
-    val key_result_id: Int,
-    @PrimaryKey(autoGenerate = true)
-    val id : Int = 0
+    var content: String,
+    var check: Boolean = false,
+    val key_result_id: String,
+    @PrimaryKey
+    val id : String = UUID.randomUUID().toString()
 )

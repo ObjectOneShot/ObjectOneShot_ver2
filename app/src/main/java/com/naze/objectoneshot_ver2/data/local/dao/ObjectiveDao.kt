@@ -5,8 +5,8 @@ import com.naze.objectoneshot_ver2.data.local.model.Objective
 
 @Dao
 interface ObjectiveDao {
-    @Insert
-    suspend fun insert(objective: Objective)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(objective: Objective): Long
 
     @Update
     suspend fun update(objective: Objective)
@@ -14,6 +14,9 @@ interface ObjectiveDao {
     @Delete
     suspend fun delete(objective: Objective)
 
-    @Query("SELECT * FROM objectives")
-    suspend fun getObjectives(): List<Objective>
+    @Query("SELECT * FROM objectives WHERE progress >= 100 OR endDate < :currentTime")
+    suspend fun getAchieveObjectives(currentTime: Long): List<Objective>
+
+    @Query("SELECT * FROM objectives WHERE progress < 100 AND endDate >= :currentTime")
+    suspend fun getObjectives(currentTime: Long): List<Objective>
 }

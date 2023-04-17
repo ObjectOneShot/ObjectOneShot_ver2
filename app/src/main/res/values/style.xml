@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="objective_text">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/grey_900</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="DefaultTextStyleBody1">
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textColor">@color/grey_900</item>
+        <item name="android:textSize">@dimen/ts_body1</item>
+    </style>
+
+    <style name="DefaultTextStyleBody2">
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textColor">@color/grey_900</item>
+        <item name="android:textSize">@dimen/ts_body2</item>
+    </style>
+
+    <style name="DefaultTextStyleBody3">
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textColor">@color/grey_900</item>
+        <item name="android:textSize">@dimen/ts_body3</item>
+    </style>
+
+    <style name="DefaultTextStyleCaption">
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textColor">@color/grey_900</item>
+        <item name="android:textSize">@dimen/ts_caption</item>
+    </style>
+
+    <style name="DefaultTextStyleHead">
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textColor">@color/grey_900</item>
+        <item name="android:textSize">@dimen/ts_head</item>
+    </style>
+</resources>

@@ -1,16 +1,18 @@
 package com.naze.objectoneshot_ver2.data.local.model
 
+import android.util.Log
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.util.UUID
 
 @Entity(tableName = "objectives")
 data class Objective(
-    val title: String,
-    val startDate: Long,
-    val endDate: Long,
-    val progress: Double,
-    val complete: Boolean,
-    @PrimaryKey(autoGenerate = true)
-    val id: Int = 0
+    var title: String = "",
+    var startDate: Long,
+    var endDate: Long,
+    var progress: Double,
+    var complete: Boolean,
+    @PrimaryKey
+    val id: String = UUID.randomUUID().toString()
 ) {
 }

@@ -1,16 +1,12 @@
 package com.naze.objectoneshot_ver2.data.local.dao
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 import com.naze.objectoneshot_ver2.data.local.model.KeyResult
 
 @Dao
 interface KeyResultDao {
-    @Insert
-    suspend fun insert(keyResult: KeyResult)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insert(keyResult:List<KeyResult>)
 
     @Update
     suspend fun update(keyResult: KeyResult)
