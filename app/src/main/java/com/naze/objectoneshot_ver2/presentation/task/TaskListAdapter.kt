@@ -55,8 +55,7 @@ class TaskListAdapter(
                     } else {
                         deleteItem()
                         if (adapterPosition == itemCount - 1) { //마지막 아이템이라면
-                            //binding.btnAddTask.visibility = View.VISIBLE
-                            notifyItemChanged(itemCount-1)
+                            binding.btnAddTask.visibility = View.VISIBLE
                         }
                     }
                     binding.btnDeleteTask.visibility = View.GONE
