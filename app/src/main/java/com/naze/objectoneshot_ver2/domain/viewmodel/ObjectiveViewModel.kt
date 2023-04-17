@@ -21,9 +21,6 @@ import javax.inject.Inject
 class ObjectiveViewModel @Inject constructor(
     private val objectiveRepository: ObjectiveRepository
 ): ViewModel() {
-    private val _objectiveList = MutableLiveData<List<Objective>>() //Objective 리스트
-    val objectiveList: LiveData<List<Objective>> get() = _objectiveList
-
     private val _objectiveListWithKeyResults = MutableLiveData<List<ObjectiveWithKeyResults>>()
     val objectiveListWithKeyResults : LiveData<List<ObjectiveWithKeyResults>> get() = _objectiveListWithKeyResults
 
