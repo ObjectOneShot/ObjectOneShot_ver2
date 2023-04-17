@@ -35,4 +35,8 @@ class ObjectiveRepositoryImpl @Inject constructor(
         return objectiveDao.getAchieveObjectives(getCurrentDate())
     } //TODO (추후 변경 : KeyResult 데이터를 포함한 구조로 변경 필요)
 
+    override suspend fun getObjectiveById(id: String): Objective {
+        return objectiveDao.getObjectiveById(id)
+    }
+
 }

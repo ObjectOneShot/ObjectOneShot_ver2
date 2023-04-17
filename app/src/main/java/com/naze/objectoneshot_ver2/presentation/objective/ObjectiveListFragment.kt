@@ -42,8 +42,13 @@ class ObjectiveListFragment: BindingFragment<FragmentObjectiveListBinding>(R.lay
 
     private fun setRecyclerView() {
         val adapterObjective = ObjectiveListAdapter(ObjectiveListAdapter.ItemClickListener {
-            //TODO(미구현)
-            requireContext().showToast("클릭")
+            objectiveViewModel.getObjectiveData(it)
+            parentFragmentManager.beginTransaction().apply {
+                replace(R.id.fl_main, ObjectiveModifyFragment(), "ObjectiveModify")
+                addToBackStack(null)
+                commit()
+            }
+            requireContext().showToast("클릭 $it")
         } )
 
         binding.rvObjective.apply {

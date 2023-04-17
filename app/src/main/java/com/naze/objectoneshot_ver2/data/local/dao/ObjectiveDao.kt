@@ -19,4 +19,7 @@ interface ObjectiveDao {
 
     @Query("SELECT * FROM objectives WHERE progress < 100 AND endDate >= :currentTime")
     suspend fun getObjectives(currentTime: Long): List<Objective>
+
+    @Query("SELECT * FROM objectives WHERE id = :id")
+    suspend fun getObjectiveById(id: String) : Objective
 }

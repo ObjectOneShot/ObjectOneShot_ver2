@@ -12,4 +12,6 @@ interface ObjectiveRepository {
     suspend fun getObjective(): List<Objective>
     suspend fun getAchieveObjective(): List<Objective>
 
+    suspend fun getObjectiveById(id: String): Objective
+
 }

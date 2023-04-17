@@ -72,6 +72,7 @@ class ObjectiveViewModel @Inject constructor(
             }
         }
     }
+
     /***
      * 데이터 SELECT (GET)
      */
@@ -89,8 +90,8 @@ class ObjectiveViewModel @Inject constructor(
 
 
 
-    /***
-     * 데이터 초기화
+    /** 데이터 초기화 - Add Fragment
+     *  데이터 신규 생성
      */
 
     fun initObjectiveData() {
@@ -127,12 +128,28 @@ class ObjectiveViewModel @Inject constructor(
         Log.d("TEST_initKeyResult","keyResult id = ${_keyResult.value?.id}")
     }//objective_id를 가지고 새로운 KeyResult 를 추가
 
-    fun initKeyResultList() {
+    private fun initKeyResultList() {
         _keyResultList.value = null
     }
+
+    /**데이터 초기화
+     * Modify Fragment - 수정 위한 데이터
+     */
+    fun getObjectiveData(id : String) {
+        viewModelScope.launch(Dispatchers.Main) {
+            _objective.value = objectiveRepository.getObjectiveById(id)
+        }
+    }
+
+    /** 데이터 초기화 - 기타
+     *  KeyResult State 값
+     */
     fun initKeyResultState() {
         _keyResultState.value = KeyResultState.BEFORE_PROGRESS //시작할 땐 _keyResultState를 BEFORE로 초기화
     }
+
+
+
 
     /***
      * 하단 미분류
