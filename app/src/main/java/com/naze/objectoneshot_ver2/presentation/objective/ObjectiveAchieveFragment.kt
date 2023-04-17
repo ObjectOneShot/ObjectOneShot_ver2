@@ -28,7 +28,7 @@ class ObjectiveAchieveFragment: BindingFragment<FragmentObjectiveAchieveListBind
         }
         objectiveViewModel.getObjectiveAchieveList()
 
-        objectiveViewModel.objectiveList.observe(viewLifecycleOwner) {
+        objectiveViewModel.objectiveListWithKeyResults.observe(viewLifecycleOwner) {
             adapterObjective.submitList(it)
         }
     }

@@ -6,7 +6,7 @@
     <data>
         <variable
             name="objective"
-            type="com.naze.objectoneshot_ver2.data.local.model.Objective" />
+            type="com.naze.objectoneshot_ver2.data.local.model.ObjectiveWithKeyResults" />
         <variable
             name="clickListener"
             type="com.naze.objectoneshot_ver2.presentation.objective.ObjectiveAchieveListAdapter.ItemClickListener" />
@@ -34,7 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/ts_body1"
-                android:text="@{objective.title}"
+                android:text="@{objective.objective.title}"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="8dp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -47,8 +47,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
-                date="@{objective.endDate}"
-                progress="@{objective.progress}"
+                date="@{objective.objective.endDate}"
+                progress="@{objective.objective.progress}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
 
@@ -106,8 +106,8 @@
             android:layout_marginVertical="8dp"
             app:rpbBackgroundColor="@color/grey_300"
             app:rpbCornerRadius="8dp"
-            app:setRoundProgressDrawableColorComplete="@{objective.progress}"
-            app:setRoundProgress="@{objective.progress}"
+            app:setRoundProgressDrawableColorComplete="@{objective.objective.progress}"
+            app:setRoundProgress="@{objective.objective.progress}"
             app:rpbShowProgressText="false"
             app:layout_constraintTop_toTopOf="@+id/view_divider"
             app:layout_constraintStart_toStartOf="parent"
@@ -119,7 +119,7 @@
             android:id="@+id/tv_progress_percent"
             android:layout_width="@dimen/progress_text_width"
             android:layout_height="wrap_content"
-            android:text="@{@string/item_progress_string_format(objective.progress)}"
+            android:text="@{@string/item_progress_string_format(objective.objective.progress)}"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:layout_marginStart="8dp"
