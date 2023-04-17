@@ -58,7 +58,7 @@ class ObjectiveListFragment: BindingFragment<FragmentObjectiveListBinding>(R.lay
         objectiveViewModel.getObjectiveList()
         //가져오기
 
-        objectiveViewModel.objectiveList.observe(viewLifecycleOwner) {
+        objectiveViewModel.objectiveListWithKeyResults.observe(viewLifecycleOwner) {
             adapterObjective.submitList(it)
         }
 

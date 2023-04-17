@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.naze.objectoneshot_ver2.data.local.model.KeyResult
 import com.naze.objectoneshot_ver2.data.local.model.Objective
+import com.naze.objectoneshot_ver2.data.local.model.ObjectiveWithKeyResults
 import com.naze.objectoneshot_ver2.data.local.model.Task
 import com.naze.objectoneshot_ver2.domain.repository.ObjectiveRepository
 import com.naze.objectoneshot_ver2.domain.type.KeyResultState
@@ -22,6 +23,9 @@ class ObjectiveViewModel @Inject constructor(
 ): ViewModel() {
     private val _objectiveList = MutableLiveData<List<Objective>>() //Objective 리스트
     val objectiveList: LiveData<List<Objective>> get() = _objectiveList
+
+    private val _objectiveListWithKeyResults = MutableLiveData<List<ObjectiveWithKeyResults>>()
+    val objectiveListWithKeyResults : LiveData<List<ObjectiveWithKeyResults>> get() = _objectiveListWithKeyResults
 
     private val _objective = MutableLiveData<Objective>()
     val objective: LiveData<Objective> get() = _objective
@@ -78,13 +82,13 @@ class ObjectiveViewModel @Inject constructor(
      */
     fun getObjectiveList() {
         viewModelScope.launch(Dispatchers.Main) {
-            _objectiveList.value = objectiveRepository.getObjective()
+            _objectiveListWithKeyResults.value = objectiveRepository.getObjective()
         }
     } //ObjectiveList 가져오기 추후 변경 예정
 
     fun getObjectiveAchieveList() {
         viewModelScope.launch(Dispatchers.Main) {
-            _objectiveList.value = objectiveRepository.getAchieveObjective()
+            _objectiveListWithKeyResults.value = objectiveRepository.getAchieveObjective()
         }
     } //ObjectiveAchieveList 가져오기 추후 변경 예정
 
@@ -138,6 +142,8 @@ class ObjectiveViewModel @Inject constructor(
     fun getObjectiveData(id : String) {
         viewModelScope.launch(Dispatchers.Main) {
             _objective.value = objectiveRepository.getObjectiveById(id)
+            val value = objectiveRepository.getKeyResultWithTasksById(id)
+            Log.d("TEST_getAllData","$value")
         }
     }
 
