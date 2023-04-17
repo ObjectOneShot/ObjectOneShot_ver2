@@ -48,7 +48,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 date="@{objective.endDate}"
-                complete="@{objective.complete}"
+                progress="@{objective.progress}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
 
