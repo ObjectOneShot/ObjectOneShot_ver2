@@ -55,6 +55,10 @@ class ObjectiveAddFragment: BindingFragment<FragmentObjectiveAddBinding>(R.layou
             parentFragmentManager.popBackStackImmediate()
         } //Objective 등록
 
+        binding.toolBarBackBtn.setOnClickListener {
+            parentFragmentManager.popBackStackImmediate()
+        }
+
         setCalendar() //달력 설정
         setAddKeyResult()
         setFragment() // KeyResult List 설정
