@@ -39,7 +39,12 @@ class TaskListAdapter(
 
         fun bind(item: Task) {
             binding.task = item
-            Log.d("TEST_TaskListAdapter", "Key_result_id: ${item.key_result_id}")
+            Log.d("TEST_TaskListAdapter", "item_내용: ${item.content}")
+            if (adapterPosition == itemCount - 1) { //마지막 아이템이면 Add Task 보여주기
+                binding.btnAddTask.visibility = View.VISIBLE
+            } else {
+                binding.btnAddTask.visibility = View.GONE
+            }
 
             binding.etTaskName.setOnFocusChangeListener { v, hasFocus ->
                 val text = binding.etTaskName.text.toString()
@@ -47,15 +52,11 @@ class TaskListAdapter(
                     if (text.isNotEmpty()) {
                         addOrUpdateTaskList(item)
                         objectiveViewModel.changeKeyResultListProgress(keyResultId)
-                        if (adapterPosition == itemCount - 1) { //마지막 아이템이면 아이템 추가
-                            addItem()
-                        }
                     } else {
-                        if (adapterPosition != itemCount - 1) { //마지막 아이템이 아니라면 삭제
-                            deleteItem()
-                        } else if (adapterPosition == itemCount - 1) { //마지막 아이템이라면 + 버튼 활성화
-                            binding.btnAddTask.visibility = View.VISIBLE
-
+                        deleteItem()
+                        if (adapterPosition == itemCount - 1) { //마지막 아이템이라면
+                            //binding.btnAddTask.visibility = View.VISIBLE
+                            notifyItemChanged(itemCount-1)
                         }
                     }
                     binding.btnDeleteTask.visibility = View.GONE
@@ -73,10 +74,13 @@ class TaskListAdapter(
                 }
             }
             binding.cbTaskComplete.setOnClickListener {
-                addOrUpdateTaskList(item)
-                objectiveViewModel.changeKeyResultListProgress(keyResultId)
+                if(binding.etTaskName.text.toString().isNotEmpty()) {
+                    addOrUpdateTaskList(item)
+                    objectiveViewModel.changeKeyResultListProgress(keyResultId)
+                } else {
+                    binding.cbTaskComplete.isChecked = false
+                }
             }
-
         }
         private fun addItem() {
             if (itemCount < 5) {
