@@ -2,6 +2,7 @@ package com.naze.objectoneshot_ver2.presentation.keyresult
 
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
@@ -35,6 +36,13 @@ class KeyResultAdapter(
                 layoutManager = LinearLayoutManager(context)
                 taskListAdapter.submitList(objectiveViewModel.getTaskList(keyResult.id))
                 //objectiveViewModel 에서 해당 keyResult에 해당하는 TaskList 가져오기
+            }
+            binding.btnExpand.setOnClickListener {
+                if (binding.rvTaskList.visibility == View.GONE) { //안 보일 때 보이게 하기
+                    binding.rvTaskList.visibility = View.VISIBLE
+                } else {
+                    binding.rvTaskList.visibility = View.GONE
+                }
             }
         }
     }
