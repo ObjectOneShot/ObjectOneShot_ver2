@@ -78,6 +78,7 @@
             android:layout_marginBottom="11dp"
             android:textSize="14sp"
             android:textColor="@color/grey_900"
+            android:gravity="end"
             app:layout_constraintTop_toTopOf="@+id/view_divider"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/pg_objective_progress" />
