@@ -13,4 +13,6 @@ interface ObjectiveRepository {
     suspend fun getObjectiveById(id: String): Objective
     suspend fun getKeyResultWithTasksById(id: String): List<KeyResultWithTasks>
 
+    suspend fun updateObjective(objective: Objective)
+    suspend fun updateKeyResultWithTask(keyResult: List<KeyResult>, task: List<Task>, objectiveId: String)
 }

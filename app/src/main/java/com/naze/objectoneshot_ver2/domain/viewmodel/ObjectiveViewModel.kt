@@ -74,6 +74,17 @@ class ObjectiveViewModel @Inject constructor(
         }
     }
 
+    fun updateObjective() {
+        viewModelScope.launch(Dispatchers.IO) {
+            objectiveRepository.updateObjective(_objective.value!!)
+
+            val keyResultsList = _keyResultList.value?: mutableListOf()
+            val tasksList = _taskList.value?: mutableListOf()
+            objectiveRepository.updateKeyResultWithTask(keyResultsList, tasksList, _objective.value!!.id)
+        }
+
+    }
+
     /***
      * 데이터 SELECT (GET)
      */

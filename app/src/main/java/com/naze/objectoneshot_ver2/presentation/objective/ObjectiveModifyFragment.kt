@@ -34,6 +34,11 @@ class ObjectiveModifyFragment: BindingFragment<FragmentObjectiveModifyBinding>(R
         init()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        objectiveViewModel.updateObjective()
+    }
+
     private fun init() {
         binding.etObjectiveName.addTextChangedListener(object : TextWatcher { //목표 삭제 시 빨간 줄
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {  }
