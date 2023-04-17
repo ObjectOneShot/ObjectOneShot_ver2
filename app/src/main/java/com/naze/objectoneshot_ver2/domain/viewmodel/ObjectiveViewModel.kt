@@ -171,16 +171,19 @@ class ObjectiveViewModel @Inject constructor(
         _keyResultState.value = KeyResultState.BEFORE_PROGRESS //시작할 땐 _keyResultState를 BEFORE로 초기화
     }
 
+    /** 하단 미분류 */
 
+    /** */
+    fun isChange(): Boolean {
+        val task = mutableListOf<Task>()
+        _keyResultWithTasks.value?.forEach {
+            task.addAll(it.tasks)
+        }
+        return !(_keyResultList.value == _keyResultWithTasks.value?.map { it.keyResult }
+                && _taskList.value == task)
+    }
 
-
-    /***
-     * 하단 미분류
-     */
-
-    /**
-     * view 에서 button 으로 state 변경할 때 사용
-     */
+    /** view 에서 button 으로 state 변경할 때 사용  */
     fun setKeyResultState(keyResultState: KeyResultState) {
         _keyResultState.value = keyResultState
     }

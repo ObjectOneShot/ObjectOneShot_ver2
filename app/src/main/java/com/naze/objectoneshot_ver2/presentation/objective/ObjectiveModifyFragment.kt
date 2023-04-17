@@ -1,10 +1,14 @@
 package com.naze.objectoneshot_ver2.presentation.objective
 
+import android.app.Dialog
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
+import androidx.constraintlayout.utils.widget.ImageFilterButton
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -32,11 +36,6 @@ class ObjectiveModifyFragment: BindingFragment<FragmentObjectiveModifyBinding>(R
         binding.lifecycleOwner = this
         binding.viewmodel = objectiveViewModel
         init()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        objectiveViewModel.updateObjective()
     }
 
     private fun init() {
@@ -72,6 +71,7 @@ class ObjectiveModifyFragment: BindingFragment<FragmentObjectiveModifyBinding>(R
     private fun setButton() {
         setAddKeyResult()
         setFragmentBtn()
+        setTitleBarBtn()
     }
 
     /**  Add Key Result   */
@@ -115,6 +115,12 @@ class ObjectiveModifyFragment: BindingFragment<FragmentObjectiveModifyBinding>(R
         } else {
             binding.keyAddItem.layoutKeyAdd.visibility = View.GONE
             binding.btnAddKeyResult.setImageResource(R.drawable.ic_text_key_result_add)
+        }
+    }
+
+    private fun setTitleBarBtn() {
+        binding.toolBarBackBtn.setOnClickListener {
+            onBackPressed()
         }
     }
 
@@ -196,6 +202,28 @@ class ObjectiveModifyFragment: BindingFragment<FragmentObjectiveModifyBinding>(R
         }
         binding.btnComplete.setOnClickListener {
             if (!it.isSelected) objectiveViewModel.setKeyResultState(KeyResultState.COMPLETE)
+        }
+    }
+
+    fun onBackPressed() {
+        if (objectiveViewModel.isChange()) { //같으면 false, 다르면 true
+            Log.d("TEST_Modify","내용에 변경이 있어요")
+            val dialog = Dialog(requireContext())
+            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            dialog.setContentView(R.layout.dialog_save)
+            dialog.show()
+            dialog.findViewById<ImageFilterButton>(R.id.btn_save_dialog).setOnClickListener {
+                objectiveViewModel.updateObjective()
+                dialog.dismiss()
+                parentFragmentManager.popBackStackImmediate()
+            }
+            dialog.findViewById<ImageFilterButton>(R.id.btn_cancel_dialog).setOnClickListener {
+                dialog.dismiss()
+                parentFragmentManager.popBackStackImmediate()
+            }
+        } else {
+            Log.d("TEST_Modify","내용에 변경이 없어요")
+            parentFragmentManager.popBackStackImmediate()
         }
     }
 }
