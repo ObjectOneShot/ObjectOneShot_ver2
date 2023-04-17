@@ -5,10 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.naze.objectoneshot_ver2.data.local.model.KeyResult
-import com.naze.objectoneshot_ver2.data.local.model.Objective
-import com.naze.objectoneshot_ver2.data.local.model.ObjectiveWithKeyResults
-import com.naze.objectoneshot_ver2.data.local.model.Task
+import com.naze.objectoneshot_ver2.data.local.model.*
 import com.naze.objectoneshot_ver2.domain.repository.ObjectiveRepository
 import com.naze.objectoneshot_ver2.domain.type.KeyResultState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,6 +20,9 @@ class ObjectiveViewModel @Inject constructor(
 ): ViewModel() {
     private val _objectiveListWithKeyResults = MutableLiveData<List<ObjectiveWithKeyResults>>()
     val objectiveListWithKeyResults : LiveData<List<ObjectiveWithKeyResults>> get() = _objectiveListWithKeyResults
+
+    private val _keyResultWithTasks = MutableLiveData<List<KeyResultWithTasks>>()
+    val keyResultWithTasks : LiveData<List<KeyResultWithTasks>> get() = _keyResultWithTasks
 
     private val _objective = MutableLiveData<Objective>()
     val objective: LiveData<Objective> get() = _objective
@@ -115,7 +115,7 @@ class ObjectiveViewModel @Inject constructor(
             progress = 0.0,
             complete = false,
         )
-        Log.d("TEST_initObjective","id = ${_objective.value?.id}")
+        //Log.d("TEST_initObjective","id = ${_objective.value?.id}")
         initKeyResultList()
     } //ObjectiveData Add 위해 초기값 설정
 
@@ -125,22 +125,31 @@ class ObjectiveViewModel @Inject constructor(
             progress = 0.0,
             objective_id = _objective.value!!.id,
         )
-        Log.d("TEST_initKeyResult","objective id = ${_objective.value?.id}")
-        Log.d("TEST_initKeyResult","keyResult id = ${_keyResult.value?.id}")
+        //Log.d("TEST_initKeyResult","objective id = ${_objective.value?.id}")
+        //Log.d("TEST_initKeyResult","keyResult id = ${_keyResult.value?.id}")
     }//objective_id를 가지고 새로운 KeyResult 를 추가
 
     private fun initKeyResultList() {
         _keyResultList.value = null
     }
 
-    /**데이터 초기화
+    /**데이터 초기화(데이터 가져오기)
      * Modify Fragment - 수정 위한 데이터
      */
     fun getObjectiveData(id : String) {
         viewModelScope.launch(Dispatchers.Main) {
             _objective.value = objectiveRepository.getObjectiveById(id)
-            val value = objectiveRepository.getKeyResultWithTasksById(id)
-            Log.d("TEST_getAllData","$value")
+            _keyResultWithTasks.value = objectiveRepository.getKeyResultWithTasksById(id)
+
+            _keyResultList.value = _keyResultWithTasks.value?.map { it.keyResult }
+            val task = mutableListOf<Task>()
+            _keyResultWithTasks.value?.forEach {
+                task.addAll(it.tasks)
+            }
+            _taskList.value = task
+            Log.d("TEST_getAllData1","${_keyResultWithTasks.value}")
+            Log.d("TEST_getAllData2","${_keyResultList.value}")
+            Log.d("TEST_getAllData3","${_taskList.value}")
         }
     }
 
