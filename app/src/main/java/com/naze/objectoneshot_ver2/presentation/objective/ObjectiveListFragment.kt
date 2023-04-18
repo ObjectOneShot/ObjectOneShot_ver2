@@ -85,14 +85,12 @@ class ObjectiveListFragment: BindingFragment<FragmentObjectiveListBinding>(R.lay
             if (it.isEmpty()) {
                 binding.ivEmptyList.visibility = View.VISIBLE
                 binding.tvEmptyList.visibility = View.VISIBLE
-                binding.rvObjective.visibility = View.GONE
+                adapterObjective.submitList(it)
             } else {
                 binding.ivEmptyList.visibility = View.GONE
                 binding.tvEmptyList.visibility = View.GONE
-                binding.rvObjective.visibility = View.VISIBLE
                 adapterObjective.submitList(it)
             }
-
         }
 
         binding.srLayout.setOnRefreshListener {
