@@ -55,7 +55,7 @@ class ObjectiveListFragment: BindingFragment<FragmentObjectiveListBinding>(R.lay
                 commit()
             }
             //requireContext().showToast("클릭 $it")
-        } )
+        } ,objectiveViewModel)
         val swipeHelper = SwipeHelper().apply {
             setClamp(200f)
         }
@@ -81,12 +81,15 @@ class ObjectiveListFragment: BindingFragment<FragmentObjectiveListBinding>(R.lay
         //가져오기
 
         objectiveViewModel.objectiveListWithKeyResults.observe(viewLifecycleOwner) {
+            Log.d("TEST_observe","$it")
             if (it.isEmpty()) {
                 binding.ivEmptyList.visibility = View.VISIBLE
                 binding.tvEmptyList.visibility = View.VISIBLE
+                binding.rvObjective.visibility = View.GONE
             } else {
                 binding.ivEmptyList.visibility = View.GONE
                 binding.tvEmptyList.visibility = View.GONE
+                binding.rvObjective.visibility = View.VISIBLE
                 adapterObjective.submitList(it)
             }
 

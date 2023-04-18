@@ -9,10 +9,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.naze.objectoneshot_ver2.data.local.model.Objective
 import com.naze.objectoneshot_ver2.data.local.model.ObjectiveWithKeyResults
 import com.naze.objectoneshot_ver2.databinding.ItemObjectiveBinding
+import com.naze.objectoneshot_ver2.domain.viewmodel.ObjectiveViewModel
 import com.naze.objectoneshot_ver2.util.ItemDiffCallback
 
 class ObjectiveListAdapter(
-    private val clickListener: ItemClickListener
+    private val clickListener: ItemClickListener,
+    private val objectiveViewModel: ObjectiveViewModel
 ): ListAdapter<ObjectiveWithKeyResults, RecyclerView.ViewHolder>(
     ItemDiffCallback<ObjectiveWithKeyResults>(
         onContentsTheSame = {old, new -> old == new},
@@ -57,8 +59,9 @@ class ObjectiveListAdapter(
                      binding.tvKeyResult2.text = item.keyResults[1].title
                  }
              }
-             binding.swipeView.setOnClickListener {
+             binding.deleteItemView.setOnClickListener {
                  Log.d("TEST_swipe_delete","${item.objective.id} click")
+                 objectiveViewModel.deleteObjective(item.objective.id)
              }
          }
      }
