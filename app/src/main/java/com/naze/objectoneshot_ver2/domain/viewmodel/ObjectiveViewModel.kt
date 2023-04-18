@@ -182,7 +182,7 @@ class ObjectiveViewModel @Inject constructor(
     fun deleteAchieveObjective(id: String) {
         viewModelScope.launch(Dispatchers.Main) {
             objectiveRepository.deleteObjective(id)
-            objectiveRepository.getAchieveObjective()
+            getObjectiveAchieveList()
         }
     }
 

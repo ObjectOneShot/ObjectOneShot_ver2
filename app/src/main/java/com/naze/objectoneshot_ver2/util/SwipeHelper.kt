@@ -3,11 +3,13 @@ package com.naze.objectoneshot_ver2.util
 import android.graphics.Canvas
 import android.util.Log
 import android.view.View
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ItemTouchHelper.ACTION_STATE_SWIPE
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.naze.objectoneshot_ver2.R
+import com.naze.objectoneshot_ver2.presentation.objective.ObjectiveAchieveListAdapter
 import com.naze.objectoneshot_ver2.presentation.objective.ObjectiveListAdapter
 import kotlin.math.max
 import kotlin.math.min
@@ -65,7 +67,18 @@ class SwipeHelper: ItemTouchHelper.Callback() {
     }
 
     private fun getView(viewHolder: ViewHolder): View {
-        return (viewHolder as ObjectiveListAdapter.ObjectiveViewHolder).itemView.findViewById(R.id.swipe_view)
+        val view = when (viewHolder) {
+            is ObjectiveListAdapter.ObjectiveViewHolder -> {
+                viewHolder.itemView.findViewById<ConstraintLayout>(R.id.swipe_view)
+            }
+            is ObjectiveAchieveListAdapter.ObjectiveViewHolder -> {
+                viewHolder.itemView.findViewById<ConstraintLayout>(R.id.swipe_view)
+            }
+            else -> {
+                viewHolder.itemView.findViewById<ConstraintLayout>(R.id.swipe_view)
+            }
+        }
+        return view
     }
 
     override fun onChildDraw(
