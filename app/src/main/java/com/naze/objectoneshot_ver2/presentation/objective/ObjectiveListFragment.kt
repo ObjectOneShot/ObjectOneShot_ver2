@@ -59,7 +59,15 @@ class ObjectiveListFragment: BindingFragment<FragmentObjectiveListBinding>(R.lay
         //가져오기
 
         objectiveViewModel.objectiveListWithKeyResults.observe(viewLifecycleOwner) {
-            adapterObjective.submitList(it)
+            if (it.isEmpty()) {
+                binding.ivEmptyList.visibility = View.VISIBLE
+                binding.tvEmptyList.visibility = View.VISIBLE
+            } else {
+                binding.ivEmptyList.visibility = View.GONE
+                binding.tvEmptyList.visibility = View.GONE
+                adapterObjective.submitList(it)
+            }
+
         }
 
         binding.srLayout.setOnRefreshListener {
