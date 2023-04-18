@@ -30,6 +30,7 @@ class TaskListAdapter(
             binding.btnAddTask.setOnClickListener {
                 if (binding.etTaskName.text.toString().isNotEmpty()) {
                     addItem()
+                    binding.btnAddTask.visibility = View.GONE
                 }
             }
             binding.btnDeleteTask.setOnClickListener {
