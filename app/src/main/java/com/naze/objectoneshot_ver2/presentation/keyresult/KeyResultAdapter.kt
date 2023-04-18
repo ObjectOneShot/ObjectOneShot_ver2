@@ -4,16 +4,16 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.naze.objectoneshot_ver2.R
 import com.naze.objectoneshot_ver2.data.local.model.KeyResult
 import com.naze.objectoneshot_ver2.databinding.ItemKeyResultBinding
 import com.naze.objectoneshot_ver2.domain.viewmodel.ObjectiveViewModel
+import com.naze.objectoneshot_ver2.presentation.objective.ObjectiveListAdapter
 import com.naze.objectoneshot_ver2.presentation.task.TaskListAdapter
 import com.naze.objectoneshot_ver2.util.ItemDiffCallback
+import com.naze.objectoneshot_ver2.util.SwipeHelperKeyResult
 
 
 class KeyResultAdapter(
@@ -23,7 +23,13 @@ class KeyResultAdapter(
         onContentsTheSame = {old, new -> old == new},
         onItemsTheSame = {old, new -> old.id == new.id}
     )
-){
+) {
+    private var listener : OnItemClickListener?= null
+
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        this.listener = listener
+    }
+
     inner class KeyViewHolder(
         private val binding: ItemKeyResultBinding
     ): RecyclerView.ViewHolder(binding.root) {
@@ -43,10 +49,17 @@ class KeyResultAdapter(
                 if (binding.rvTaskList.visibility == View.GONE) { //안 보일 때 보이게 하기
                     binding.rvTaskList.visibility = View.VISIBLE
                     binding.btnExpand.rotation = 180f
+                    listener?.onItemClick(itemView, true)
                 } else {
                     binding.rvTaskList.visibility = View.GONE
                     binding.btnExpand.rotation = 360f
+                    listener?.onItemClick(itemView, false)
                 }
+            }
+
+
+            binding.deleteItemView.setOnClickListener {
+                Log.d("TEST_swipe_delete","${keyResult.id} click")
             }
         }
     }
@@ -64,4 +77,9 @@ class KeyResultAdapter(
             }
         }
     }
+
+    interface OnItemClickListener {
+        fun onItemClick(v: View, isExpand: Boolean)
+    }
+
 }
