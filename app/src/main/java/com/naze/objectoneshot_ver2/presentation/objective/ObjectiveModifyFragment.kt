@@ -8,6 +8,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.constraintlayout.utils.widget.ImageFilterButton
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
@@ -51,6 +52,12 @@ class ObjectiveModifyFragment: BindingFragment<FragmentObjectiveModifyBinding>(R
         setCalendar()
         setFragment()
         setButton()
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                onBackPressed()
+            }
+        })
     }
 
     private fun setCalendar() {

@@ -48,7 +48,7 @@ class ObjectiveListFragment: BindingFragment<FragmentObjectiveListBinding>(R.lay
                 addToBackStack(null)
                 commit()
             }
-            requireContext().showToast("클릭 $it")
+            //requireContext().showToast("클릭 $it")
         } )
 
         binding.rvObjective.apply {
