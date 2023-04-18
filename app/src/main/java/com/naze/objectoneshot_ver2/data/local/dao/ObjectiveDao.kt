@@ -16,6 +16,9 @@ interface ObjectiveDao {
     @Delete
     suspend fun delete(objective: Objective)
 
+    @Query("DELETE FROM objectives WHERE id = :id")
+    suspend fun deleteObjective(id: String)
+
     @Transaction
     @Query("SELECT * FROM objectives WHERE progress >= 100 OR endDate < :currentTime")
     suspend fun getAchieveObjectives(currentTime: Long): List<ObjectiveWithKeyResults>

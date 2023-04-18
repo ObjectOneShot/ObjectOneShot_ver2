@@ -53,4 +53,7 @@ class ObjectiveRepositoryImpl @Inject constructor(
         keyResultDao.updateKeyResultWithTask(keyResult, task, objectiveId)
     }
 
+    override suspend fun deleteObjective(objectiveId: String) {
+        objectiveDao.deleteObjective(objectiveId)
+    }
 }

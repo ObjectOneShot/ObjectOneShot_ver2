@@ -171,9 +171,16 @@ class ObjectiveViewModel @Inject constructor(
         _keyResultState.value = KeyResultState.BEFORE_PROGRESS //시작할 땐 _keyResultState를 BEFORE로 초기화
     }
 
+    /** Objective 삭제 */
+    fun deleteObjective(id: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            objectiveRepository.deleteObjective(id)
+        }
+    }
+
     /** 하단 미분류 */
 
-    /** */
+    /** 변경 사항 있는지 확인 */
     fun isChange(): Boolean {
         val task = mutableListOf<Task>()
         _keyResultWithTasks.value?.forEach {
