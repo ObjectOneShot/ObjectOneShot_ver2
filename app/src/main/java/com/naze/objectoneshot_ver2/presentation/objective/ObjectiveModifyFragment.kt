@@ -21,6 +21,7 @@ import com.naze.objectoneshot_ver2.domain.type.KeyResultState
 import com.naze.objectoneshot_ver2.domain.viewmodel.ObjectiveViewModel
 import com.naze.objectoneshot_ver2.presentation.keyresult.KeyResultListFragment
 import com.naze.objectoneshot_ver2.presentation.task.TaskAddAdapter
+import com.naze.objectoneshot_ver2.presentation.tips.TipsFragment
 import com.naze.objectoneshot_ver2.util.BindingFragment
 import com.naze.objectoneshot_ver2.util.showToast
 import kotlinx.coroutines.Dispatchers
@@ -30,6 +31,7 @@ import java.util.*
 class ObjectiveModifyFragment: BindingFragment<FragmentObjectiveModifyBinding>(R.layout.fragment_objective_modify){
 
     private val objectiveViewModel : ObjectiveViewModel by activityViewModels()
+    private var isCheck: Boolean = true
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -50,7 +52,7 @@ class ObjectiveModifyFragment: BindingFragment<FragmentObjectiveModifyBinding>(R
             }
         })
         setCalendar()
-        setFragment()
+        if (isCheck) setFragment()
         setButton()
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
@@ -58,6 +60,14 @@ class ObjectiveModifyFragment: BindingFragment<FragmentObjectiveModifyBinding>(R
                 onBackPressed()
             }
         })
+
+        binding.btnHelp.setOnClickListener {
+            parentFragmentManager.beginTransaction().apply {
+                replace(R.id.fl_main, TipsFragment(), "Tips")
+                addToBackStack(null)
+                commit()
+            }
+        }
     }
 
     private fun setCalendar() {
@@ -137,6 +147,7 @@ class ObjectiveModifyFragment: BindingFragment<FragmentObjectiveModifyBinding>(R
     private val fragment3 = KeyResultListFragment(KeyResultState.COMPLETE)
 
     private fun setFragment() {
+        isCheck = false
         objectiveViewModel.initKeyResultState()
         keyResultStateFragmentSetting()
         transaction = childFragmentManager.beginTransaction()

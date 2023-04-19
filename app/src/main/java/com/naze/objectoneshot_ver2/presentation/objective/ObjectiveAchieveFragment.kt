@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.naze.objectoneshot_ver2.R
 import com.naze.objectoneshot_ver2.databinding.FragmentObjectiveAchieveListBinding
 import com.naze.objectoneshot_ver2.domain.viewmodel.ObjectiveViewModel
+import com.naze.objectoneshot_ver2.presentation.tips.TipsFragment
 import com.naze.objectoneshot_ver2.util.BindingFragment
 import com.naze.objectoneshot_ver2.util.SwipeHelper
 import com.naze.objectoneshot_ver2.util.showToast
@@ -20,6 +21,14 @@ class ObjectiveAchieveFragment: BindingFragment<FragmentObjectiveAchieveListBind
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setRecyclerView()
+
+        binding.btnHelp.setOnClickListener {
+            parentFragmentManager.beginTransaction().apply {
+                replace(R.id.fl_main, TipsFragment(), "Tips")
+                addToBackStack(null)
+                commit()
+            }
+        }
     }
 
     @SuppressLint("ClickableViewAccessibility")

@@ -17,6 +17,7 @@ import com.naze.objectoneshot_ver2.domain.type.KeyResultState
 import com.naze.objectoneshot_ver2.domain.viewmodel.ObjectiveViewModel
 import com.naze.objectoneshot_ver2.presentation.keyresult.KeyResultListFragment
 import com.naze.objectoneshot_ver2.presentation.task.TaskAddAdapter
+import com.naze.objectoneshot_ver2.presentation.tips.TipsFragment
 import com.naze.objectoneshot_ver2.util.BindingFragment
 import com.naze.objectoneshot_ver2.util.showToast
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,6 +29,8 @@ import java.util.*
 class ObjectiveAddFragment: BindingFragment<FragmentObjectiveAddBinding>(R.layout.fragment_objective_add) {
 
     private val objectiveViewModel: ObjectiveViewModel by activityViewModels()
+    private var isCheck: Boolean = true
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -59,9 +62,17 @@ class ObjectiveAddFragment: BindingFragment<FragmentObjectiveAddBinding>(R.layou
             parentFragmentManager.popBackStackImmediate()
         }
 
+        binding.btnHelp.setOnClickListener {
+            parentFragmentManager.beginTransaction().apply {
+                replace(R.id.fl_main, TipsFragment(), "Tips")
+                addToBackStack(null)
+                commit()
+            }
+        }
+
         setCalendar() //달력 설정
         setAddKeyResult()
-        setFragment() // KeyResult List 설정
+        if (isCheck) setFragment() // KeyResult List 설정
         setFragmentBtn() //추후 버튼 관련 함수들과 묶음
     }
 
@@ -160,6 +171,7 @@ class ObjectiveAddFragment: BindingFragment<FragmentObjectiveAddBinding>(R.layou
     private val fragment3 = KeyResultListFragment(KeyResultState.COMPLETE)
 
     private fun setFragment() {
+        isCheck = false
         objectiveViewModel.initKeyResultState()
         keyResultStateFragmentSetting()
         transaction = childFragmentManager.beginTransaction()
