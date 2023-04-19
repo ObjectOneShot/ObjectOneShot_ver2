@@ -1,6 +1,8 @@
 package com.naze.objectoneshot_ver2.presentation.objective
 
+import android.app.Dialog
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -107,7 +109,10 @@ class ObjectiveAddFragment: BindingFragment<FragmentObjectiveAddBinding>(R.layou
                         setVisibleKeyResult(false)
                         binding.keyAddItem.etKeyName.setHintTextColor(Color.parseColor("#FF808080"))
                     } else {
-                        requireContext().showToast("Task를 1개 이상 입력해주세요.")
+                        val dialog: Dialog = Dialog(requireContext())
+                        dialog.setContentView(R.layout.dialog_task_alert)
+                        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                        dialog.show()
                     }
                 } else {
                     binding.keyAddItem.etKeyName.setHintTextColor(Color.parseColor("#80FF0000"))

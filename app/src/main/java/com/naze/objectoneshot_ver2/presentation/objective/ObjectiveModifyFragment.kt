@@ -102,7 +102,10 @@ class ObjectiveModifyFragment: BindingFragment<FragmentObjectiveModifyBinding>(R
                         setVisibleKeyResult(false)
                         binding.keyAddItem.etKeyName.setHintTextColor(Color.parseColor("#FF808080"))
                     } else {
-                        requireContext().showToast("Task를 1개 이상 입력해주세요.")
+                        val dialog: Dialog = Dialog(requireContext())
+                        dialog.setContentView(R.layout.dialog_task_alert)
+                        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                        dialog.show()
                     }
                 } else {
                     binding.keyAddItem.etKeyName.setHintTextColor(Color.parseColor("#80FF0000"))

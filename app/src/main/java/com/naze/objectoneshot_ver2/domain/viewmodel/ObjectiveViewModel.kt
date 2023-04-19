@@ -355,4 +355,11 @@ class ObjectiveViewModel @Inject constructor(
     fun getTaskList(id: String): List<Task>? {
         return _taskList.value?.filter { it.key_result_id == id }
     }
+
+    /**
+     * 완료 혹은 미완료된 데이터가 있는지 확인
+     */
+    fun checkAchieveData() {
+
+    }
 }
