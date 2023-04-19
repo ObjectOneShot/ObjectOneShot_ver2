@@ -1,11 +1,15 @@
 package com.naze.objectoneshot_ver2.presentation.objective
 
 import android.annotation.SuppressLint
+import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.naze.objectoneshot_ver2.R
@@ -16,6 +20,8 @@ import com.naze.objectoneshot_ver2.util.BindingFragment
 import com.naze.objectoneshot_ver2.util.SwipeHelper
 import com.naze.objectoneshot_ver2.util.showToast
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ObjectiveListFragment: BindingFragment<FragmentObjectiveListBinding>(R.layout.fragment_objective_list) {
@@ -25,6 +31,26 @@ class ObjectiveListFragment: BindingFragment<FragmentObjectiveListBinding>(R.lay
         super.onViewCreated(view, savedInstanceState)
 
         init()
+    }
+
+    private fun setAchieveDialog() {
+        lifecycleScope.launch(Dispatchers.Main) {
+            if( objectiveViewModel.checkAchieveComplete() ) {
+                val dialog: Dialog = Dialog(requireContext())
+                dialog.setContentView(R.layout.dialog_achieve)
+                dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                dialog.show()
+            }
+        }
+        lifecycleScope.launch(Dispatchers.Main) {
+            if ( objectiveViewModel.checkAchieveUnComplete()) {
+                val dialog: Dialog = Dialog(requireContext())
+                dialog.setContentView(R.layout.dialog_unachieve)
+                dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                dialog.show()
+            }
+        }
+
     }
 
     private fun init() {
@@ -51,6 +77,7 @@ class ObjectiveListFragment: BindingFragment<FragmentObjectiveListBinding>(R.lay
             }
         }
         setRecyclerView()
+        setAchieveDialog()
     }
 
     @SuppressLint("ClickableViewAccessibility")

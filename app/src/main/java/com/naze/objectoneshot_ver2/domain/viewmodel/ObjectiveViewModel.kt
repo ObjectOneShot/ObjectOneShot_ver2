@@ -1,14 +1,20 @@
 package com.naze.objectoneshot_ver2.domain.viewmodel
 
+import android.app.Dialog
+import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.naze.objectoneshot_ver2.R
 import com.naze.objectoneshot_ver2.data.local.model.*
 import com.naze.objectoneshot_ver2.domain.repository.ObjectiveRepository
 import com.naze.objectoneshot_ver2.domain.type.KeyResultState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
@@ -16,6 +22,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ObjectiveViewModel @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val objectiveRepository: ObjectiveRepository
 ): ViewModel() {
     private val _objectiveListWithKeyResults = MutableLiveData<List<ObjectiveWithKeyResults>>()
@@ -359,7 +366,25 @@ class ObjectiveViewModel @Inject constructor(
     /**
      * 완료 혹은 미완료된 데이터가 있는지 확인
      */
-    fun checkAchieveData() {
+    suspend fun checkAchieveComplete(): Boolean {
+        var check = false
+        val list = objectiveRepository.getObjectiveComplete()
+        if (list.isNotEmpty()) {
+            check = true
+            list.forEach { it.complete = true }
+            objectiveRepository.updateObjectiveComplete(list)
+        }
+        return check
+    }
 
+    suspend fun checkAchieveUnComplete(): Boolean {
+        var check = false
+        val list = objectiveRepository.getObjectiveUnComplete()
+        if (list.isNotEmpty()) {
+            check = true
+            list.forEach { it.complete = true }
+            objectiveRepository.updateObjectiveComplete(list)
+        }
+        return check
     }
 }

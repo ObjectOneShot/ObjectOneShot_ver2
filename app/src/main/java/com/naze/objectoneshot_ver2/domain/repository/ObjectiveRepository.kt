@@ -17,4 +17,8 @@ interface ObjectiveRepository {
     suspend fun updateKeyResultWithTask(keyResult: List<KeyResult>, task: List<Task>, objectiveId: String)
 
     suspend fun deleteObjective(objectiveId: String)
+
+    suspend fun getObjectiveComplete() : List<Objective>
+    suspend fun getObjectiveUnComplete() : List<Objective>
+    suspend fun updateObjectiveComplete(objectives: List<Objective>)
 }

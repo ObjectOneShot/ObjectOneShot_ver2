@@ -56,4 +56,16 @@ class ObjectiveRepositoryImpl @Inject constructor(
     override suspend fun deleteObjective(objectiveId: String) {
         objectiveDao.deleteObjective(objectiveId)
     }
+
+    override suspend fun getObjectiveComplete(): List<Objective> {
+        return objectiveDao.getObjectiveComplete()
+    }
+
+    override suspend fun getObjectiveUnComplete(): List<Objective> {
+        return objectiveDao.getObjectiveUnComplete(getCurrentDate())
+    }
+
+    override suspend fun updateObjectiveComplete(objectives: List<Objective>) {
+        return objectiveDao.updateCompleteObjective(objectives)
+    }
 }

@@ -13,6 +13,9 @@ interface ObjectiveDao {
     @Update
     suspend fun update(objective: Objective)
 
+    @Update
+    suspend fun updateCompleteObjective(objective: List<Objective>)
+
     @Delete
     suspend fun delete(objective: Objective)
 
@@ -33,4 +36,10 @@ interface ObjectiveDao {
     @Transaction
     @Query("SELECT * FROM objectives")
     suspend fun getObjectiveWithKeyResult() : List<ObjectiveWithKeyResults>
+
+    @Query("SELECT * FROM objectives WHERE complete = 0 AND (progress >= 100)")
+    suspend fun getObjectiveComplete() : List<Objective>
+
+    @Query("SELECT * FROM objectives WHERE complete = 0 AND (endDate < :currentTime)")
+    suspend fun getObjectiveUnComplete(currentTime: Long) : List<Objective>
 }
