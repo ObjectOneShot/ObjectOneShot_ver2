@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.naze.objectoneshot_ver2.R
 import com.naze.objectoneshot_ver2.databinding.FragmentViewpagerBinding
+import com.naze.objectoneshot_ver2.presentation.objective.ObjectiveListFragment
 import com.naze.objectoneshot_ver2.util.BindingFragment
 import com.naze.objectoneshot_ver2.util.ViewPagerAdapter
 
@@ -34,15 +35,21 @@ class OnBoardingFragment: BindingFragment<FragmentViewpagerBinding>(R.layout.fra
         })
 
         binding.btnSkip.setOnClickListener {
-            parentFragmentManager.popBackStackImmediate()
+            parentFragmentManager.beginTransaction().apply {
+                replace(R.id.fl_main, ObjectiveListFragment(), "ObjectiveList")
+                commit()
+            }
         }
 
         binding.btnStart.setOnClickListener {
-            parentFragmentManager.popBackStackImmediate()
+            parentFragmentManager.beginTransaction().apply {
+                replace(R.id.fl_main, ObjectiveListFragment(), "ObjectiveList")
+                commit()
+            }
         }
     }
 
     private fun getTipsList(): ArrayList<Fragment> {
-        return arrayListOf()
+        return arrayListOf(OnBoarding1Fragment(),OnBoarding2Fragment(),OnBoarding3Fragment(),OnBoarding4Fragment(),OnBoarding5Fragment())
     }
 }

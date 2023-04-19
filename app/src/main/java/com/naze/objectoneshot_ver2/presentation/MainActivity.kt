@@ -1,6 +1,7 @@
 package com.naze.objectoneshot_ver2.presentation
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
@@ -11,6 +12,7 @@ import androidx.fragment.app.Fragment
 import com.naze.objectoneshot_ver2.R
 import com.naze.objectoneshot_ver2.databinding.ActivityMainBinding
 import com.naze.objectoneshot_ver2.presentation.objective.ObjectiveListFragment
+import com.naze.objectoneshot_ver2.presentation.onboarding.OnBoardingFragment
 import com.naze.objectoneshot_ver2.util.BindingActivity
 import com.naze.objectoneshot_ver2.util.showToast
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,12 +22,28 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     private lateinit var imm: InputMethodManager
     private var backPressedTime: Long = 0
 
+    private lateinit var sharedPref: SharedPreferences
+
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.Theme_ObjectOneShot_ver2)
         super.onCreate(savedInstanceState)
-        setFragment(ObjectiveListFragment())
 
         imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+
+        sharedPref = getSharedPreferences("my_prefs", Context.MODE_PRIVATE)
+
+        if (sharedPref.getBoolean("isFirstRun", true)) {
+            showOnBoarding()
+            sharedPref.edit().putBoolean("isFirstRun", false).apply()
+        } else {
+            setFragment(ObjectiveListFragment())
+        }
+    }
+
+    private fun showOnBoarding() {
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.fl_main, OnBoardingFragment(), "OnBoarding" )
+        transaction.commit()
     }
 
     private fun setFragment(fragment: Fragment) {
