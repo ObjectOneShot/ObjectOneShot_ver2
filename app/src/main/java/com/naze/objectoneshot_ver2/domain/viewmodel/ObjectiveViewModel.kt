@@ -186,6 +186,20 @@ class ObjectiveViewModel @Inject constructor(
         }
     }
 
+    fun deleteKeyResult(id: String) {
+        val currentList = _keyResultList.value ?: mutableListOf()
+        val index = currentList.indexOfFirst { it.id == id }
+        if (index != -1) {
+            _keyResultList.value = currentList.filterNot { it.id == id }
+            deleteTaskDataByKeyResult(id)
+        }
+    }
+
+    private fun deleteTaskDataByKeyResult(id : String) {
+        val currentList = _taskList.value ?: mutableListOf()
+        _taskList.value = currentList.filterNot { it.key_result_id == id }
+    }
+
     /** 하단 미분류 */
 
     /** 변경 사항 있는지 확인 */

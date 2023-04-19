@@ -1,12 +1,17 @@
 package com.naze.objectoneshot_ver2.presentation.keyresult
 
+import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.utils.widget.ImageFilterButton
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.naze.objectoneshot_ver2.R
 import com.naze.objectoneshot_ver2.data.local.model.KeyResult
 import com.naze.objectoneshot_ver2.databinding.ItemKeyResultBinding
 import com.naze.objectoneshot_ver2.domain.viewmodel.ObjectiveViewModel
@@ -56,10 +61,24 @@ class KeyResultAdapter(
                     listener?.onItemClick(itemView, false)
                 }
             }
-
+            binding.swipeView.setOnClickListener {
+                //delete item 터치 막기 위한 방법
+            }
 
             binding.deleteItemView.setOnClickListener {
-                Log.d("TEST_swipe_delete","${keyResult.id} click")
+                val dialog: Dialog = Dialog(itemView.context)
+                dialog.setContentView(R.layout.dialog_delete)
+                dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                dialog.show()
+                dialog.findViewById<ImageFilterButton>(R.id.btn_delete_dialog).setOnClickListener {
+                    dialog.dismiss()
+                    objectiveViewModel.deleteKeyResult(keyResult.id)
+                    Log.d("TEST_swipe_delete","${keyResult.id} click")
+                }
+                dialog.findViewById<ImageFilterButton>(R.id.btn_cancel_dialog).setOnClickListener {
+                    dialog.dismiss()
+                }
+
             }
         }
     }

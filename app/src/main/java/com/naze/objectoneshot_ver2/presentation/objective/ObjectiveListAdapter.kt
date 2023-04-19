@@ -1,11 +1,16 @@
 package com.naze.objectoneshot_ver2.presentation.objective
 
+import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.utils.widget.ImageFilterButton
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.naze.objectoneshot_ver2.R
 import com.naze.objectoneshot_ver2.data.local.model.Objective
 import com.naze.objectoneshot_ver2.data.local.model.ObjectiveWithKeyResults
 import com.naze.objectoneshot_ver2.databinding.ItemObjectiveBinding
@@ -60,8 +65,17 @@ class ObjectiveListAdapter(
                  }
              }
              binding.deleteItemView.setOnClickListener {
-                 Log.d("TEST_swipe_delete","${item.objective.id} click")
-                 objectiveViewModel.deleteObjective(item.objective.id)
+                 val dialog: Dialog = Dialog(itemView.context)
+                 dialog.setContentView(R.layout.dialog_delete)
+                 dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                 dialog.show()
+                 dialog.findViewById<ImageFilterButton>(R.id.btn_delete_dialog).setOnClickListener {
+                     dialog.dismiss()
+                     objectiveViewModel.deleteObjective(item.objective.id)
+                 }
+                 dialog.findViewById<ImageFilterButton>(R.id.btn_cancel_dialog).setOnClickListener {
+                     dialog.dismiss()
+                 }
              }
          }
      }
