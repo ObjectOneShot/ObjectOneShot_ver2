@@ -25,6 +25,12 @@ class ObjectiveAchieveFragment: BindingFragment<FragmentObjectiveAchieveListBind
     @SuppressLint("ClickableViewAccessibility")
     private fun setRecyclerView() {
         val adapterObjective = ObjectiveAchieveListAdapter(ObjectiveAchieveListAdapter.ItemClickListener {
+             objectiveViewModel.getObjectiveData(it)
+            parentFragmentManager.beginTransaction().apply {
+                replace(R.id.fl_main, ObjectiveAchieveViewFragment(), "ObjectiveAchieveView")
+                addToBackStack(null)
+                commit()
+            }
             //requireContext().showToast("클릭")
         },objectiveViewModel)
 
