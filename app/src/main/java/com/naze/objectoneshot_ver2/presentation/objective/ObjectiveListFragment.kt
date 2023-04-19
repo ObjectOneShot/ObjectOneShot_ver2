@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.naze.objectoneshot_ver2.R
 import com.naze.objectoneshot_ver2.databinding.FragmentObjectiveListBinding
 import com.naze.objectoneshot_ver2.domain.viewmodel.ObjectiveViewModel
+import com.naze.objectoneshot_ver2.presentation.tips.TipsFragment
 import com.naze.objectoneshot_ver2.util.BindingFragment
 import com.naze.objectoneshot_ver2.util.SwipeHelper
 import com.naze.objectoneshot_ver2.util.showToast
@@ -38,6 +39,13 @@ class ObjectiveListFragment: BindingFragment<FragmentObjectiveListBinding>(R.lay
         binding.btnAchieve.setOnClickListener {
             parentFragmentManager.beginTransaction().apply {
                 replace(R.id.fl_main, ObjectiveAchieveFragment(),"Achieve")
+                addToBackStack(null)
+                commit()
+            }
+        }
+        binding.btnHelp.setOnClickListener {
+            parentFragmentManager.beginTransaction().apply {
+                replace(R.id.fl_main, TipsFragment(), "Tips")
                 addToBackStack(null)
                 commit()
             }
