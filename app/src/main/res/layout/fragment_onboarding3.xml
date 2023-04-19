@@ -13,7 +13,7 @@
         <androidx.constraintlayout.utils.widget.ImageFilterView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/image_tip1"
+            android:src="@drawable/image_onboarding3"
             android:layout_marginBottom="-8dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

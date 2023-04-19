@@ -1,4 +1,4 @@
-package com.naze.objectoneshot_ver2.presentation.tips
+package com.naze.objectoneshot_ver2.presentation.onboarding
 
 import android.os.Bundle
 import android.view.View
@@ -9,7 +9,7 @@ import com.naze.objectoneshot_ver2.databinding.FragmentViewpagerBinding
 import com.naze.objectoneshot_ver2.util.BindingFragment
 import com.naze.objectoneshot_ver2.util.ViewPagerAdapter
 
-class TipsFragment: BindingFragment<FragmentViewpagerBinding>(R.layout.fragment_viewpager) {
+class OnBoardingFragment: BindingFragment<FragmentViewpagerBinding>(R.layout.fragment_viewpager) {
 
     private lateinit var viewPagerAdapter: ViewPagerAdapter
     private lateinit var viewPager: ViewPager2
@@ -43,6 +43,6 @@ class TipsFragment: BindingFragment<FragmentViewpagerBinding>(R.layout.fragment_
     }
 
     private fun getTipsList(): ArrayList<Fragment> {
-        return arrayListOf(Tip1Fragment(), Tip2Fragment(), Tip3Fragment(), Tip4Fragment())
+        return arrayListOf()
     }
 }
