@@ -8,6 +8,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -135,6 +136,14 @@ class ObjectiveAddFragment: BindingFragment<FragmentObjectiveAddBinding>(R.layou
         }
         binding.keyAddItem.btnDeleteKey.setOnClickListener {
             setVisibleKeyResult(false)
+        }
+        binding.keyAddItem.etKeyName.setOnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                binding.keyAddItem.rvTaskList.requestFocus()
+                return@setOnEditorActionListener true
+            } else {
+                false
+            }
         }
 
     }

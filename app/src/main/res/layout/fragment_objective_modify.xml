@@ -109,6 +109,10 @@
                     android:textColor="@color/grey_900"
                     android:textSize="14sp"
                     android:textStyle="bold"
+                    android:inputType="text"
+                    android:imeOptions="actionDone"
+                    android:maxLines="1"
+                    android:maxLength="@integer/max_length_objective"
                     android:text="@={viewmodel.objective.title}"
                     android:background="@drawable/shape_rectangle_under_bar_black"
                     android:hint="목표를 입력해주세요"/>
