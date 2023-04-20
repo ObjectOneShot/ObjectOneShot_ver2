@@ -125,7 +125,7 @@ class SwipeHelperKeyResult(): ItemTouchHelper.Callback() {
         isCurrentlyActive: Boolean
     ) : Float {
         // View의 가로 길이의 절반까지만 swipe 되도록
-        val min: Float = -view.width.toFloat()/10 * 3
+        val min: Float = -view.width.toFloat()/10 * 2
         // RIGHT 방향으로 swipe 막기
         val max: Float = 0f
 
