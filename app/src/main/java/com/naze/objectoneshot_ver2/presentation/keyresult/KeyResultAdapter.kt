@@ -49,21 +49,15 @@ class KeyResultAdapter(
                 if (binding.rvTaskList.visibility == View.GONE) { //안 보일 때 보이게 하기
                     binding.rvTaskList.visibility = View.VISIBLE
                     binding.btnExpand.rotation = 180f
-                    binding.swipeLayout.isEnabledSwipe = false
-                    binding.deleteLayout.visibility = View.GONE
                 } else {
                     binding.rvTaskList.visibility = View.GONE
                     binding.btnExpand.rotation = 360f
-                    binding.swipeLayout.isEnabledSwipe = false
-                    binding.deleteLayout.visibility = View.VISIBLE
                 }
             }
             binding.swipeLayout.setOnTouchListener { v, event ->
                 if (binding.rvTaskList.visibility == View.VISIBLE) {
-                    Log.d("TEST_swipe","보임")
                     return@setOnTouchListener true
                 } else {
-                    Log.d("TEST_swipe","안보임")
                     false
                 }
             }
