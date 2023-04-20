@@ -11,6 +11,7 @@
         android:layout_height="match_parent">
 
         <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/iv_tips"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/image_tip1"

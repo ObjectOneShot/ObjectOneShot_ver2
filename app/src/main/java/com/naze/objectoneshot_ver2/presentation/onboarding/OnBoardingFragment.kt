@@ -53,6 +53,11 @@ class OnBoardingFragment: BindingFragment<FragmentViewpagerBinding>(R.layout.fra
     }
 
     private fun getTipsList(): ArrayList<Fragment> {
-        return arrayListOf(OnBoarding1Fragment(),OnBoarding2Fragment(),OnBoarding3Fragment(),OnBoarding4Fragment(),OnBoarding5Fragment())
+        return arrayListOf(
+            OnBoardingViewFragment(R.drawable.image_onboarding1),
+            OnBoardingViewFragment(R.drawable.image_onboarding2),
+            OnBoardingViewFragment(R.drawable.image_onboarding3),
+            OnBoardingViewFragment(R.drawable.image_onboarding4),
+            OnBoardingViewFragment(R.drawable.image_onboarding5),)
     }
 }

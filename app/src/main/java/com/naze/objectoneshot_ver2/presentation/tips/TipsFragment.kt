@@ -43,6 +43,10 @@ class TipsFragment: BindingFragment<FragmentViewpagerBinding>(R.layout.fragment_
     }
 
     private fun getTipsList(): ArrayList<Fragment> {
-        return arrayListOf(Tip1Fragment(), Tip2Fragment(), Tip3Fragment(), Tip4Fragment())
+        return arrayListOf(
+            TipViewFragment(R.drawable.image_tip1),
+            TipViewFragment(R.drawable.image_tip2),
+            TipViewFragment(R.drawable.image_tip3),
+            TipViewFragment(R.drawable.image_tip4),)
     }
 }
