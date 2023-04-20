@@ -9,7 +9,6 @@ import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.fragment.app.Fragment
-import com.google.firebase.analytics.FirebaseAnalytics
 import com.objectiveoneshot.objectiveoneshot.R
 import com.objectiveoneshot.objectiveoneshot.databinding.ActivityMainBinding
 import com.objectiveoneshot.objectiveoneshot.presentation.objective.ObjectiveListFragment
@@ -38,16 +37,9 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
         if (sharedPref.getBoolean("isFirstRun", true)) {
             showOnBoarding()
-            Log.d("TEST_??","??")
         } else {
-            Log.d("TEST_??","???")
             setFragment(ObjectiveListFragment())
         }
-        val method = "asd"
-        val firebaseAnalytics :FirebaseAnalytics = FirebaseAnalytics.getInstance(this)
-        val bundle = Bundle()
-        bundle.putString(FirebaseAnalytics.Param.METHOD, method)
-        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.LOGIN, bundle)
     }
 
     private fun showOnBoarding() {

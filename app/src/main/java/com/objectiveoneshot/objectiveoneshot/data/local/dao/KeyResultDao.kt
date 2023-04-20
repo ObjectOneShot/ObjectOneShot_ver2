@@ -26,10 +26,10 @@ interface KeyResultDao {
     @Query("DELETE FROM KEY_RESULTS WHERE objective_id = :objectiveId")
     suspend fun deleteKeyResultByObjectiveId(objectiveId: String) //업데이트를 위하여 objective와 관련된 모든 keyresult를 삭제
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun updateKeyResult(keyResult: List<KeyResult>)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun updateTask(task: List<Task>)
 
     @Transaction
