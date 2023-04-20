@@ -7,10 +7,10 @@
     <data>
         <variable
             name="objective"
-            type="com.naze.objectoneshot_ver2.data.local.model.Objective" />
+            type="com.objectiveoneshot.objectiveoneshot.data.local.model.Objective" />
         <variable
             name="viewmodel"
-            type="com.naze.objectoneshot_ver2.domain.viewmodel.ObjectiveViewModel" />
+            type="com.objectiveoneshot.objectiveoneshot.domain.viewmodel.ObjectiveViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
