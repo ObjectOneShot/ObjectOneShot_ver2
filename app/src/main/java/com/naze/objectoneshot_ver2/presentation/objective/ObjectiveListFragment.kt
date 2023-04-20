@@ -89,27 +89,12 @@ class ObjectiveListFragment: BindingFragment<FragmentObjectiveListBinding>(R.lay
                 addToBackStack(null)
                 commit()
             }
-            //requireContext().showToast("클릭 $it")
         } ,objectiveViewModel)
-        val swipeHelper = SwipeHelper().apply {
-            setClamp(200f)
-        }
-        val itemTouchHelper = ItemTouchHelper(swipeHelper)
-        itemTouchHelper.attachToRecyclerView(binding.rvObjective)
+
 
         binding.rvObjective.apply {
             adapter = adapterObjective
             layoutManager = LinearLayoutManager(requireContext())
-
-            setOnTouchListener { _, _ ->
-                swipeHelper.removePreviousClamp(this)
-                false
-            }
-            (parent.parent as View).setOnTouchListener { v, event ->
-                Log.d("Test_touch","반응2?")
-                swipeHelper.removePreviousClamp(this)
-                false
-            }
         }
 
         objectiveViewModel.getObjectiveList()
