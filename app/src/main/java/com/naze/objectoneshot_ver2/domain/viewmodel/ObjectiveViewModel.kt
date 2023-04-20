@@ -286,8 +286,15 @@ class ObjectiveViewModel @Inject constructor(
         val list = _keyResultList.value ?: mutableListOf()
         var sum = 0.0
         for (i in list) {
+            if (i.progress >= 100) {
+                sum ++
+            }
+        } //완료된 keyResult 의 개수
+        /*
+        for (i in list) {
             sum += i.progress
         }
+        */ //progress 의 합
         sum/list.size
         _objective.value = _objective.value?.copy(progress = if (list.isNotEmpty()) sum/list.size else 0.0)
     } //KeyResult 데이터를 가지고 계산해야 하기에 처리
