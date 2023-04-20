@@ -190,6 +190,7 @@ class ObjectiveViewModel @Inject constructor(
         if (index != -1) {
             _keyResultList.value = currentList.filterNot { it.id == id }
             deleteTaskDataByKeyResult(id)
+            setObjectiveProgress()
         }
     }
 
@@ -282,10 +283,10 @@ class ObjectiveViewModel @Inject constructor(
         val list = _keyResultList.value ?: mutableListOf()
         var sum = 0.0
         for (i in list) {
-            sum += i.progress
+            if (i.progress >= 100)
+                sum ++
         }
-        sum/list.size
-        _objective.value = _objective.value?.copy(progress = if (list.isNotEmpty()) sum/list.size else 0.0)
+        _objective.value = _objective.value?.copy(progress = if (list.isNotEmpty()) sum/list.size*100 else 0.0)
     } //KeyResult 데이터를 가지고 계산해야 하기에 처리
 
     /**
