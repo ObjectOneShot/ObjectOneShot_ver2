@@ -2,4 +2,5 @@
 <resources>
     <integer name="max_length_objective">50</integer>
     <integer name="max_length_key_result">30</integer>
+
 </resources>

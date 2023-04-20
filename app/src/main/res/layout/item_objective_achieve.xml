@@ -31,7 +31,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintWidth_percent="0.2">
+                app:layout_constraintWidth_percent="@dimen/delete_btn_percent">
 
                 <androidx.constraintlayout.utils.widget.ImageFilterView
                     android:layout_width="wrap_content"
