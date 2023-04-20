@@ -56,14 +56,11 @@ class ObjectiveViewModel @Inject constructor(
     fun insertObjective() {
         viewModelScope.launch(Dispatchers.IO) {
             _objective.value?.let { objectiveRepository.insertObjective(it) }
-            Log.d("TEST_Insert","insertObjective ${_objective.value?.id}")
             insertKeyResult()
         }
     }
 
     private fun insertKeyResult() {
-        Log.d("TEST_Insert","objective id = ${_keyResultList.value?.get(0)?.objective_id}")
-        Log.d("TEST_Insert","key_result id = ${_keyResultList.value?.get(0)?.id}")
         viewModelScope.launch(Dispatchers.IO) {
             _keyResultList.value?.let { objectiveRepository.insertKeyResult(it)}
             insertTask()
@@ -74,7 +71,6 @@ class ObjectiveViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             _taskList.value?.let {
                 for(i in it) {
-                    Log.d("TEST_insert", "key_result_id = ${i.key_result_id}")
                     objectiveRepository.insertTask(i)
                 }
             }
@@ -158,7 +154,6 @@ class ObjectiveViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.Main) {
             _objective.value = objectiveRepository.getObjectiveById(id)
             _keyResultWithTasks.value = objectiveRepository.getKeyResultWithTasksById(id)
-
             _keyResultList.value = _keyResultWithTasks.value?.map { it.keyResult }
             val task = mutableListOf<Task>()
             _keyResultWithTasks.value?.forEach {
@@ -209,14 +204,30 @@ class ObjectiveViewModel @Inject constructor(
 
     /** 하단 미분류 */
 
+    /** update data */
+    fun modifyKeyResultData(keyResult: KeyResult) {
+        val currentList = _keyResultList.value ?: mutableListOf()
+        val index = currentList.indexOfFirst { it.id == keyResult.id }
+        if (index != -1) {
+            val newList = currentList.toMutableList().apply {
+                set(index, keyResult)
+            }
+            _keyResultList.value = newList
+        }
+    }
+
     /** 변경 사항 있는지 확인 */
-    fun isChange(): Boolean {
+    suspend fun isChange(id: String): Boolean {
         val task = mutableListOf<Task>()
-        _keyResultWithTasks.value?.forEach {
+
+        val objectiveBefore = objectiveRepository.getObjectiveById(id)
+        val keyResultTasks = objectiveRepository.getKeyResultWithTasksById(id)
+
+        keyResultTasks.forEach {
             task.addAll(it.tasks)
         }
-        return !(_keyResultList.value == _keyResultWithTasks.value?.map { it.keyResult }
-                && _taskList.value == task)
+        return !(_keyResultList.value == keyResultTasks.map { it.keyResult }
+                && _taskList.value == task && objectiveBefore == _objective.value)
     }
 
     /** view 에서 button 으로 state 변경할 때 사용  */
