@@ -1,5 +1,6 @@
 package com.naze.objectoneshot_ver2.presentation.keyresult
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -30,6 +31,7 @@ class KeyResultAdapter(
     inner class KeyViewHolder(
         private val binding: ItemKeyResultBinding
     ): RecyclerView.ViewHolder(binding.root) {
+        @SuppressLint("ClickableViewAccessibility")
         fun bind(keyResult: KeyResult) {
             binding.keyResult = keyResult
             binding.executePendingBindings()
@@ -42,18 +44,29 @@ class KeyResultAdapter(
                 taskListAdapter.submitList(objectiveViewModel.getTaskList(keyResult.id))
                 //objectiveViewModel 에서 해당 keyResult에 해당하는 TaskList 가져오기
             }
+
             binding.btnExpand.setOnClickListener {
                 if (binding.rvTaskList.visibility == View.GONE) { //안 보일 때 보이게 하기
                     binding.rvTaskList.visibility = View.VISIBLE
                     binding.btnExpand.rotation = 180f
                     binding.swipeLayout.isEnabledSwipe = false
+                    binding.deleteLayout.visibility = View.GONE
                 } else {
                     binding.rvTaskList.visibility = View.GONE
                     binding.btnExpand.rotation = 360f
-                    binding.swipeLayout.isEnabledSwipe = true
+                    binding.swipeLayout.isEnabledSwipe = false
+                    binding.deleteLayout.visibility = View.VISIBLE
                 }
             }
-
+            binding.swipeLayout.setOnTouchListener { v, event ->
+                if (binding.rvTaskList.visibility == View.VISIBLE) {
+                    Log.d("TEST_swipe","보임")
+                    return@setOnTouchListener true
+                } else {
+                    Log.d("TEST_swipe","안보임")
+                    false
+                }
+            }
             binding.deleteItemView.setOnClickListener {
                 if (!binding.swipeLayout.isClosed) {
                     val dialog: Dialog = Dialog(itemView.context)
