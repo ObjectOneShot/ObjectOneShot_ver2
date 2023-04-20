@@ -27,7 +27,7 @@ class KeyResultListFragment(val state: KeyResultState): BindingFragment<Fragment
     }
 
     private fun setList() {
-        val adapterKeyResult = KeyResultAdapter(objectiveViewModel)
+        val adapterKeyResult = KeyResultAdapter(objectiveViewModel,viewLifecycleOwner)
 
         val swipeHelper = SwipeHelperKeyResult().apply {
             setClamp(200f)
