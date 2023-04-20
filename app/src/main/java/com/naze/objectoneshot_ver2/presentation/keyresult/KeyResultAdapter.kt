@@ -15,10 +15,8 @@ import com.naze.objectoneshot_ver2.R
 import com.naze.objectoneshot_ver2.data.local.model.KeyResult
 import com.naze.objectoneshot_ver2.databinding.ItemKeyResultBinding
 import com.naze.objectoneshot_ver2.domain.viewmodel.ObjectiveViewModel
-import com.naze.objectoneshot_ver2.presentation.objective.ObjectiveListAdapter
 import com.naze.objectoneshot_ver2.presentation.task.TaskListAdapter
 import com.naze.objectoneshot_ver2.util.ItemDiffCallback
-import com.naze.objectoneshot_ver2.util.SwipeHelperKeyResult
 
 
 class KeyResultAdapter(
@@ -29,12 +27,6 @@ class KeyResultAdapter(
         onItemsTheSame = {old, new -> old.id == new.id}
     )
 ) {
-    private var listener : OnItemClickListener?= null
-
-    fun setOnItemClickListener(listener: OnItemClickListener) {
-        this.listener = listener
-    }
-
     inner class KeyViewHolder(
         private val binding: ItemKeyResultBinding
     ): RecyclerView.ViewHolder(binding.root) {
@@ -54,15 +46,12 @@ class KeyResultAdapter(
                 if (binding.rvTaskList.visibility == View.GONE) { //안 보일 때 보이게 하기
                     binding.rvTaskList.visibility = View.VISIBLE
                     binding.btnExpand.rotation = 180f
-                    listener?.onItemClick(itemView, true)
+                    binding.swipeLayout.isEnabledSwipe = false
                 } else {
                     binding.rvTaskList.visibility = View.GONE
                     binding.btnExpand.rotation = 360f
-                    listener?.onItemClick(itemView, false)
+                    binding.swipeLayout.isEnabledSwipe = true
                 }
-            }
-            binding.swipeView.setOnClickListener {
-                //delete item 터치 막기 위한 방법
             }
 
             binding.deleteItemView.setOnClickListener {
@@ -95,10 +84,6 @@ class KeyResultAdapter(
                 holder.bind(keyResult)
             }
         }
-    }
-
-    interface OnItemClickListener {
-        fun onItemClick(v: View, isExpand: Boolean)
     }
 
 }

@@ -12,19 +12,22 @@
             type="com.naze.objectoneshot_ver2.presentation.objective.ObjectiveAchieveListAdapter.ItemClickListener" />
     </data>
 
-    <FrameLayout
+    <com.zerobranch.layout.SwipeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp">
+        android:layout_marginBottom="10dp"
+        app:draggedItem="@id/swipe_view"
+        app:rightItem="@id/delete_item_view"
+        app:swipeDirection="left">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/delete_item_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/shape_rectangle_round_right_corner_10"
             android:backgroundTint="@color/error">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/delete_item_view"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -162,6 +165,6 @@
                 app:layout_constraintStart_toEndOf="@+id/pg_objective_progress" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </FrameLayout>
+    </com.zerobranch.layout.SwipeLayout>
 
 </layout>

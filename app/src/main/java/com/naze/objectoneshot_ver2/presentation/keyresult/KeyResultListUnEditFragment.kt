@@ -1,19 +1,15 @@
 package com.naze.objectoneshot_ver2.presentation.keyresult
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.naze.objectoneshot_ver2.R
 import com.naze.objectoneshot_ver2.databinding.FragmentKeyResultListBinding
 import com.naze.objectoneshot_ver2.domain.type.KeyResultState
 import com.naze.objectoneshot_ver2.domain.viewmodel.ObjectiveViewModel
 import com.naze.objectoneshot_ver2.util.BindingFragment
-import com.naze.objectoneshot_ver2.util.SwipeHelper
-import com.naze.objectoneshot_ver2.util.SwipeHelperKeyResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

@@ -8,22 +8,25 @@
             name="keyResult"
             type="com.naze.objectoneshot_ver2.data.local.model.KeyResult" />
     </data>
-    <FrameLayout
+    <com.zerobranch.layout.SwipeLayout
+        android:id="@+id/swipe_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:draggedItem="@id/swipe_view"
+        app:rightItem="@id/delete_item_view"
+        app:swipeDirection="left"
         android:layout_marginTop="10dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/delete_item_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/shape_rectangle_round_right_corner_10"
             android:backgroundTint="@color/error">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/delete_item_view"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintWidth_percent="0.2">
 
@@ -123,6 +126,6 @@
                 app:layout_constraintTop_toBottomOf="@id/pg_objective_progress" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </FrameLayout>
+    </com.zerobranch.layout.SwipeLayout>
 
 </layout>

@@ -10,11 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.naze.objectoneshot_ver2.data.local.model.KeyResult
 import com.naze.objectoneshot_ver2.databinding.ItemKeyResultBinding
 import com.naze.objectoneshot_ver2.domain.viewmodel.ObjectiveViewModel
-import com.naze.objectoneshot_ver2.presentation.objective.ObjectiveListAdapter
-import com.naze.objectoneshot_ver2.presentation.task.TaskListAdapter
 import com.naze.objectoneshot_ver2.presentation.task.TaskListUnEditAdapter
 import com.naze.objectoneshot_ver2.util.ItemDiffCallback
-import com.naze.objectoneshot_ver2.util.SwipeHelperKeyResult
 
 
 class KeyResultUnEditAdapter(
