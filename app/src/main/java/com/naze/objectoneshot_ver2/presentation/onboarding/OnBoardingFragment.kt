@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.naze.objectoneshot_ver2.R
 import com.naze.objectoneshot_ver2.databinding.FragmentViewpagerBinding
+import com.naze.objectoneshot_ver2.presentation.MainActivity.Companion.sharedPref
 import com.naze.objectoneshot_ver2.presentation.objective.ObjectiveListFragment
 import com.naze.objectoneshot_ver2.util.BindingFragment
 import com.naze.objectoneshot_ver2.util.ViewPagerAdapter
@@ -36,6 +37,7 @@ class OnBoardingFragment: BindingFragment<FragmentViewpagerBinding>(R.layout.fra
 
         binding.btnSkip.setOnClickListener {
             parentFragmentManager.beginTransaction().apply {
+                sharedPref.edit().putBoolean("isFirstRun", false).apply()
                 replace(R.id.fl_main, ObjectiveListFragment(), "ObjectiveList")
                 commit()
             }
@@ -43,6 +45,7 @@ class OnBoardingFragment: BindingFragment<FragmentViewpagerBinding>(R.layout.fra
 
         binding.btnStart.setOnClickListener {
             parentFragmentManager.beginTransaction().apply {
+                sharedPref.edit().putBoolean("isFirstRun", false).apply()
                 replace(R.id.fl_main, ObjectiveListFragment(), "ObjectiveList")
                 commit()
             }

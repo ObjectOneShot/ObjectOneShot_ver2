@@ -22,7 +22,9 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     private lateinit var imm: InputMethodManager
     private var backPressedTime: Long = 0
 
-    private lateinit var sharedPref: SharedPreferences
+    companion object {
+        lateinit var sharedPref: SharedPreferences
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.Theme_ObjectOneShot_ver2)
@@ -34,8 +36,9 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
         if (sharedPref.getBoolean("isFirstRun", true)) {
             showOnBoarding()
-            sharedPref.edit().putBoolean("isFirstRun", false).apply()
+            Log.d("TEST_??","??")
         } else {
+            Log.d("TEST_??","???")
             setFragment(ObjectiveListFragment())
         }
     }
