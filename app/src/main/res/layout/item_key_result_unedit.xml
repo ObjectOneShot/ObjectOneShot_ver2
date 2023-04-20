@@ -47,14 +47,11 @@
             android:paddingBottom="10dp"
             android:background="@drawable/shape_300_50_box">
 
-            <EditText
+            <TextView
                 android:id="@+id/et_key_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="Key Result 를 입력해주세요"
                 android:background="@null"
-                android:inputType="text"
-                android:imeOptions="actionDone"
                 android:layout_marginHorizontal="8dp"
                 android:layout_marginTop="15dp"
                 android:text="@={keyResult.title}"
