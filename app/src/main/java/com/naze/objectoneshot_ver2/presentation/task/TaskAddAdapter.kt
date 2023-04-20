@@ -41,7 +41,9 @@ class TaskAddAdapter(
         fun bind(item: Task) {
             binding.task = item
             Log.d("TEST_TaskAddAdapter", "Key_result_id: ${item.key_result_id}")
-            binding.etTaskName.requestFocus()
+            if (adapterPosition != 0) {
+                binding.etTaskName.requestFocus()
+            }
             binding.etTaskName.setOnFocusChangeListener { v, hasFocus ->
                 val text = binding.etTaskName.text.toString()
                 if (!hasFocus) {//focus 가 해제 될 때

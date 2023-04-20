@@ -21,6 +21,7 @@ import com.naze.objectoneshot_ver2.presentation.keyresult.KeyResultListFragment
 import com.naze.objectoneshot_ver2.presentation.task.TaskAddAdapter
 import com.naze.objectoneshot_ver2.presentation.tips.TipsFragment
 import com.naze.objectoneshot_ver2.util.BindingFragment
+import com.naze.objectoneshot_ver2.util.showKeyboard
 import com.naze.objectoneshot_ver2.util.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -122,6 +123,8 @@ class ObjectiveAddFragment: BindingFragment<FragmentObjectiveAddBinding>(R.layou
                 objectiveViewModel.initKeyResultData() //신규 데이터 생성
 
                 setVisibleKeyResult(true)
+                binding.keyAddItem.etKeyName.requestFocus()
+                requireContext().showKeyboard(binding.keyAddItem.etKeyName,true)
                 adapterTask = TaskAddAdapter(objectiveViewModel.keyResult.value?.id?:"", objectiveViewModel)
                 binding.keyAddItem.rvTaskList.apply {
                     adapterTask.submitList(null)
