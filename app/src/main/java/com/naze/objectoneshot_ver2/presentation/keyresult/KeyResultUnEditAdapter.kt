@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.naze.objectoneshot_ver2.data.local.model.KeyResult
 import com.naze.objectoneshot_ver2.databinding.ItemKeyResultBinding
+import com.naze.objectoneshot_ver2.databinding.ItemKeyResultUneditBinding
 import com.naze.objectoneshot_ver2.domain.viewmodel.ObjectiveViewModel
 import com.naze.objectoneshot_ver2.presentation.task.TaskListUnEditAdapter
 import com.naze.objectoneshot_ver2.util.ItemDiffCallback
@@ -24,7 +25,7 @@ class KeyResultUnEditAdapter(
 ) {
 
     inner class KeyViewHolder(
-        private val binding: ItemKeyResultBinding
+        private val binding: ItemKeyResultUneditBinding
     ): RecyclerView.ViewHolder(binding.root) {
         fun bind(keyResult: KeyResult) {
             binding.keyResult = keyResult
@@ -52,7 +53,7 @@ class KeyResultUnEditAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        return KeyViewHolder(ItemKeyResultBinding.inflate(inflater, parent, false))
+        return KeyViewHolder(ItemKeyResultUneditBinding.inflate(inflater, parent, false))
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {

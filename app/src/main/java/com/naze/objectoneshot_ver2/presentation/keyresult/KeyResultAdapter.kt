@@ -63,20 +63,7 @@ class KeyResultAdapter(
             }
             binding.deleteItemView.setOnClickListener {
                 if (!binding.swipeLayout.isClosed) {
-                    val dialog: Dialog = Dialog(itemView.context)
-                    dialog.setContentView(R.layout.dialog_delete)
-                    dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                    dialog.show()
-                    dialog.findViewById<ImageFilterButton>(R.id.btn_delete_dialog)
-                        .setOnClickListener {
-                            dialog.dismiss()
-                            objectiveViewModel.deleteKeyResult(keyResult.id)
-                            Log.d("TEST_swipe_delete", "${keyResult.id} click")
-                        }
-                    dialog.findViewById<ImageFilterButton>(R.id.btn_cancel_dialog)
-                        .setOnClickListener {
-                            dialog.dismiss()
-                        }
+                    objectiveViewModel.deleteKeyResult(keyResult.id)
                 }
             }
             binding.etKeyName.setOnEditorActionListener { v, actionId, event ->

@@ -53,6 +53,9 @@ class TaskListAdapter(
                     if (text.isNotEmpty()) {
                         addOrUpdateTaskList(item)
                         objectiveViewModel.changeKeyResultListProgress(keyResultId)
+                        if (adapterPosition == itemCount - 1) { //마지막 아이템이라면
+                            binding.btnAddTask.visibility = View.VISIBLE
+                        }
                     } else {
                         deleteItem()
                         if (adapterPosition == itemCount - 1) { //마지막 아이템이라면
@@ -68,6 +71,9 @@ class TaskListAdapter(
             binding.etTaskName.setOnEditorActionListener { v, actionId, event ->
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     binding.etTaskName.clearFocus()
+                    if (adapterPosition == itemCount - 1) { //마지막 아이템이라면
+                        binding.btnAddTask.visibility = View.VISIBLE
+                    }
                     return@setOnEditorActionListener true
                 } else {
                     return@setOnEditorActionListener false
