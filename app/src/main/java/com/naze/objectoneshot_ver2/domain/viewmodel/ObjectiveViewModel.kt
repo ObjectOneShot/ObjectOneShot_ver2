@@ -230,6 +230,22 @@ class ObjectiveViewModel @Inject constructor(
                 && _taskList.value == task && objectiveBefore == _objective.value)
     }
 
+    fun checkEmpty(): Boolean {
+        val hasEmptyContent = _taskList.value?.any { it.content.isEmpty() } ?: false
+        if (hasEmptyContent) {
+            return true
+        }
+        val hasEmptyObjective = _objective.value?.title?.isEmpty() ?: false
+        if (hasEmptyObjective) {
+            return true
+        }
+        val hasEmptyTitle = _keyResultList.value?.any { it.title.isEmpty() } ?: false
+        if (hasEmptyTitle) {
+            return true
+        }
+        return false
+    }
+
     /** view 에서 button 으로 state 변경할 때 사용  */
     fun setKeyResultState(keyResultState: KeyResultState) {
         _keyResultState.value = keyResultState

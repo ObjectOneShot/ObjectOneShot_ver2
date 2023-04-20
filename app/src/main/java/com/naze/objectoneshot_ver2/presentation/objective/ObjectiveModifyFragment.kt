@@ -231,24 +231,36 @@ class ObjectiveModifyFragment: BindingFragment<FragmentObjectiveModifyBinding>(R
 
     fun onBackPressed() {
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
-            if (objectiveViewModel.isChange(objectiveViewModel.objective.value?.id?:"")) { //변경이 있으면 true
-                Log.d("TEST_Modify", "내용에 변경이 있어요")
-                val dialog = Dialog(requireContext())
-                dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                dialog.setContentView(R.layout.dialog_save)
-                dialog.show()
-                dialog.findViewById<ImageFilterButton>(R.id.btn_save_dialog).setOnClickListener {
-                    objectiveViewModel.updateObjective()
-                    dialog.dismiss()
-                    parentFragmentManager.popBackStackImmediate()
-                }
-                dialog.findViewById<ImageFilterButton>(R.id.btn_cancel_dialog).setOnClickListener {
-                    dialog.dismiss()
+            if (!objectiveViewModel.checkEmpty()) { //비어있는게 없을 때
+                if (objectiveViewModel.isChange(
+                        objectiveViewModel.objective.value?.id ?: ""
+                    )
+                ) { //변경이 있으면 true
+                    Log.d("TEST_Modify", "내용에 변경이 있어요")
+                    val dialog = Dialog(requireContext())
+                    dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                    dialog.setContentView(R.layout.dialog_save)
+                    dialog.show()
+                    dialog.findViewById<ImageFilterButton>(R.id.btn_save_dialog)
+                        .setOnClickListener {
+                            objectiveViewModel.updateObjective()
+                            dialog.dismiss()
+                            parentFragmentManager.popBackStackImmediate()
+                        }
+                    dialog.findViewById<ImageFilterButton>(R.id.btn_cancel_dialog)
+                        .setOnClickListener {
+                            dialog.dismiss()
+                            parentFragmentManager.popBackStackImmediate()
+                        }
+                } else {
+                    Log.d("TEST_Modify", "내용에 변경이 없어요")
                     parentFragmentManager.popBackStackImmediate()
                 }
             } else {
-                Log.d("TEST_Modify", "내용에 변경이 없어요")
-                parentFragmentManager.popBackStackImmediate()
+                val dialog = Dialog(requireContext())
+                dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                dialog.setContentView(R.layout.dialog_task_alert)
+                dialog.show()
             }
         }
     }
