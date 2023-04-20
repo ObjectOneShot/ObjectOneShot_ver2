@@ -27,6 +27,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Thread.sleep(1000L)
         setTheme(R.style.Theme_ObjectOneShot_ver2)
         super.onCreate(savedInstanceState)
 
@@ -77,6 +78,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                     val currentTime = System.currentTimeMillis()
                     if (currentTime - backPressedTime < 2000) {
                         super.onBackPressed()
+                        finish()
                     } else {
                         backPressedTime = currentTime
                         this.showToast("한 번 더 누르면 종료됩니다.")
