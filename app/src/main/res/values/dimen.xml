@@ -32,4 +32,6 @@
 
     <dimen name="progress_bar_height">16dp</dimen>
     <dimen name="progress_text_width">40dp</dimen>
+
+    <dimen name="delete_btn_percent">0.15</dimen>
 </resources>

@@ -1,54 +1,42 @@
 package com.naze.objectoneshot_ver2.presentation.keyresult
 
+import android.annotation.SuppressLint
+import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.lifecycleScope
+import android.view.inputmethod.EditorInfo
+import androidx.constraintlayout.utils.widget.ImageFilterButton
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.naze.objectoneshot_ver2.R
 import com.naze.objectoneshot_ver2.data.local.model.KeyResult
 import com.naze.objectoneshot_ver2.databinding.ItemKeyResultBinding
 import com.naze.objectoneshot_ver2.domain.viewmodel.ObjectiveViewModel
 import com.naze.objectoneshot_ver2.presentation.task.TaskListAdapter
 import com.naze.objectoneshot_ver2.util.ItemDiffCallback
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 
 class KeyResultAdapter(
-    private val objectiveViewModel: ObjectiveViewModel,
-    private val lifecycleOwner: LifecycleOwner
+    private val objectiveViewModel: ObjectiveViewModel
 ): ListAdapter<KeyResult, RecyclerView.ViewHolder>(
     ItemDiffCallback<KeyResult>(
         onContentsTheSame = {old, new -> old == new},
         onItemsTheSame = {old, new -> old.id == new.id}
     )
-){
+) {
     inner class KeyViewHolder(
         private val binding: ItemKeyResultBinding
     ): RecyclerView.ViewHolder(binding.root) {
-        init {
-            binding.btnExpand.setOnClickListener { //확장
-                when (binding.rvTaskList.visibility) {
-                    View.VISIBLE -> {
-                        binding.rvTaskList.visibility = View.GONE
-                    }
-                    View.GONE -> {
-                        binding.rvTaskList.visibility = View.VISIBLE
-                    }
-                    else -> {}
-                }
-            }
-        }
-
+        @SuppressLint("ClickableViewAccessibility")
         fun bind(keyResult: KeyResult) {
-            Log.d("TEST_KeyResultAdapter","KeyResult : $keyResult")
             binding.keyResult = keyResult
             binding.executePendingBindings()
-
+            Log.d("TEST_KeyResultAdapter","KeyResult Id : ${keyResult.id}")
             val taskListAdapter = TaskListAdapter(keyResult.id, objectiveViewModel)
 
             binding.rvTaskList.apply {
@@ -56,6 +44,35 @@ class KeyResultAdapter(
                 layoutManager = LinearLayoutManager(context)
                 taskListAdapter.submitList(objectiveViewModel.getTaskList(keyResult.id))
                 //objectiveViewModel 에서 해당 keyResult에 해당하는 TaskList 가져오기
+            }
+            binding.btnExpand.setOnClickListener {
+                if (binding.rvTaskList.visibility == View.GONE) { //안 보일 때 보이게 하기
+                    binding.rvTaskList.visibility = View.VISIBLE
+                    binding.btnExpand.rotation = 180f
+                } else {
+                    binding.rvTaskList.visibility = View.GONE
+                    binding.btnExpand.rotation = 360f
+                }
+            }
+            binding.swipeLayout.setOnTouchListener { v, event ->
+                if (binding.rvTaskList.visibility == View.VISIBLE) {
+                    return@setOnTouchListener true
+                } else {
+                    false
+                }
+            }
+            binding.deleteItemView.setOnClickListener {
+                if (!binding.swipeLayout.isClosed) {
+                    objectiveViewModel.deleteKeyResult(keyResult.id)
+                }
+            }
+            binding.etKeyName.setOnEditorActionListener { v, actionId, event ->
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    objectiveViewModel.modifyKeyResultData(keyResult)
+                    binding.etKeyName.clearFocus()
+                    return@setOnEditorActionListener true
+                }
+                false
             }
         }
     }
@@ -73,4 +90,5 @@ class KeyResultAdapter(
             }
         }
     }
+
 }
