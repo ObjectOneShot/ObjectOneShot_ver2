@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <integer name="max_length_objective">30</integer>
-    <integer name="max_length_key_result">30</integer>
+    <integer name="max_length_objective">18</integer>
+    <integer name="max_length_key_result">18</integer>
+    <integer name="max_length_task">18</integer>
 
 </resources>

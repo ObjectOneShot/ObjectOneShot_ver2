@@ -46,34 +46,9 @@ class TaskListAdapter(
             } else {
                 binding.btnAddTask.visibility = View.GONE
             }
-
-            binding.etTaskName.setOnFocusChangeListener { v, hasFocus ->
-                val text = binding.etTaskName.text.toString()
-                if (!hasFocus) {//focus 가 해제 될 때
-                    if (text.isNotEmpty()) {
-                        addOrUpdateTaskList(item)
-                        objectiveViewModel.changeKeyResultListProgress(keyResultId)
-                        if (adapterPosition == itemCount - 1) { //마지막 아이템이라면
-                            binding.btnAddTask.visibility = View.VISIBLE
-                        }
-                    } else {
-                        deleteItem()
-                        if (adapterPosition == itemCount - 1) { //마지막 아이템이라면
-                            binding.btnAddTask.visibility = View.VISIBLE
-                        }
-                    }
-                    binding.btnDeleteTask.visibility = View.GONE
-                } else { //focus가 들어올 때
-                    binding.btnAddTask.visibility = View.GONE
-                    binding.btnDeleteTask.visibility = View.VISIBLE
-                }
-            }
             binding.etTaskName.setOnEditorActionListener { v, actionId, event ->
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     binding.etTaskName.clearFocus()
-                    if (adapterPosition == itemCount - 1) { //마지막 아이템이라면
-                        binding.btnAddTask.visibility = View.VISIBLE
-                    }
                     return@setOnEditorActionListener true
                 } else {
                     return@setOnEditorActionListener false

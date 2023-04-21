@@ -36,6 +36,8 @@
             android:text="@={task.content}"
             android:textSize="16sp"
             enableEdit="@{task.check}"
+            android:maxLength="@integer/max_length_task"
+            android:maxLines="1"
             android:textColor="@color/grey_900"
             app:layout_constraintStart_toEndOf="@+id/cb_task_complete"
             app:layout_constraintTop_toTopOf="parent"
