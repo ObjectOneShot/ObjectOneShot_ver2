@@ -303,8 +303,10 @@ class ObjectiveViewModel @Inject constructor(
         }
         _keyResultList.value = newList
         Log.d("TEST_ObjectiveViewModel","KeyResultList : ${_keyResultList.value}")
+
         setKeyResultStateByProgress(_keyResult.value?.progress?:0.0)
         setObjectiveProgress()
+
         //TODO(List에 추가된 경우 -> Objective 의 Progress가 변한다)
     } //init 한 KeyResult 를 가지고 List 에 추가
 

@@ -65,7 +65,7 @@ class TaskAddAdapter(
                 } else {
                     if (text.isNotEmpty()) {
                         addOrUpdateTaskList(item)
-                        objectiveViewModel.changeKeyResultProgress(keyResultId)
+
                         binding.btnDeleteTask.visibility = View.GONE
 
                         if (adapterPosition == itemCount - 1) {

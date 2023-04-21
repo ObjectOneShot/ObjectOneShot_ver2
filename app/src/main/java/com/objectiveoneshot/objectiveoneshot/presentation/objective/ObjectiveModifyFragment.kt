@@ -95,7 +95,10 @@ class ObjectiveModifyFragment: BindingFragment<FragmentObjectiveModifyBinding>(R
     private lateinit var adapterTask: TaskAddAdapter
     private fun setAddKeyResult () {
         binding.btnAddKeyResult.setOnClickListener { //Add btn 을 눌렀을 때
-            if (binding.keyAddItem.layoutKeyAdd.visibility == View.VISIBLE) { //추가 상태일 때
+            if (binding.keyAddItem.layoutKeyAdd.visibility == View.VISIBLE) {
+                if (requireView().hasFocus()) {
+                    requireView().clearFocus()
+                }//추가 상태일 때
                 if (binding.keyAddItem.etKeyName.text.toString().isNotEmpty()) { //KeyResult 명이 비어있지 않으면
                     if (adapterTask.currentList[0].content.isNotEmpty() || adapterTask.currentList.size > 1) {
                         objectiveViewModel.addKeyResultList() //데이터 입력
