@@ -13,3 +13,7 @@
 .externalNativeBuild
 .cxx
 local.properties
+/app/debug/app-debug.apk
+/.idea/deploymentTargetDropDown.xml
+/objectiveoneshotkey.jks
+/app/debug/output-metadata.json
