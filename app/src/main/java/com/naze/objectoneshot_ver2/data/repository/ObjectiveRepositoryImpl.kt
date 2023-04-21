@@ -3,7 +3,9 @@ package com.naze.objectoneshot_ver2.data.repository
 import com.naze.objectoneshot_ver2.data.local.dao.KeyResultDao
 import com.naze.objectoneshot_ver2.data.local.dao.ObjectiveDao
 import com.naze.objectoneshot_ver2.data.local.dao.TaskDao
-import com.naze.objectoneshot_ver2.data.local.model.*
+import com.naze.objectoneshot_ver2.data.local.model.KeyResult
+import com.naze.objectoneshot_ver2.data.local.model.Objective
+import com.naze.objectoneshot_ver2.data.local.model.Task
 import com.naze.objectoneshot_ver2.domain.repository.ObjectiveRepository
 import com.naze.objectoneshot_ver2.util.getCurrentDate
 import javax.inject.Inject
@@ -25,47 +27,12 @@ class ObjectiveRepositoryImpl @Inject constructor(
         taskDao.insert(task)
     }
 
-    override suspend fun getObjective(): List<ObjectiveWithKeyResults> {
+    override suspend fun getObjective(): List<Objective> {
         return objectiveDao.getObjectives(getCurrentDate())
     } //TODO (추후 변경 : KeyResult 데이터를 포함한 구조로 변경 필요)
 
-    override suspend fun getAchieveObjective(): List<ObjectiveWithKeyResults> {
+    override suspend fun getAchieveObjective(): List<Objective> {
         return objectiveDao.getAchieveObjectives(getCurrentDate())
     } //TODO (추후 변경 : KeyResult 데이터를 포함한 구조로 변경 필요)
 
-    override suspend fun getObjectiveById(id: String): Objective {
-        return objectiveDao.getObjectiveById(id)
-    }
-
-    override suspend fun getKeyResultWithTasksById(id: String): List<KeyResultWithTasks> {
-        return keyResultDao.getKeyResultWithTasksById(id)
-    }
-
-    override suspend fun updateObjective(objective: Objective) {
-        objectiveDao.update(objective)
-    }
-
-    override suspend fun updateKeyResultWithTask(
-        keyResult: List<KeyResult>,
-        task: List<Task>,
-        objectiveId: String
-    ) {
-        keyResultDao.updateKeyResultWithTask(keyResult, task, objectiveId)
-    }
-
-    override suspend fun deleteObjective(objectiveId: String) {
-        objectiveDao.deleteObjective(objectiveId)
-    }
-
-    override suspend fun getObjectiveComplete(): List<Objective> {
-        return objectiveDao.getObjectiveComplete()
-    }
-
-    override suspend fun getObjectiveUnComplete(): List<Objective> {
-        return objectiveDao.getObjectiveUnComplete(getCurrentDate())
-    }
-
-    override suspend fun updateObjectiveComplete(objectives: List<Objective>) {
-        return objectiveDao.updateCompleteObjective(objectives)
-    }
 }

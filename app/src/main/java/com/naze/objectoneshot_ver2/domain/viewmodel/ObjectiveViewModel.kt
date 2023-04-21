@@ -1,20 +1,16 @@
 package com.naze.objectoneshot_ver2.domain.viewmodel
 
-import android.app.Dialog
-import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.naze.objectoneshot_ver2.R
-import com.naze.objectoneshot_ver2.data.local.model.*
+import com.naze.objectoneshot_ver2.data.local.model.KeyResult
+import com.naze.objectoneshot_ver2.data.local.model.Objective
+import com.naze.objectoneshot_ver2.data.local.model.Task
 import com.naze.objectoneshot_ver2.domain.repository.ObjectiveRepository
 import com.naze.objectoneshot_ver2.domain.type.KeyResultState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
@@ -22,14 +18,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ObjectiveViewModel @Inject constructor(
-    @ApplicationContext private val context: Context,
     private val objectiveRepository: ObjectiveRepository
 ): ViewModel() {
-    private val _objectiveListWithKeyResults = MutableLiveData<List<ObjectiveWithKeyResults>>()
-    val objectiveListWithKeyResults : LiveData<List<ObjectiveWithKeyResults>> get() = _objectiveListWithKeyResults
-
-    private val _keyResultWithTasks = MutableLiveData<List<KeyResultWithTasks>>()
-    val keyResultWithTasks : LiveData<List<KeyResultWithTasks>> get() = _keyResultWithTasks
+    private val _objectiveList = MutableLiveData<List<Objective>>() //Objective 리스트
+    val objectiveList: LiveData<List<Objective>> get() = _objectiveList
 
     private val _objective = MutableLiveData<Objective>()
     val objective: LiveData<Objective> get() = _objective
@@ -56,11 +48,14 @@ class ObjectiveViewModel @Inject constructor(
     fun insertObjective() {
         viewModelScope.launch(Dispatchers.IO) {
             _objective.value?.let { objectiveRepository.insertObjective(it) }
+            Log.d("TEST_Insert","insertObjective ${_objective.value?.id}")
             insertKeyResult()
         }
     }
 
     private fun insertKeyResult() {
+        Log.d("TEST_Insert","objective id = ${_keyResultList.value?.get(0)?.objective_id}")
+        Log.d("TEST_Insert","key_result id = ${_keyResultList.value?.get(0)?.id}")
         viewModelScope.launch(Dispatchers.IO) {
             _keyResultList.value?.let { objectiveRepository.insertKeyResult(it)}
             insertTask()
@@ -71,42 +66,31 @@ class ObjectiveViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             _taskList.value?.let {
                 for(i in it) {
+                    Log.d("TEST_insert", "key_result_id = ${i.key_result_id}")
                     objectiveRepository.insertTask(i)
                 }
             }
         }
     }
-
-    fun updateObjective() {
-        viewModelScope.launch(Dispatchers.IO) {
-            objectiveRepository.updateObjective(_objective.value!!)
-
-            val keyResultsList = _keyResultList.value?: mutableListOf()
-            val tasksList = _taskList.value?: mutableListOf()
-            objectiveRepository.updateKeyResultWithTask(keyResultsList, tasksList, _objective.value!!.id)
-        }
-
-    }
-
     /***
      * 데이터 SELECT (GET)
      */
     fun getObjectiveList() {
         viewModelScope.launch(Dispatchers.Main) {
-            _objectiveListWithKeyResults.value = objectiveRepository.getObjective()
+            _objectiveList.value = objectiveRepository.getObjective()
         }
     } //ObjectiveList 가져오기 추후 변경 예정
 
     fun getObjectiveAchieveList() {
         viewModelScope.launch(Dispatchers.Main) {
-            _objectiveListWithKeyResults.value = objectiveRepository.getAchieveObjective()
+            _objectiveList.value = objectiveRepository.getAchieveObjective()
         }
     } //ObjectiveAchieveList 가져오기 추후 변경 예정
 
 
 
-    /** 데이터 초기화 - Add Fragment
-     *  데이터 신규 생성
+    /***
+     * 데이터 초기화
      */
 
     fun initObjectiveData() {
@@ -129,7 +113,7 @@ class ObjectiveViewModel @Inject constructor(
             progress = 0.0,
             complete = false,
         )
-        //Log.d("TEST_initObjective","id = ${_objective.value?.id}")
+        Log.d("TEST_initObjective","id = ${_objective.value?.id}")
         initKeyResultList()
     } //ObjectiveData Add 위해 초기값 설정
 
@@ -139,114 +123,24 @@ class ObjectiveViewModel @Inject constructor(
             progress = 0.0,
             objective_id = _objective.value!!.id,
         )
-        //Log.d("TEST_initKeyResult","objective id = ${_objective.value?.id}")
-        //Log.d("TEST_initKeyResult","keyResult id = ${_keyResult.value?.id}")
+        Log.d("TEST_initKeyResult","objective id = ${_objective.value?.id}")
+        Log.d("TEST_initKeyResult","keyResult id = ${_keyResult.value?.id}")
     }//objective_id를 가지고 새로운 KeyResult 를 추가
 
-    private fun initKeyResultList() {
+    fun initKeyResultList() {
         _keyResultList.value = null
     }
-
-    /**데이터 초기화(데이터 가져오기)
-     * Modify Fragment - 수정 위한 데이터
-     */
-    fun getObjectiveData(id : String) {
-        viewModelScope.launch(Dispatchers.Main) {
-            _objective.value = objectiveRepository.getObjectiveById(id)
-            _keyResultWithTasks.value = objectiveRepository.getKeyResultWithTasksById(id)
-            _keyResultList.value = _keyResultWithTasks.value?.map { it.keyResult }
-            val task = mutableListOf<Task>()
-            _keyResultWithTasks.value?.forEach {
-                task.addAll(it.tasks)
-            }
-            _taskList.value = task
-            Log.d("TEST_getAllData1","${_keyResultWithTasks.value}")
-            Log.d("TEST_getAllData2","${_keyResultList.value}")
-            Log.d("TEST_getAllData3","${_taskList.value}")
-        }
-    }
-
-    /** 데이터 초기화 - 기타
-     *  KeyResult State 값
-     */
     fun initKeyResultState() {
         _keyResultState.value = KeyResultState.BEFORE_PROGRESS //시작할 땐 _keyResultState를 BEFORE로 초기화
     }
 
-    /** Objective 삭제 */
-    fun deleteObjective(id: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            objectiveRepository.deleteObjective(id)
-            getObjectiveList()
-        }
-    }
+    /***
+     * 하단 미분류
+     */
 
-    fun deleteAchieveObjective(id: String) {
-        viewModelScope.launch(Dispatchers.Main) {
-            objectiveRepository.deleteObjective(id)
-            getObjectiveAchieveList()
-        }
-    }
-
-    fun deleteKeyResult(id: String) {
-        val currentList = _keyResultList.value ?: mutableListOf()
-        val index = currentList.indexOfFirst { it.id == id }
-        if (index != -1) {
-            _keyResultList.value = currentList.filterNot { it.id == id }
-            deleteTaskDataByKeyResult(id)
-        }
-    }
-
-    private fun deleteTaskDataByKeyResult(id : String) {
-        val currentList = _taskList.value ?: mutableListOf()
-        _taskList.value = currentList.filterNot { it.key_result_id == id }
-    }
-
-    /** 하단 미분류 */
-
-    /** update data */
-    fun modifyKeyResultData(keyResult: KeyResult) {
-        val currentList = _keyResultList.value ?: mutableListOf()
-        val index = currentList.indexOfFirst { it.id == keyResult.id }
-        if (index != -1) {
-            val newList = currentList.toMutableList().apply {
-                set(index, keyResult)
-            }
-            _keyResultList.value = newList
-        }
-    }
-
-    /** 변경 사항 있는지 확인 */
-    suspend fun isChange(id: String): Boolean {
-        val task = mutableListOf<Task>()
-
-        val objectiveBefore = objectiveRepository.getObjectiveById(id)
-        val keyResultTasks = objectiveRepository.getKeyResultWithTasksById(id)
-
-        keyResultTasks.forEach {
-            task.addAll(it.tasks)
-        }
-        return !(_keyResultList.value == keyResultTasks.map { it.keyResult }
-                && _taskList.value == task && objectiveBefore == _objective.value)
-    }
-
-    fun checkEmpty(): Boolean {
-        val hasEmptyContent = _taskList.value?.any { it.content.isEmpty() } ?: false
-        if (hasEmptyContent) {
-            return true
-        }
-        val hasEmptyObjective = _objective.value?.title?.isEmpty() ?: false
-        if (hasEmptyObjective) {
-            return true
-        }
-        val hasEmptyTitle = _keyResultList.value?.any { it.title.isEmpty() } ?: false
-        if (hasEmptyTitle) {
-            return true
-        }
-        return false
-    }
-
-    /** view 에서 button 으로 state 변경할 때 사용  */
+    /**
+     * view 에서 button 으로 state 변경할 때 사용
+     */
     fun setKeyResultState(keyResultState: KeyResultState) {
         _keyResultState.value = keyResultState
     }
@@ -286,15 +180,8 @@ class ObjectiveViewModel @Inject constructor(
         val list = _keyResultList.value ?: mutableListOf()
         var sum = 0.0
         for (i in list) {
-            if (i.progress >= 100) {
-                sum ++
-            }
-        } //완료된 keyResult 의 개수
-        /*
-        for (i in list) {
             sum += i.progress
         }
-        */ //progress 의 합
         sum/list.size
         _objective.value = _objective.value?.copy(progress = if (list.isNotEmpty()) sum/list.size else 0.0)
     } //KeyResult 데이터를 가지고 계산해야 하기에 처리
@@ -395,30 +282,5 @@ class ObjectiveViewModel @Inject constructor(
      */
     fun getTaskList(id: String): List<Task>? {
         return _taskList.value?.filter { it.key_result_id == id }
-    }
-
-    /**
-     * 완료 혹은 미완료된 데이터가 있는지 확인
-     */
-    suspend fun checkAchieveComplete(): Boolean {
-        var check = false
-        val list = objectiveRepository.getObjectiveComplete()
-        if (list.isNotEmpty()) {
-            check = true
-            list.forEach { it.complete = true }
-            objectiveRepository.updateObjectiveComplete(list)
-        }
-        return check
-    }
-
-    suspend fun checkAchieveUnComplete(): Boolean {
-        var check = false
-        val list = objectiveRepository.getObjectiveUnComplete()
-        if (list.isNotEmpty()) {
-            check = true
-            list.forEach { it.complete = true }
-            objectiveRepository.updateObjectiveComplete(list)
-        }
-        return check
     }
 }

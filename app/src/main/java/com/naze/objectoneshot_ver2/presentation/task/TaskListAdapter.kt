@@ -1,5 +1,7 @@
 package com.naze.objectoneshot_ver2.presentation.task
 
+import android.content.Context
+import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +13,7 @@ import com.naze.objectoneshot_ver2.data.local.model.Task
 import com.naze.objectoneshot_ver2.databinding.ItemTaskBinding
 import com.naze.objectoneshot_ver2.domain.viewmodel.ObjectiveViewModel
 import com.naze.objectoneshot_ver2.util.ItemDiffCallback
+import com.naze.objectoneshot_ver2.util.showKeyboard
 
 class TaskListAdapter(
     private val keyResultId: String,
@@ -29,8 +32,8 @@ class TaskListAdapter(
 
             binding.btnAddTask.setOnClickListener {
                 if (binding.etTaskName.text.toString().isNotEmpty()) {
-                    addItem()
                     binding.btnAddTask.visibility = View.GONE
+                    addItem()
                 }
             }
             binding.btnDeleteTask.setOnClickListener {
@@ -40,11 +43,20 @@ class TaskListAdapter(
 
         fun bind(item: Task) {
             binding.task = item
-            Log.d("TEST_TaskListAdapter", "item_내용: ${item.content}")
-            if (adapterPosition == itemCount - 1) { //마지막 아이템이면 Add Task 보여주기
+            Log.d("TEST_TaskListAdapter", "Key_result_id: ${item.key_result_id}")
+
+            if (adapterPosition == itemCount - 1) {
                 binding.btnAddTask.visibility = View.VISIBLE
             } else {
                 binding.btnAddTask.visibility = View.GONE
+            }
+            binding.cbTaskComplete.setOnClickListener {
+                if (binding.etTaskName.text.isNotEmpty()) {
+                    addOrUpdateTaskList(item)
+                    objectiveViewModel.changeKeyResultProgress(keyResultId)
+                } else {
+                    binding.cbTaskComplete.isChecked = !binding.cbTaskComplete.isChecked
+                }
             }
 
             binding.etTaskName.setOnFocusChangeListener { v, hasFocus ->
@@ -53,40 +65,28 @@ class TaskListAdapter(
                     if (text.isNotEmpty()) {
                         addOrUpdateTaskList(item)
                         objectiveViewModel.changeKeyResultListProgress(keyResultId)
-                        if (adapterPosition == itemCount - 1) { //마지막 아이템이라면
+                        if (adapterPosition == itemCount - 1) {
                             binding.btnAddTask.visibility = View.VISIBLE
                         }
                     } else {
                         deleteItem()
-                        if (adapterPosition == itemCount - 1) { //마지막 아이템이라면
-                            binding.btnAddTask.visibility = View.VISIBLE
-                        }
                     }
                     binding.btnDeleteTask.visibility = View.GONE
                 } else { //focus가 들어올 때
-                    binding.btnAddTask.visibility = View.GONE
+                    if (binding.btnAddTask.visibility == View.VISIBLE) binding.btnAddTask.visibility = View.GONE
                     binding.btnDeleteTask.visibility = View.VISIBLE
                 }
             }
             binding.etTaskName.setOnEditorActionListener { v, actionId, event ->
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     binding.etTaskName.clearFocus()
-                    if (adapterPosition == itemCount - 1) { //마지막 아이템이라면
-                        binding.btnAddTask.visibility = View.VISIBLE
-                    }
                     return@setOnEditorActionListener true
                 } else {
                     return@setOnEditorActionListener false
                 }
             }
-            binding.cbTaskComplete.setOnClickListener {
-                if(binding.etTaskName.text.toString().isNotEmpty()) {
-                    addOrUpdateTaskList(item)
-                    objectiveViewModel.changeKeyResultListProgress(keyResultId)
-                } else {
-                    binding.cbTaskComplete.isChecked = false
-                }
-            }
+
+
         }
         private fun addItem() {
             if (itemCount < 5) {

@@ -94,15 +94,15 @@ fun setTextDate(view: TextView, date: Long) {
     view.text = spannableString
 }
 
-@BindingAdapter("progress","date")
-fun TextView.setTextDateComplete(progress:Double, date: Long ) {
+@BindingAdapter("complete","date")
+fun TextView.setTextDateComplete(complete:Boolean, date: Long ) {
     val dateFormat = SimpleDateFormat("yy-MM-dd", Locale.getDefault())
     val timeDiffInMillis = getCurrentDate() - date
     val daysLeft = TimeUnit.MILLISECONDS.toDays(timeDiffInMillis)
 
     Log.d("TEST_objective_item","$daysLeft")
 
-    if (progress >= 100.0) {
+    if (complete) {
         val spannableString =
             SpannableString("달성 / ${dateFormat.format(date)}")
 
