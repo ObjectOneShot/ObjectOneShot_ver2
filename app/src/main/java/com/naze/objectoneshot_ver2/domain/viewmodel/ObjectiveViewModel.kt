@@ -9,7 +9,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.naze.objectoneshot_ver2.R
 import com.naze.objectoneshot_ver2.data.local.model.*
 import com.naze.objectoneshot_ver2.domain.repository.ObjectiveRepository
 import com.naze.objectoneshot_ver2.domain.type.KeyResultState
