@@ -1,6 +1,5 @@
 package com.objectiveoneshot.objectiveoneshot.presentation.task
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,8 +24,6 @@ class TaskListAdapter(
         private val binding: ItemTaskBinding,
     ): RecyclerView.ViewHolder(binding.root) {
         init {
-            binding.btnDeleteTask.visibility = View.GONE
-
             binding.btnAddTask.setOnClickListener {
                 if (binding.etTaskName.text.toString().isNotEmpty()) {
                     addItem()
@@ -40,11 +37,46 @@ class TaskListAdapter(
 
         fun bind(item: Task) {
             binding.task = item
-            Log.d("TEST_TaskListAdapter", "item_내용: ${item.content}")
-            if (adapterPosition == itemCount - 1) { //마지막 아이템이면 Add Task 보여주기
-                binding.btnAddTask.visibility = View.VISIBLE
-            } else {
-                binding.btnAddTask.visibility = View.GONE
+
+            binding.btnDeleteTask.visibility = View.GONE
+            when (adapterPosition) {
+                itemCount - 1 -> { //삭제 시에 마지막 아이템이면 Add Task 보여주기
+                    binding.btnAddTask.visibility = View.VISIBLE
+                }
+                itemCount - 2 -> { //마지막 아이템이면 Add Task 보여주기
+                    binding.btnAddTask.visibility = View.VISIBLE
+                }
+                else -> {
+                    binding.btnAddTask.visibility = View.GONE
+                }
+            }
+            binding.btnDeleteTask.setOnClickListener {
+                deleteItem()
+            }
+            binding.etTaskName.setOnFocusChangeListener { v, hasFocus ->
+                val text = binding.etTaskName.text.toString()
+                if (hasFocus) {
+                    if (adapterPosition != currentList.size-1) {
+                        binding.btnDeleteTask.visibility = View.VISIBLE
+                    }
+                } else {
+                    if (text.isNotEmpty()) {
+                        addOrUpdateTaskList(item)
+                        objectiveViewModel.changeKeyResultProgress(keyResultId)
+                        binding.btnDeleteTask.visibility = View.GONE
+
+                        if (adapterPosition == itemCount - 1) {
+                            binding.btnAddTask.visibility = View.VISIBLE
+                        }
+                    } else {
+                        if (adapterPosition == itemCount - 1) {
+                            deleteItem()
+                            notifyItemChanged(adapterPosition - 1)
+                        } else {
+                            deleteItem()
+                        }
+                    }
+                }
             }
             binding.etTaskName.setOnEditorActionListener { v, actionId, event ->
                 if (actionId == EditorInfo.IME_ACTION_DONE) {

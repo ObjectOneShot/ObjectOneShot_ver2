@@ -26,10 +26,9 @@ class TaskAddAdapter(
         private val binding: ItemTaskBinding,
     ): RecyclerView.ViewHolder(binding.root) {
         init {
-            binding.btnDeleteTask.visibility = View.GONE
-
             binding.btnAddTask.setOnClickListener {
                 if (binding.etTaskName.text.toString().isNotEmpty()) {
+                    binding.btnAddTask.visibility = View.GONE
                     addItem()
                 }
             }
@@ -40,37 +39,51 @@ class TaskAddAdapter(
 
         fun bind(item: Task) {
             binding.task = item
-            Log.d("TEST_TaskAddAdapter", "Key_result_id: ${item.key_result_id}")
+
+            binding.btnDeleteTask.visibility = View.GONE
+            when (adapterPosition) {
+                itemCount - 1 -> { //삭제 시에 마지막 아이템이면 Add Task 보여주기
+                    binding.btnAddTask.visibility = View.VISIBLE
+                }
+                itemCount - 2 -> { //마지막 아이템이면 Add Task 보여주기
+                    binding.btnAddTask.visibility = View.VISIBLE
+                }
+                else -> {
+                    binding.btnAddTask.visibility = View.GONE
+                }
+            }
             if (adapterPosition != 0) {
                 binding.etTaskName.requestFocus()
             }
             binding.etTaskName.setOnFocusChangeListener { v, hasFocus ->
                 val text = binding.etTaskName.text.toString()
-                if (!hasFocus) {//focus 가 해제 될 때
+                Log.d("TEST_Task","$adapterPosition / ${itemCount - 1}")
+                if (hasFocus) {
+                    if (adapterPosition != currentList.size-1) {
+                        binding.btnDeleteTask.visibility = View.VISIBLE
+                    }
+                } else {
                     if (text.isNotEmpty()) {
                         addOrUpdateTaskList(item)
                         objectiveViewModel.changeKeyResultProgress(keyResultId)
-                        if (adapterPosition == itemCount - 1) { //마지막 아이템이면 아이템 추가
-                            addItem()
+                        binding.btnDeleteTask.visibility = View.GONE
+
+                        if (adapterPosition == itemCount - 1) {
+                            binding.btnAddTask.visibility = View.VISIBLE
                         }
                     } else {
-                        if (adapterPosition != itemCount - 1) { //마지막 아이템이 아니라면 삭제
+                        if (adapterPosition == itemCount - 1) {
                             deleteItem()
-                        } else if (adapterPosition == itemCount - 1) { //마지막 아이템이라면 + 버튼 활성화
-                            binding.btnAddTask.visibility = View.VISIBLE
-
+                            notifyItemChanged(adapterPosition - 1)
+                        } else {
+                            deleteItem()
                         }
                     }
-                    binding.btnDeleteTask.visibility = View.GONE
-                } else { //focus가 들어올 때
-                    binding.btnAddTask.visibility = View.GONE
-                    binding.btnDeleteTask.visibility = View.VISIBLE
                 }
             }
             binding.etTaskName.setOnEditorActionListener { v, actionId, event ->
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     binding.etTaskName.clearFocus()
-                    binding.btnAddTask.visibility = View.GONE
                     return@setOnEditorActionListener true
                 } else {
                     return@setOnEditorActionListener false
@@ -121,7 +134,7 @@ class TaskAddAdapter(
     }
 
     private fun addOrUpdateTaskList(item: Task) {
-        objectiveViewModel.addOrUpdateTaskData(Task(
+        objectiveViewModel.addOrUpdateNewTaskData(Task(
             item.content,
             item.check,
             item.key_result_id,

@@ -134,6 +134,8 @@ class ObjectiveAddFragment: BindingFragment<FragmentObjectiveAddBinding>(R.layou
         }
         binding.keyAddItem.btnDeleteKey.setOnClickListener {
             setVisibleKeyResult(false)
+            //저장된 테스크 데이터 삭제
+            objectiveViewModel.deleteNewTask()
         }
         binding.keyAddItem.etKeyName.setOnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_NEXT) {

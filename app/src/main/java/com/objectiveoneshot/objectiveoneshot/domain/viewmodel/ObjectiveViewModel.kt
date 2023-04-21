@@ -39,6 +39,9 @@ class ObjectiveViewModel @Inject constructor(
     private val _taskList = MutableLiveData<List<Task>>()
     val taskList: LiveData<List<Task>> get() = _taskList
 
+    private val _newTaskList = MutableLiveData<List<Task>>()
+    val newTaskList: LiveData<List<Task>> get() = _newTaskList
+
     private val _task = MutableLiveData<Task>()
     val task: LiveData<Task> get() = _task
 
@@ -293,6 +296,7 @@ class ObjectiveViewModel @Inject constructor(
      * init 한 KeyResult 를 가지고 List 에 추가
      */
     fun addKeyResultList() {
+        addNewTaskToTaskData()
         val currentList = _keyResultList.value ?: mutableListOf()
         val newList = currentList.toMutableList().apply {
             _keyResult.value?.let { add(it) }
@@ -320,6 +324,31 @@ class ObjectiveViewModel @Inject constructor(
             _taskList.value = newList
         }
         Log.d("TEST_ObjectiveViewModel","taskList Add or Update: ${_taskList.value}")
+    }
+
+    fun addNewTaskToTaskData() {
+        Log.d("TEST_Task","니 작동하니?\n${_newTaskList.value}")
+        val currentList = _taskList.value ?: mutableListOf()
+        val newList = currentList + _newTaskList.value as List<Task>
+        _taskList.value = newList
+    }
+
+    fun deleteNewTask() {
+        _newTaskList.value = mutableListOf()
+    }
+
+    fun addOrUpdateNewTaskData(task: Task) {
+        val currentList = _newTaskList.value ?: mutableListOf()
+        val index = currentList.indexOfFirst { it.id == task.id }
+        if (index == -1) {
+            _newTaskList.value = currentList + task
+        } else {
+            val newList = currentList.toMutableList().apply {
+                set(index, task)
+            }
+            _newTaskList.value = newList
+        }
+        Log.d("TEST_Task","taskList Add or Update: ${_newTaskList.value}")
     }
 
     /**
