@@ -41,7 +41,9 @@ class TaskAddAdapter(
         fun bind(item: Task) {
             binding.task = item
             Log.d("TEST_TaskAddAdapter", "Key_result_id: ${item.key_result_id}")
-
+            if (adapterPosition != 0) {
+                binding.etTaskName.requestFocus()
+            }
             binding.etTaskName.setOnFocusChangeListener { v, hasFocus ->
                 val text = binding.etTaskName.text.toString()
                 if (!hasFocus) {//focus 가 해제 될 때
@@ -68,17 +70,18 @@ class TaskAddAdapter(
             binding.etTaskName.setOnEditorActionListener { v, actionId, event ->
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     binding.etTaskName.clearFocus()
+                    binding.btnAddTask.visibility = View.GONE
                     return@setOnEditorActionListener true
                 } else {
                     return@setOnEditorActionListener false
                 }
             }
             binding.cbTaskComplete.setOnClickListener {
-                if (binding.etTaskName.text.isNotEmpty()) {
+                if (binding.etTaskName.text.toString().isNotEmpty()) {
                     addOrUpdateTaskList(item)
                     objectiveViewModel.changeKeyResultProgress(keyResultId)
                 } else {
-                    binding.cbTaskComplete.isChecked = !binding.cbTaskComplete.isChecked
+                    binding.cbTaskComplete.isChecked = false
                 }
             }
 

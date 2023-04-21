@@ -1,11 +1,14 @@
 package com.naze.objectoneshot_ver2.presentation.objective
 
+import android.app.Dialog
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -17,7 +20,9 @@ import com.naze.objectoneshot_ver2.domain.type.KeyResultState
 import com.naze.objectoneshot_ver2.domain.viewmodel.ObjectiveViewModel
 import com.naze.objectoneshot_ver2.presentation.keyresult.KeyResultListFragment
 import com.naze.objectoneshot_ver2.presentation.task.TaskAddAdapter
+import com.naze.objectoneshot_ver2.presentation.tips.TipsFragment
 import com.naze.objectoneshot_ver2.util.BindingFragment
+import com.naze.objectoneshot_ver2.util.showKeyboard
 import com.naze.objectoneshot_ver2.util.showToast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -28,6 +33,8 @@ import java.util.*
 class ObjectiveAddFragment: BindingFragment<FragmentObjectiveAddBinding>(R.layout.fragment_objective_add) {
 
     private val objectiveViewModel: ObjectiveViewModel by activityViewModels()
+    private var isCheck: Boolean = true
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -55,9 +62,21 @@ class ObjectiveAddFragment: BindingFragment<FragmentObjectiveAddBinding>(R.layou
             parentFragmentManager.popBackStackImmediate()
         } //Objective 등록
 
+        binding.toolBarBackBtn.setOnClickListener {
+            parentFragmentManager.popBackStackImmediate()
+        }
+
+        binding.btnHelp.setOnClickListener {
+            parentFragmentManager.beginTransaction().apply {
+                replace(R.id.fl_main, TipsFragment(), "Tips")
+                addToBackStack(null)
+                commit()
+            }
+        }
+
         setCalendar() //달력 설정
         setAddKeyResult()
-        setFragment() // KeyResult List 설정
+        if (isCheck) setFragment() // KeyResult List 설정
         setFragmentBtn() //추후 버튼 관련 함수들과 묶음
     }
 
@@ -92,7 +111,10 @@ class ObjectiveAddFragment: BindingFragment<FragmentObjectiveAddBinding>(R.layou
                         setVisibleKeyResult(false)
                         binding.keyAddItem.etKeyName.setHintTextColor(Color.parseColor("#FF808080"))
                     } else {
-                        requireContext().showToast("Task를 1개 이상 입력해주세요.")
+                        val dialog: Dialog = Dialog(requireContext())
+                        dialog.setContentView(R.layout.dialog_task_alert)
+                        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                        dialog.show()
                     }
                 } else {
                     binding.keyAddItem.etKeyName.setHintTextColor(Color.parseColor("#80FF0000"))
@@ -102,6 +124,8 @@ class ObjectiveAddFragment: BindingFragment<FragmentObjectiveAddBinding>(R.layou
                 objectiveViewModel.initKeyResultData() //신규 데이터 생성
 
                 setVisibleKeyResult(true)
+                binding.keyAddItem.etKeyName.requestFocus()
+                requireContext().showKeyboard(binding.keyAddItem.etKeyName,true)
                 adapterTask = TaskAddAdapter(objectiveViewModel.keyResult.value?.id?:"", objectiveViewModel)
                 binding.keyAddItem.rvTaskList.apply {
                     adapterTask.submitList(null)
@@ -112,6 +136,14 @@ class ObjectiveAddFragment: BindingFragment<FragmentObjectiveAddBinding>(R.layou
         }
         binding.keyAddItem.btnDeleteKey.setOnClickListener {
             setVisibleKeyResult(false)
+        }
+        binding.keyAddItem.etKeyName.setOnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                binding.keyAddItem.rvTaskList.requestFocus()
+                return@setOnEditorActionListener true
+            } else {
+                false
+            }
         }
 
     }
@@ -156,6 +188,7 @@ class ObjectiveAddFragment: BindingFragment<FragmentObjectiveAddBinding>(R.layou
     private val fragment3 = KeyResultListFragment(KeyResultState.COMPLETE)
 
     private fun setFragment() {
+        isCheck = false
         objectiveViewModel.initKeyResultState()
         keyResultStateFragmentSetting()
         transaction = childFragmentManager.beginTransaction()
