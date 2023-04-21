@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.naze.objectoneshot_ver2.R
 import com.naze.objectoneshot_ver2.databinding.FragmentKeyResultListBinding
@@ -23,7 +24,7 @@ class KeyResultListFragment(val state: KeyResultState): BindingFragment<Fragment
     }
 
     private fun setList() {
-        val adapterKeyResult = KeyResultAdapter(objectiveViewModel,viewLifecycleOwner)
+        val adapterKeyResult = KeyResultAdapter(objectiveViewModel)
 
         binding.rvKeyList.apply {
             adapter = adapterKeyResult

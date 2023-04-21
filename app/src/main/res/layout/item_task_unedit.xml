@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="task"
+            type="com.naze.objectoneshot_ver2.data.local.model.Task" />
+        <variable
+            name="viewmodel"
+            type="com.naze.objectoneshot_ver2.domain.viewmodel.ObjectiveViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <CheckBox
+            android:id="@+id/cb_task_complete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="@={task.check}"
+            android:enabled="false"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/view_divider"/>
+
+        <EditText
+            android:id="@+id/et_task_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="8dp"
+            android:background="@null"
+            android:inputType="text"
+            android:imeOptions="actionDone"
+            android:hint="내용을 입력해주세요"
+            android:text="@={task.content}"
+            android:textSize="16sp"
+            enableEdit="@{task.check}"
+            android:textColor="@color/grey_900"
+            app:layout_constraintStart_toEndOf="@+id/cb_task_complete"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/view_divider"/>
+
+        <View
+            android:id="@+id/view_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/grey_900"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
