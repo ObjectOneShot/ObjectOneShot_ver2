@@ -6,10 +6,10 @@
     <data>
         <variable
             name="objective"
-            type="com.naze.objectoneshot_ver2.data.local.model.ObjectiveWithKeyResults" />
+            type="com.objectiveoneshot.objectiveoneshot.data.local.model.ObjectiveWithKeyResults" />
         <variable
             name="clickListener"
-            type="com.naze.objectoneshot_ver2.presentation.objective.ObjectiveListAdapter.ItemClickListener" />
+            type="com.objectiveoneshot.objectiveoneshot.presentation.objective.ObjectiveListAdapter.ItemClickListener" />
     </data>
 
     <com.zerobranch.layout.SwipeLayout

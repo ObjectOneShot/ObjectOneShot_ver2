@@ -5,10 +5,10 @@
     <data>
         <variable
             name="task"
-            type="com.naze.objectoneshot_ver2.data.local.model.Task" />
+            type="com.objectiveoneshot.objectiveoneshot.data.local.model.Task" />
         <variable
             name="viewmodel"
-            type="com.naze.objectoneshot_ver2.domain.viewmodel.ObjectiveViewModel" />
+            type="com.objectiveoneshot.objectiveoneshot.domain.viewmodel.ObjectiveViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -36,6 +36,8 @@
             android:text="@={task.content}"
             android:textSize="16sp"
             enableEdit="@{task.check}"
+            android:maxLength="@integer/max_length_task"
+            android:maxLines="1"
             android:textColor="@color/grey_900"
             app:layout_constraintStart_toEndOf="@+id/cb_task_complete"
             app:layout_constraintTop_toTopOf="parent"

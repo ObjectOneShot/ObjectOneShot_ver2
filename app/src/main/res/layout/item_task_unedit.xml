@@ -5,10 +5,10 @@
     <data>
         <variable
             name="task"
-            type="com.naze.objectoneshot_ver2.data.local.model.Task" />
+            type="com.objectiveoneshot.objectiveoneshot.data.local.model.Task" />
         <variable
             name="viewmodel"
-            type="com.naze.objectoneshot_ver2.domain.viewmodel.ObjectiveViewModel" />
+            type="com.objectiveoneshot.objectiveoneshot.domain.viewmodel.ObjectiveViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

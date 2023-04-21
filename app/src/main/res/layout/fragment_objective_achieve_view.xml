@@ -7,10 +7,10 @@
     <data>
         <variable
             name="objective"
-            type="com.naze.objectoneshot_ver2.data.local.model.Objective" />
+            type="com.objectiveoneshot.objectiveoneshot.data.local.model.Objective" />
         <variable
             name="viewmodel"
-            type="com.naze.objectoneshot_ver2.domain.viewmodel.ObjectiveViewModel" />
+            type="com.objectiveoneshot.objectiveoneshot.domain.viewmodel.ObjectiveViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -269,15 +269,22 @@
                 app:layout_constraintEnd_toEndOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <FrameLayout
-            android:id="@+id/fl_key"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginHorizontal="16dp"
+            android:background="#F7F4FD"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/card_key_result" />
+            app:layout_constraintTop_toBottomOf="@+id/card_key_result">
+
+            <FrameLayout
+                android:id="@+id/fl_key"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="16dp"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
