@@ -53,9 +53,8 @@ class TaskListAdapter(
             binding.etTaskName.setOnFocusChangeListener { v, hasFocus ->
                 val text = binding.etTaskName.text.toString()
                 if (hasFocus) {
-                    if (adapterPosition != currentList.size-1) {
-                        binding.btnDeleteTask.visibility = View.VISIBLE
-                    }
+                    binding.btnDeleteTask.visibility = View.VISIBLE
+                    binding.btnAddTask.visibility = View.GONE
                 } else {
                     if (text.isNotEmpty()) {
                         addOrUpdateTaskList(item)
@@ -68,7 +67,7 @@ class TaskListAdapter(
                     } else {
                         if (adapterPosition == itemCount - 1) {
                             deleteItem()
-                            notifyItemChanged(adapterPosition - 1)
+                            notifyItemChanged(adapterPosition - 1,)
                         } else {
                             deleteItem()
                         }
@@ -92,6 +91,7 @@ class TaskListAdapter(
                 }
             }
         }
+
         private fun addItem() {
             if (itemCount < 5) {
                 val newTask = Task("",false,keyResultId)

@@ -52,16 +52,13 @@ class TaskAddAdapter(
                     binding.btnAddTask.visibility = View.GONE
                 }
             }
-            if (adapterPosition != 0) {
-                binding.etTaskName.requestFocus()
-            }
+
             binding.etTaskName.setOnFocusChangeListener { v, hasFocus ->
                 val text = binding.etTaskName.text.toString()
                 Log.d("TEST_Task","$adapterPosition / ${itemCount - 1}")
                 if (hasFocus) {
-                    if (adapterPosition != currentList.size-1) {
-                        binding.btnDeleteTask.visibility = View.VISIBLE
-                    }
+                    binding.btnDeleteTask.visibility = View.VISIBLE
+                    binding.btnAddTask.visibility = View.GONE
                 } else {
                     if (text.isNotEmpty()) {
                         addOrUpdateTaskList(item)
