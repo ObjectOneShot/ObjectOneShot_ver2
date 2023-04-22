@@ -366,6 +366,16 @@ class ObjectiveViewModel @Inject constructor(
         Log.d("TEST_ObjectiveViewModel","taskList Delete : ${_taskList.value}")
     }
 
+    fun deleteNewTaskData(task: Task) {
+        val currentList = _newTaskList.value ?: mutableListOf()
+        val index = currentList.indexOfFirst { it.id == task.id }
+        if (index != -1) {
+            Log.d("TEST_ObjectiveViewModel","taskList Delete : ${currentList[index]}")
+            _newTaskList.value = currentList.filterNot { it.id == task.id }
+        }
+        Log.d("TEST_ObjectiveViewModel","taskList Delete : ${_newTaskList.value}")
+    }
+
     /**
      * @param id = key_result_id
      */

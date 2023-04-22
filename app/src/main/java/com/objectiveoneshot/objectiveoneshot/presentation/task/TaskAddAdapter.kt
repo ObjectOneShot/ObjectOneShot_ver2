@@ -109,6 +109,7 @@ class TaskAddAdapter(
             deleteTaskList(currentList[adapterPosition])
             submitList(currentList.toMutableList().apply { removeAt(adapterPosition) })
             objectiveViewModel.changeKeyResultProgress(keyResultId)
+            binding.etTaskName.clearFocus()
         }
     }
 
@@ -143,6 +144,6 @@ class TaskAddAdapter(
     }
 
     private fun deleteTaskList(item: Task) {
-        objectiveViewModel.deleteTaskData(item)
+        objectiveViewModel.deleteNewTaskData(item)
     }
 }

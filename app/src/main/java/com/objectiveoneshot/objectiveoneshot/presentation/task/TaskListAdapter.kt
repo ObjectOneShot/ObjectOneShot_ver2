@@ -43,9 +43,6 @@ class TaskListAdapter(
                 itemCount - 1 -> { //삭제 시에 마지막 아이템이면 Add Task 보여주기
                     binding.btnAddTask.visibility = View.VISIBLE
                 }
-                itemCount - 2 -> { //마지막 아이템이면 Add Task 보여주기
-                    binding.btnAddTask.visibility = View.VISIBLE
-                }
                 else -> {
                     binding.btnAddTask.visibility = View.GONE
                 }
@@ -105,6 +102,7 @@ class TaskListAdapter(
             deleteTaskList(currentList[adapterPosition])
             submitList(currentList.toMutableList().apply { removeAt(adapterPosition) })
             objectiveViewModel.changeKeyResultListProgress(keyResultId)
+            binding.etTaskName.clearFocus()
         }
     }
 
