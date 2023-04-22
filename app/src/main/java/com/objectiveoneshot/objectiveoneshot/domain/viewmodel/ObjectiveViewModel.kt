@@ -172,6 +172,10 @@ class ObjectiveViewModel @Inject constructor(
         _keyResultState.value = KeyResultState.BEFORE_PROGRESS //시작할 땐 _keyResultState를 BEFORE로 초기화
     }
 
+    fun initAchieveKeyResultState() {
+        _keyResultState.value = KeyResultState.COMPLETE
+    }
+
     /** Objective 삭제 */
     fun deleteObjective(id: String) {
         viewModelScope.launch(Dispatchers.IO) {

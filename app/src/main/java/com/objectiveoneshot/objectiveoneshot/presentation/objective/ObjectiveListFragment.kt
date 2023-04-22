@@ -44,6 +44,7 @@ class ObjectiveListFragment: BindingFragment<FragmentObjectiveListBinding>(R.lay
                 dialog.setContentView(R.layout.dialog_unachieve)
                 dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
                 dialog.show()
+
             }
         }
 
