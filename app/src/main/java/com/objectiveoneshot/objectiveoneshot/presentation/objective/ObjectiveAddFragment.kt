@@ -56,8 +56,15 @@ class ObjectiveAddFragment: BindingFragment<FragmentObjectiveAddBinding>(R.layou
         })
 
         binding.btnAddObjective.setOnClickListener {
-            objectiveViewModel.insertObjective()
-            parentFragmentManager.popBackStackImmediate()
+            if (binding.keyAddItem.layoutKeyAdd.visibility == View.GONE) {
+                objectiveViewModel.insertObjective()
+                parentFragmentManager.popBackStackImmediate()
+            } else {
+                val dialog: Dialog = Dialog(requireContext())
+                dialog.setContentView(R.layout.dialog_key_result_alert)
+                dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                dialog.show()
+            }
         } //Objective 등록
 
         binding.toolBarBackBtn.setOnClickListener {

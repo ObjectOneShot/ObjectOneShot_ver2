@@ -5,10 +5,9 @@
     android:layout_height="wrap_content">
 
     <androidx.constraintlayout.utils.widget.ImageFilterView
-        android:id="@+id/dialog_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_dialog_achieve"
+        android:src="@drawable/dialog_key_result_alert"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -13,7 +13,6 @@ import com.objectiveoneshot.objectiveoneshot.presentation.keyresult.KeyResultLis
 import com.objectiveoneshot.objectiveoneshot.util.BindingFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.*
 
 class ObjectiveAchieveViewFragment: BindingFragment<FragmentObjectiveAchieveViewBinding>(R.layout.fragment_objective_achieve_view){
 
@@ -45,7 +44,7 @@ class ObjectiveAchieveViewFragment: BindingFragment<FragmentObjectiveAchieveView
     private val fragment3 = KeyResultListUnEditFragment(KeyResultState.COMPLETE)
 
     private fun setFragment() {
-        objectiveViewModel.initKeyResultState()
+        objectiveViewModel.initAchieveKeyResultState()
         keyResultStateFragmentSetting()
         transaction = childFragmentManager.beginTransaction()
         transaction.add(R.id.fl_key, fragment1)

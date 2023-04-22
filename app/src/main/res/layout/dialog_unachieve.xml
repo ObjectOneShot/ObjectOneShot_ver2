@@ -5,6 +5,7 @@
     android:layout_height="wrap_content">
 
     <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:id="@+id/dialog_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_dialog_unachieve"

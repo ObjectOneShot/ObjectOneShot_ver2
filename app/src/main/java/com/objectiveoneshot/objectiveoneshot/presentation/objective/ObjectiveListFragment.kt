@@ -5,8 +5,10 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.View
+import androidx.constraintlayout.utils.widget.ImageFilterView
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -35,6 +37,17 @@ class ObjectiveListFragment: BindingFragment<FragmentObjectiveListBinding>(R.lay
                 val dialog: Dialog = Dialog(requireContext())
                 dialog.setContentView(R.layout.dialog_achieve)
                 dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                dialog.setCancelable(true)
+                dialog.setCanceledOnTouchOutside(true)
+                dialog.findViewById<ImageFilterView>(R.id.dialog_view).setOnClickListener {
+                    dialog.dismiss()
+                }
+                val handler = Handler()
+                handler.postDelayed({
+                    if(dialog.isShowing) {
+                        dialog.dismiss()
+                    }
+                }, 5000)
                 dialog.show()
             }
         }
@@ -43,6 +56,17 @@ class ObjectiveListFragment: BindingFragment<FragmentObjectiveListBinding>(R.lay
                 val dialog: Dialog = Dialog(requireContext())
                 dialog.setContentView(R.layout.dialog_unachieve)
                 dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                dialog.setCancelable(true)
+                dialog.setCanceledOnTouchOutside(true)
+                dialog.findViewById<ImageFilterView>(R.id.dialog_view).setOnClickListener {
+                    dialog.dismiss()
+                }
+                val handler = Handler()
+                handler.postDelayed({
+                    if(dialog.isShowing) {
+                        dialog.dismiss()
+                    }
+                }, 5000)
                 dialog.show()
             }
         }

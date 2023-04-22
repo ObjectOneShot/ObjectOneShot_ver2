@@ -1,18 +1,14 @@
-package com.naze.objectoneshot_ver2.domain.viewmodel
+package com.objectiveoneshot.objectiveoneshot.domain.viewmodel
 
-import android.app.Dialog
 import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.naze.objectoneshot_ver2.R
-import com.naze.objectoneshot_ver2.data.local.model.*
-import com.naze.objectoneshot_ver2.domain.repository.ObjectiveRepository
-import com.naze.objectoneshot_ver2.domain.type.KeyResultState
+import com.objectiveoneshot.objectiveoneshot.data.local.model.*
+import com.objectiveoneshot.objectiveoneshot.domain.repository.ObjectiveRepository
+import com.objectiveoneshot.objectiveoneshot.domain.type.KeyResultState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
@@ -42,6 +38,9 @@ class ObjectiveViewModel @Inject constructor(
 
     private val _taskList = MutableLiveData<List<Task>>()
     val taskList: LiveData<List<Task>> get() = _taskList
+
+    private val _newTaskList = MutableLiveData<List<Task>>()
+    val newTaskList: LiveData<List<Task>> get() = _newTaskList
 
     private val _task = MutableLiveData<Task>()
     val task: LiveData<Task> get() = _task
@@ -173,6 +172,10 @@ class ObjectiveViewModel @Inject constructor(
         _keyResultState.value = KeyResultState.BEFORE_PROGRESS //시작할 땐 _keyResultState를 BEFORE로 초기화
     }
 
+    fun initAchieveKeyResultState() {
+        _keyResultState.value = KeyResultState.COMPLETE
+    }
+
     /** Objective 삭제 */
     fun deleteObjective(id: String) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -194,6 +197,7 @@ class ObjectiveViewModel @Inject constructor(
         if (index != -1) {
             _keyResultList.value = currentList.filterNot { it.id == id }
             deleteTaskDataByKeyResult(id)
+            setObjectiveProgress()
         }
     }
 
@@ -286,24 +290,27 @@ class ObjectiveViewModel @Inject constructor(
         val list = _keyResultList.value ?: mutableListOf()
         var sum = 0.0
         for (i in list) {
-            sum += i.progress
+            if (i.progress >= 100)
+                sum ++
         }
-        sum/list.size
-        _objective.value = _objective.value?.copy(progress = if (list.isNotEmpty()) sum/list.size else 0.0)
+        _objective.value = _objective.value?.copy(progress = if (list.isNotEmpty()) sum/list.size*100 else 0.0)
     } //KeyResult 데이터를 가지고 계산해야 하기에 처리
 
     /**
      * init 한 KeyResult 를 가지고 List 에 추가
      */
     fun addKeyResultList() {
+        addNewTaskToTaskData()
         val currentList = _keyResultList.value ?: mutableListOf()
         val newList = currentList.toMutableList().apply {
             _keyResult.value?.let { add(it) }
         }
         _keyResultList.value = newList
         Log.d("TEST_ObjectiveViewModel","KeyResultList : ${_keyResultList.value}")
+
         setKeyResultStateByProgress(_keyResult.value?.progress?:0.0)
         setObjectiveProgress()
+
         //TODO(List에 추가된 경우 -> Objective 의 Progress가 변한다)
     } //init 한 KeyResult 를 가지고 List 에 추가
 
@@ -325,6 +332,31 @@ class ObjectiveViewModel @Inject constructor(
         Log.d("TEST_ObjectiveViewModel","taskList Add or Update: ${_taskList.value}")
     }
 
+    fun addNewTaskToTaskData() {
+        Log.d("TEST_Task","니 작동하니?\n${_newTaskList.value}")
+        val currentList = _taskList.value ?: mutableListOf()
+        val newList = currentList + _newTaskList.value as List<Task>
+        _taskList.value = newList
+    }
+
+    fun deleteNewTask() {
+        _newTaskList.value = mutableListOf()
+    }
+
+    fun addOrUpdateNewTaskData(task: Task) {
+        val currentList = _newTaskList.value ?: mutableListOf()
+        val index = currentList.indexOfFirst { it.id == task.id }
+        if (index == -1) {
+            _newTaskList.value = currentList + task
+        } else {
+            val newList = currentList.toMutableList().apply {
+                set(index, task)
+            }
+            _newTaskList.value = newList
+        }
+        Log.d("TEST_Task","taskList Add or Update: ${_newTaskList.value}")
+    }
+
     /**
      * Task 삭제
      */
@@ -336,6 +368,16 @@ class ObjectiveViewModel @Inject constructor(
             _taskList.value = currentList.filterNot { it.id == task.id }
         }
         Log.d("TEST_ObjectiveViewModel","taskList Delete : ${_taskList.value}")
+    }
+
+    fun deleteNewTaskData(task: Task) {
+        val currentList = _newTaskList.value ?: mutableListOf()
+        val index = currentList.indexOfFirst { it.id == task.id }
+        if (index != -1) {
+            Log.d("TEST_ObjectiveViewModel","taskList Delete : ${currentList[index]}")
+            _newTaskList.value = currentList.filterNot { it.id == task.id }
+        }
+        Log.d("TEST_ObjectiveViewModel","taskList Delete : ${_newTaskList.value}")
     }
 
     /**

@@ -43,9 +43,6 @@ class TaskListAdapter(
                 itemCount - 1 -> { //삭제 시에 마지막 아이템이면 Add Task 보여주기
                     binding.btnAddTask.visibility = View.VISIBLE
                 }
-                itemCount - 2 -> { //마지막 아이템이면 Add Task 보여주기
-                    binding.btnAddTask.visibility = View.VISIBLE
-                }
                 else -> {
                     binding.btnAddTask.visibility = View.GONE
                 }
@@ -56,9 +53,8 @@ class TaskListAdapter(
             binding.etTaskName.setOnFocusChangeListener { v, hasFocus ->
                 val text = binding.etTaskName.text.toString()
                 if (hasFocus) {
-                    if (adapterPosition != currentList.size-1) {
-                        binding.btnDeleteTask.visibility = View.VISIBLE
-                    }
+                    binding.btnDeleteTask.visibility = View.VISIBLE
+                    binding.btnAddTask.visibility = View.GONE
                 } else {
                     if (text.isNotEmpty()) {
                         addOrUpdateTaskList(item)
@@ -71,7 +67,7 @@ class TaskListAdapter(
                     } else {
                         if (adapterPosition == itemCount - 1) {
                             deleteItem()
-                            notifyItemChanged(adapterPosition - 1)
+                            notifyItemChanged(adapterPosition - 1,)
                         } else {
                             deleteItem()
                         }
@@ -95,6 +91,7 @@ class TaskListAdapter(
                 }
             }
         }
+
         private fun addItem() {
             if (itemCount < 5) {
                 val newTask = Task("",false,keyResultId)
@@ -105,6 +102,7 @@ class TaskListAdapter(
             deleteTaskList(currentList[adapterPosition])
             submitList(currentList.toMutableList().apply { removeAt(adapterPosition) })
             objectiveViewModel.changeKeyResultListProgress(keyResultId)
+            binding.etTaskName.clearFocus()
         }
     }
 
