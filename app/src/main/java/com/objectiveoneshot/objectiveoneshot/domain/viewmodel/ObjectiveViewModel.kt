@@ -330,6 +330,7 @@ class ObjectiveViewModel @Inject constructor(
             _taskList.value = newList
         }
         Log.d("TEST_ObjectiveViewModel","taskList Add or Update: ${_taskList.value}")
+        changeKeyResultListProgress(task.key_result_id)
     }
 
     fun addNewTaskToTaskData() {
@@ -355,6 +356,7 @@ class ObjectiveViewModel @Inject constructor(
             _newTaskList.value = newList
         }
         Log.d("TEST_Task","taskList Add or Update: ${_newTaskList.value}")
+        changeKeyResultListProgress(task.key_result_id)
     }
 
     /**
