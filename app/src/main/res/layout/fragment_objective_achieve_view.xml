@@ -53,6 +53,7 @@
                 android:textColor="@color/black"/>
 
             <androidx.constraintlayout.utils.widget.ImageFilterButton
+                android:id="@+id/btn_help"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="12dp"

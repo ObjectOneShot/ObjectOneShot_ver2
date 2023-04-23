@@ -10,6 +10,7 @@ import com.objectiveoneshot.objectiveoneshot.databinding.FragmentObjectiveAchiev
 import com.objectiveoneshot.objectiveoneshot.domain.type.KeyResultState
 import com.objectiveoneshot.objectiveoneshot.domain.viewmodel.ObjectiveViewModel
 import com.objectiveoneshot.objectiveoneshot.presentation.keyresult.KeyResultListUnEditFragment
+import com.objectiveoneshot.objectiveoneshot.presentation.tips.TipsFragment
 import com.objectiveoneshot.objectiveoneshot.util.BindingFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -35,6 +36,13 @@ class ObjectiveAchieveViewFragment: BindingFragment<FragmentObjectiveAchieveView
     private fun setTitleBarBtn() {
         binding.toolBarBackBtn.setOnClickListener {
             parentFragmentManager.popBackStackImmediate()
+        }
+        binding.btnHelp.setOnClickListener {
+            parentFragmentManager.beginTransaction().apply {
+                replace(R.id.fl_main, TipsFragment(), "Tips")
+                addToBackStack(null)
+                commit()
+            }
         }
     }
 
