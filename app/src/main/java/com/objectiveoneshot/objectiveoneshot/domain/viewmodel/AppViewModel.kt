@@ -57,11 +57,13 @@ class AppViewModel @Inject constructor(
         val newItem = newKeyResult.tasks.toMutableList().apply {
             add(Task(content = "", key_result_id = newKeyResult.keyResult.id))
         }
-        Log.d("TT_keyResult","${newKeyResult.keyResult.id}\n$newItem")
+
         val newList = currentList.toMutableList().apply {
-            add(newKeyResult)
+            add(newKeyResult.copy(tasks = newItem))
         }
         _keyResultWithTasks.value = newList
+        Log.d("TT_keyResult","${_keyResultWithTasks.value}\n$newItem")
+        setObjectiveProgress()
     }
 
     /**
@@ -88,6 +90,8 @@ class AppViewModel @Inject constructor(
     fun deleteKeyResult(keyResultId: String) {
         val newList = _keyResultWithTasks.value.orEmpty().filter { it.keyResult.id != keyResultId }
         _keyResultWithTasks.value = newList
+
+        setObjectiveProgress()
     }
 
     fun deleteTask(keyResultId: String, taskId: String) {
@@ -119,6 +123,49 @@ class AppViewModel @Inject constructor(
             }
         }
         _keyResultWithTasks.value = newList
+
+        setObjectiveProgress()
+    }
+
+    private fun setObjectiveProgress() {
+        val keyResults = _keyResultWithTasks.value
+        val progress = if (!keyResults.isNullOrEmpty()) {
+            100 * keyResults.filter { it.keyResult.progress >= 100 }.size / keyResults.size
+        } else {
+            0
+        }.toDouble()
+        val objective = _objectiveData.value
+        _objectiveData.value = objective?.copy(progress = progress)
+        Log.d("TT_progress","$progress")
+    } //Objective 의 progress 계산. keyResult progress 가 100 인 개수
+
+    fun checkIsEmpty() { //비었으면 true, 안비었으면 false
+        val test1 =
+        _keyResultWithTasks.value?.any { it.keyResult.title.isEmpty() }
+        val test2 =
+        _keyResultWithTasks.value?.any {
+            it.tasks.isEmpty()
+        }
+        val test3 =
+        _objectiveData.value?.title?.isEmpty()
+
+        Log.d("TT_test","$test1\n$test2\n$test3")
+        Log.d("TT_test","${_keyResultWithTasks.value}")
+    }
+
+    suspend fun checkIsChange(id: String): Boolean { //변하면 true, 안변하면 false
+        val objectiveBefore = objectiveRepository.getObjectiveById(id)
+        val keyResultWithTasksBefore = objectiveRepository.getKeyResultWithTasksById(id)
+        return !(objectiveBefore == _objectiveData.value
+                && keyResultWithTasksBefore == _keyResultWithTasks)
+    }
+
+    suspend fun checkAchieveComplete(): Boolean {
+        return false
+    }
+
+    suspend fun checkAchieveUnComplete(): Boolean {
+        return false
     }
 }
 
