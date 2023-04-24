@@ -4,10 +4,11 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import java.util.UUID
+import java.util.*
 
 @Entity(
     tableName = "key_results",
+    ignoredColumns = ["expand"],
     foreignKeys = [
         ForeignKey(
             entity = Objective::class,
@@ -24,6 +25,10 @@ data class KeyResult(
     val objective_id: String,
     @PrimaryKey
     val id: String = UUID.randomUUID().toString()
-) {
+): Expand() {
 
+}
+
+open class Expand {
+    var expand: Boolean? = false
 }

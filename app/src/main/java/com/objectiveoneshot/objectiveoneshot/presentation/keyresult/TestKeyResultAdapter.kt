@@ -31,7 +31,7 @@ class TestKeyResultAdapter(
         fun bind(keyResult: KeyResultWithTasks) {
             binding.keyResult = keyResult
             binding.executePendingBindings()
-            Log.d("TEST_KeyResultAdapter","KeyResult Id : ${keyResult.keyResult.id}")
+            Log.d("TEST_KeyResultAdapter","KeyResult Id : ${keyResult.keyResult.expand}")
             Log.d("TEST_Test_KeyResultAdapter","filter : ${viewModel.keyResultWithTasks.value?.filter { (keyResult.keyResult.id) == it.keyResult.id }?.first()?.tasks}")
             val taskListAdapter = TestTaskListAdapter(keyResult.keyResult.id, viewModel)
 
