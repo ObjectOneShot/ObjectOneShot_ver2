@@ -14,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.objectiveoneshot.objectiveoneshot.R
 import com.objectiveoneshot.objectiveoneshot.databinding.FragmentObjectiveListBinding
+import com.objectiveoneshot.objectiveoneshot.domain.viewmodel.AppViewModel
 import com.objectiveoneshot.objectiveoneshot.domain.viewmodel.ObjectiveViewModel
 import com.objectiveoneshot.objectiveoneshot.presentation.tips.TipsFragment
 import com.objectiveoneshot.objectiveoneshot.util.BindingFragment
@@ -24,6 +25,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class ObjectiveListFragment: BindingFragment<FragmentObjectiveListBinding>(R.layout.fragment_objective_list) {
     private val objectiveViewModel: ObjectiveViewModel by activityViewModels()
+    private val viewModel: AppViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -103,9 +105,9 @@ class ObjectiveListFragment: BindingFragment<FragmentObjectiveListBinding>(R.lay
     @SuppressLint("ClickableViewAccessibility")
     private fun setRecyclerView() {
         val adapterObjective = ObjectiveListAdapter(ObjectiveListAdapter.ItemClickListener {
-            objectiveViewModel.getObjectiveData(it)
+            viewModel.getObjectiveData(it)
             parentFragmentManager.beginTransaction().apply {
-                replace(R.id.fl_main, ObjectiveModifyFragment(), "ObjectiveModify")
+                replace(R.id.fl_main, TestObjectiveModifyFragment(), "ObjectiveModify")
                 addToBackStack(null)
                 commit()
             }
