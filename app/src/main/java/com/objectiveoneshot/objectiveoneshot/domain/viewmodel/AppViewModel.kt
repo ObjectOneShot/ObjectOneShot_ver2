@@ -11,6 +11,7 @@ import com.objectiveoneshot.objectiveoneshot.domain.type.KeyResultState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,6 +30,12 @@ class AppViewModel @Inject constructor(
     val keyResultState : LiveData<KeyResultState> get() = _keyResultState
 
     /** 데이터 insert */
+    fun insertObjectiveData() {
+        viewModelScope.launch(Dispatchers.IO) {
+            _objectiveData.value?.let { objectiveRepository.insertObjective(it) }
+            //insertKeyResult()
+        }
+    }
 
     /** 데이터 select / get */
     fun getObjectiveList() {
@@ -44,6 +51,29 @@ class AppViewModel @Inject constructor(
     } //ObjectiveAchieveList 가져오기 추후 변경 예정
 
     /** 데이터 초기화 */
+    fun initObjectiveData() {
+        _objectiveData.value = Objective(
+            title = "",
+            startDate = Calendar.getInstance().apply {
+                timeInMillis = System.currentTimeMillis()
+                set(Calendar.HOUR_OF_DAY, 0)
+                set(Calendar.MINUTE, 0)
+                set(Calendar.SECOND, 0)
+                set(Calendar.MILLISECOND, 0)
+            }.timeInMillis,
+            endDate = Calendar.getInstance().apply {
+                timeInMillis = System.currentTimeMillis()
+                set(Calendar.HOUR_OF_DAY, 0)
+                set(Calendar.MINUTE, 0)
+                set(Calendar.SECOND, 0)
+                set(Calendar.MILLISECOND, 0)
+            }.timeInMillis,
+            progress = 0.0,
+            complete = false,
+        )
+        _keyResultWithTasks.value = mutableListOf()
+    }
+
     fun getObjectiveData(id: String) {
         viewModelScope.launch(Dispatchers.Main) {
             _objectiveData.value = objectiveRepository.getObjectiveById(id)
@@ -97,6 +127,20 @@ class AppViewModel @Inject constructor(
 
         setKeyResultProgress(keyResultId)
     } //이거 Task 추가하는 방식 개편 가능할 듯
+
+    fun deleteObjective(objectiveId: String) {
+        viewModelScope.launch {
+            objectiveRepository.deleteObjective(objectiveId)
+            getObjectiveList() //삭제 후 모든 리스트 불러오기
+        }
+    }
+
+    fun deleteAchieveObjective(objectiveId: String) {
+        viewModelScope.launch {
+            objectiveRepository.deleteObjective(objectiveId)
+            getObjectiveAchieveList() //삭제 후 모든 리스트 불러오기
+        }
+    }
 
     fun deleteKeyResult(keyResultId: String) {
         val newList = _keyResultWithTasks.value.orEmpty().filter { it.keyResult.id != keyResultId }

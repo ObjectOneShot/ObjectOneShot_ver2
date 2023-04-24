@@ -11,12 +11,11 @@ import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.objectiveoneshot.objectiveoneshot.R
 import com.objectiveoneshot.objectiveoneshot.databinding.FragmentObjectiveAddBinding
 import com.objectiveoneshot.objectiveoneshot.domain.type.KeyResultState
-import com.objectiveoneshot.objectiveoneshot.domain.viewmodel.ObjectiveViewModel
+import com.objectiveoneshot.objectiveoneshot.domain.viewmodel.AppViewModel
 import com.objectiveoneshot.objectiveoneshot.presentation.keyresult.KeyResultListFragment
 import com.objectiveoneshot.objectiveoneshot.presentation.task.TaskAddAdapter
 import com.objectiveoneshot.objectiveoneshot.presentation.tips.TipsFragment
@@ -30,14 +29,14 @@ import java.util.*
 @AndroidEntryPoint
 class ObjectiveAddFragment: BindingFragment<FragmentObjectiveAddBinding>(R.layout.fragment_objective_add) {
 
-    private val objectiveViewModel: ObjectiveViewModel by activityViewModels()
+    private val viewModel: AppViewModel by activityViewModels()
     private var isCheck: Boolean = true
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.lifecycleOwner = this
-        binding.viewmodel = objectiveViewModel
+        binding.viewmodel = viewModel
         init()
     }
 
@@ -57,7 +56,7 @@ class ObjectiveAddFragment: BindingFragment<FragmentObjectiveAddBinding>(R.layou
 
         binding.btnAddObjective.setOnClickListener {
             if (binding.keyAddItem.layoutKeyAdd.visibility == View.GONE) {
-                objectiveViewModel.insertObjective()
+                viewModel.insertObjectiveData()
                 parentFragmentManager.popBackStackImmediate()
             } else {
                 val dialog: Dialog = Dialog(requireContext())
@@ -98,7 +97,7 @@ class ObjectiveAddFragment: BindingFragment<FragmentObjectiveAddBinding>(R.layou
             datePicker.show(childFragmentManager, "date_picker")
             datePicker.addOnPositiveButtonClickListener {
                 val calendar = Calendar.getInstance()
-                objectiveViewModel.setObjectiveDateRange(
+                viewModel.setObjectiveDateRange(
                     startDate = it.first ?: calendar.timeInMillis,
                     endDate = it.second ?: calendar.timeInMillis)
             }
@@ -115,7 +114,7 @@ class ObjectiveAddFragment: BindingFragment<FragmentObjectiveAddBinding>(R.layou
                 }
                 if (binding.keyAddItem.etKeyName.text.toString().isNotEmpty()) { //KeyResult 명이 비어있지 않으면
                     if (adapterTask.currentList[0].content.isNotEmpty() || adapterTask.currentList.size > 1) {
-                        objectiveViewModel.addKeyResultList() //데이터 입력
+                        viewModel.addKeyResult() //데이터 입력
                         setVisibleKeyResult(false)
                         binding.keyAddItem.etKeyName.setHintTextColor(Color.parseColor("#FF808080"))
                     } else {
@@ -129,23 +128,23 @@ class ObjectiveAddFragment: BindingFragment<FragmentObjectiveAddBinding>(R.layou
                 }
 
             } else if (binding.keyAddItem.layoutKeyAdd.visibility == View.GONE) {
-                objectiveViewModel.initKeyResultData() //신규 데이터 생성
+                viewModel.addKeyResult() //신규 데이터 생성
 
                 setVisibleKeyResult(true)
                 binding.keyAddItem.etKeyName.requestFocus()
                 requireContext().showKeyboard(binding.keyAddItem.etKeyName,true)
-                adapterTask = TaskAddAdapter(objectiveViewModel.keyResult.value?.id?:"", objectiveViewModel)
+/*                adapterTask = TaskAddAdapter(objectiveViewModel.keyResult.value?.id?:"", objectiveViewModel)
                 binding.keyAddItem.rvTaskList.apply {
                     adapterTask.submitList(null)
                     adapter = adapterTask
                     layoutManager = LinearLayoutManager(requireContext())
-                }
+                }*/
             }
         }
         binding.keyAddItem.btnDeleteKey.setOnClickListener {
             setVisibleKeyResult(false)
             //저장된 테스크 데이터 삭제
-            objectiveViewModel.deleteNewTask()
+            //viewModel.deleteKeyResult()
         }
         binding.keyAddItem.etKeyName.setOnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_NEXT) {
@@ -168,7 +167,7 @@ class ObjectiveAddFragment: BindingFragment<FragmentObjectiveAddBinding>(R.layou
     }
 
     private fun keyResultStateFragmentSetting() {
-        objectiveViewModel.keyResultState.observe(viewLifecycleOwner) {
+        viewModel.keyResultState.observe(viewLifecycleOwner) {
             viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
                 when (it) {
                     KeyResultState.BEFORE_PROGRESS -> {
@@ -199,7 +198,7 @@ class ObjectiveAddFragment: BindingFragment<FragmentObjectiveAddBinding>(R.layou
 
     private fun setFragment() {
         isCheck = false
-        objectiveViewModel.initKeyResultState()
+        viewModel.setKeyResultState(KeyResultState.BEFORE_PROGRESS)
         keyResultStateFragmentSetting()
         transaction = childFragmentManager.beginTransaction()
         transaction.add(R.id.fl_key, fragment1)
@@ -239,13 +238,13 @@ class ObjectiveAddFragment: BindingFragment<FragmentObjectiveAddBinding>(R.layou
 
     private fun setFragmentBtn() {
         binding.btnBeforeProgress.setOnClickListener {
-            if (!it.isSelected) objectiveViewModel.setKeyResultState(KeyResultState.BEFORE_PROGRESS)
+            if (!it.isSelected) viewModel.setKeyResultState(KeyResultState.BEFORE_PROGRESS)
         }
         binding.btnOnProgress.setOnClickListener {
-            if (!it.isSelected) objectiveViewModel.setKeyResultState(KeyResultState.ON_PROGRESS)
+            if (!it.isSelected) viewModel.setKeyResultState(KeyResultState.ON_PROGRESS)
         }
         binding.btnComplete.setOnClickListener {
-            if (!it.isSelected) objectiveViewModel.setKeyResultState(KeyResultState.COMPLETE)
+            if (!it.isSelected) viewModel.setKeyResultState(KeyResultState.COMPLETE)
         }
     }
 

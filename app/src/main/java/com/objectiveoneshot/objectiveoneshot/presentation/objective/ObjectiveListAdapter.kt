@@ -12,12 +12,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.objectiveoneshot.objectiveoneshot.R
 import com.objectiveoneshot.objectiveoneshot.data.local.model.ObjectiveWithKeyResults
 import com.objectiveoneshot.objectiveoneshot.databinding.ItemObjectiveBinding
-import com.objectiveoneshot.objectiveoneshot.domain.viewmodel.ObjectiveViewModel
+import com.objectiveoneshot.objectiveoneshot.domain.viewmodel.AppViewModel
 import com.objectiveoneshot.objectiveoneshot.util.ItemDiffCallback
 
 class ObjectiveListAdapter(
     private val clickListener: ItemClickListener,
-    private val objectiveViewModel: ObjectiveViewModel
+    private val viewModel: AppViewModel
 ): ListAdapter<ObjectiveWithKeyResults, RecyclerView.ViewHolder>(
     ItemDiffCallback<ObjectiveWithKeyResults>(
         onContentsTheSame = {old, new -> old == new},
@@ -73,7 +73,7 @@ class ObjectiveListAdapter(
                  dialog.show()
                  dialog.findViewById<ImageFilterButton>(R.id.btn_delete_dialog).setOnClickListener {
                      dialog.dismiss()
-                     objectiveViewModel.deleteObjective(item.objective.id)
+                     viewModel.deleteObjective(item.objective.id)
                  }
                  dialog.findViewById<ImageFilterButton>(R.id.btn_cancel_dialog).setOnClickListener {
                      dialog.dismiss()
