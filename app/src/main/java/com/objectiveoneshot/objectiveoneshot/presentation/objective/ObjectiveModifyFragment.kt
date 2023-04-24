@@ -13,6 +13,7 @@ import androidx.constraintlayout.utils.widget.ImageFilterButton
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.objectiveoneshot.objectiveoneshot.R
 import com.objectiveoneshot.objectiveoneshot.databinding.FragmentObjectiveModifyBinding
@@ -93,6 +94,7 @@ class ObjectiveModifyFragment: BindingFragment<FragmentObjectiveModifyBinding>(R
     /**  Add Key Result   */
     private lateinit var adapterTask: TaskAddAdapter
     private fun setAddKeyResult () {
+        var id = ""
         binding.btnAddKeyResult.setOnClickListener { //Add btn 을 눌렀을 때
             if (binding.keyAddItem.layoutKeyAdd.visibility == View.VISIBLE) {
                 if (requireView().hasFocus()) {
@@ -114,21 +116,24 @@ class ObjectiveModifyFragment: BindingFragment<FragmentObjectiveModifyBinding>(R
                 }
 
             } else if (binding.keyAddItem.layoutKeyAdd.visibility == View.GONE) {
-                viewModel.addKeyResult() //신규 데이터 생성
+                id = viewModel.addKeyResult() //신규 데이터 생성
 
                 setVisibleKeyResult(true)
                 binding.keyAddItem.etKeyName.requestFocus()
                 requireContext().showKeyboard(binding.keyAddItem.etKeyName,true)
-/*                adapterTask = TaskAddAdapter(objectiveViewModel.keyResult.value?.id?:"", objectiveViewModel)
+                adapterTask = TaskAddAdapter(id, viewModel)
+
                 binding.keyAddItem.rvTaskList.apply {
-                    adapterTask.submitList(null)
                     adapter = adapterTask
-                    layoutManager = LinearLayoutManager(requireContext())
-                }*/
+                    layoutManager = LinearLayoutManager(context)
+                    try { adapterTask.submitList(viewModel.keyResultWithTasks.value?.first { (id) == it.keyResult.id }?.tasks)
+                    } catch (e: NoSuchElementException){ e.printStackTrace() }
+                }
             }
         }
         binding.keyAddItem.btnDeleteKey.setOnClickListener {
             setVisibleKeyResult(false)
+            viewModel.deleteKeyResult(id)
         }
     }
 
@@ -242,7 +247,7 @@ class ObjectiveModifyFragment: BindingFragment<FragmentObjectiveModifyBinding>(R
                     dialog.show()
                     dialog.findViewById<ImageFilterButton>(R.id.btn_save_dialog)
                         .setOnClickListener {
-                            //objectiveViewModel.updateObjective()
+                            viewModel.updateObjectiveData()
                             dialog.dismiss()
                             parentFragmentManager.popBackStackImmediate()
                         }

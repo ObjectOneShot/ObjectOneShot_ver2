@@ -11,6 +11,7 @@ import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.objectiveoneshot.objectiveoneshot.R
 import com.objectiveoneshot.objectiveoneshot.databinding.FragmentObjectiveAddBinding
@@ -107,6 +108,7 @@ class ObjectiveAddFragment: BindingFragment<FragmentObjectiveAddBinding>(R.layou
     /**  Add Key Result   */
     private lateinit var adapterTask: TaskAddAdapter
     private fun setAddKeyResult () {
+        var id = ""
         binding.btnAddKeyResult.setOnClickListener { //Add btn 을 눌렀을 때
             if (binding.keyAddItem.layoutKeyAdd.visibility == View.VISIBLE) { //추가 상태일 때
                 if (requireView().hasFocus()) {
@@ -128,23 +130,25 @@ class ObjectiveAddFragment: BindingFragment<FragmentObjectiveAddBinding>(R.layou
                 }
 
             } else if (binding.keyAddItem.layoutKeyAdd.visibility == View.GONE) {
-                viewModel.addKeyResult() //신규 데이터 생성
+                id = viewModel.addKeyResult() //신규 데이터 생성
 
                 setVisibleKeyResult(true)
                 binding.keyAddItem.etKeyName.requestFocus()
                 requireContext().showKeyboard(binding.keyAddItem.etKeyName,true)
-/*                adapterTask = TaskAddAdapter(objectiveViewModel.keyResult.value?.id?:"", objectiveViewModel)
+                adapterTask = TaskAddAdapter(id, viewModel)
+
                 binding.keyAddItem.rvTaskList.apply {
-                    adapterTask.submitList(null)
                     adapter = adapterTask
-                    layoutManager = LinearLayoutManager(requireContext())
-                }*/
+                    layoutManager = LinearLayoutManager(context)
+                    try { adapterTask.submitList(viewModel.keyResultWithTasks.value?.first { (id) == it.keyResult.id }?.tasks)
+                    } catch (e: NoSuchElementException){ e.printStackTrace() }
+                }
             }
         }
         binding.keyAddItem.btnDeleteKey.setOnClickListener {
             setVisibleKeyResult(false)
             //저장된 테스크 데이터 삭제
-            //viewModel.deleteKeyResult()
+            viewModel.deleteKeyResult(id)
         }
         binding.keyAddItem.etKeyName.setOnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_NEXT) {

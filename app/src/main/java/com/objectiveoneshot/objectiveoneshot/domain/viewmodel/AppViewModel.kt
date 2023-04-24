@@ -33,7 +33,14 @@ class AppViewModel @Inject constructor(
     fun insertObjectiveData() {
         viewModelScope.launch(Dispatchers.IO) {
             _objectiveData.value?.let { objectiveRepository.insertObjective(it) }
-            //insertKeyResult()
+            _keyResultWithTasks.value?.let { objectiveRepository.insertKeyResultsWithTasks(it) }
+        }
+    }
+
+    fun updateObjectiveData() {
+        viewModelScope.launch(Dispatchers.IO) {
+            _objectiveData.value?.let { objectiveRepository.updateObjective(it) }
+            _keyResultWithTasks.value?.let { objectiveRepository.updateKeyResultsWithTasks(it, _objectiveData.value?.id?:"") }
         }
     }
 
@@ -89,7 +96,7 @@ class AppViewModel @Inject constructor(
         _keyResultState.value = keyResultState
     }
 
-    fun addKeyResult() {
+    fun addKeyResult(): String {
         val currentList = _keyResultWithTasks.value ?: mutableListOf()
         val newKeyResult = KeyResultWithTasks(
             keyResult = KeyResult(title = "", progress = 0.0, objective_id = _objectiveData.value?.id?:""),
@@ -105,6 +112,8 @@ class AppViewModel @Inject constructor(
         _keyResultWithTasks.value = newList
         Log.d("TT_keyResult","${_keyResultWithTasks.value}\n$newItem")
         setObjectiveProgress()
+
+        return newKeyResult.keyResult.id
     }
 
     /**
@@ -211,7 +220,7 @@ class AppViewModel @Inject constructor(
         val objectiveBefore = objectiveRepository.getObjectiveById(_objectiveData.value?.id?:"")
         val keyResultWithTasksBefore = objectiveRepository.getKeyResultWithTasksById(_objectiveData.value?.id?:"")
         return !(objectiveBefore == _objectiveData.value
-                && keyResultWithTasksBefore == _keyResultWithTasks)
+                && keyResultWithTasksBefore == _keyResultWithTasks.value)
     }
 
     suspend fun checkAchieveComplete(): Boolean {
