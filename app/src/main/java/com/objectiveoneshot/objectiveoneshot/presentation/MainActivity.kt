@@ -27,7 +27,6 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Thread.sleep(1000L)
         setTheme(R.style.Theme_ObjectOneShot_ver2)
         super.onCreate(savedInstanceState)
 
