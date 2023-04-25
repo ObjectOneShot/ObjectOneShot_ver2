@@ -102,7 +102,7 @@ class ObjectiveModifyFragment: BindingFragment<FragmentObjectiveModifyBinding>(R
                 }//추가 상태일 때
                 if (binding.keyAddItem.etKeyName.text.toString().isNotEmpty()) { //KeyResult 명이 비어있지 않으면
                     if (adapterTask.currentList[0].content.isNotEmpty() || adapterTask.currentList.size > 1) {
-                        viewModel.addKeyResult() //데이터 입력
+                        //viewModel.addKeyResult() //데이터 입력
                         setVisibleKeyResult(false)
                         binding.keyAddItem.etKeyName.setHintTextColor(Color.parseColor("#FF808080"))
                     } else {

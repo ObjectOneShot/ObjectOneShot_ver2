@@ -219,6 +219,7 @@ class AppViewModel @Inject constructor(
     suspend fun checkIsChange(): Boolean { //변하면 true, 안변하면 false
         val objectiveBefore = objectiveRepository.getObjectiveById(_objectiveData.value?.id?:"")
         val keyResultWithTasksBefore = objectiveRepository.getKeyResultWithTasksById(_objectiveData.value?.id?:"")
+        Log.d("TT_keyResult_check","$keyResultWithTasksBefore\n${_keyResultWithTasks.value}")
         return !(objectiveBefore == _objectiveData.value
                 && keyResultWithTasksBefore == _keyResultWithTasks.value)
     }
