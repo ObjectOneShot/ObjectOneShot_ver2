@@ -225,10 +225,24 @@ class AppViewModel @Inject constructor(
     }
 
     suspend fun checkAchieveComplete(): Boolean {
-        return false
+        var check = false
+        val list = objectiveRepository.getObjectiveComplete()
+        if (list.isNotEmpty()) {
+            check = true
+            list.forEach { it.complete = true }
+            objectiveRepository.updateObjectiveComplete(list)
+        }
+        return check
     }
 
     suspend fun checkAchieveUnComplete(): Boolean {
-        return false
+        var check = false
+        val list = objectiveRepository.getObjectiveUnComplete()
+        if (list.isNotEmpty()) {
+            check = true
+            list.forEach { it.complete = true }
+            objectiveRepository.updateObjectiveComplete(list)
+        }
+        return check
     }
 }
