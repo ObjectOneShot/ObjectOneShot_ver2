@@ -208,7 +208,8 @@
 
                 <TextView
                     android:id="@+id/tv_objective_progress_percent"
-                    android:layout_width="@dimen/progress_text_width"
+                    android:layout_width="wrap_content"
+                    android:minWidth="@dimen/progress_text_width"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="10dp"
@@ -298,20 +299,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/fl_key">
-
-                    <include
-                        android:id="@+id/key_add_item"
-
-                        android:visibility="gone"
-                        layout="@layout/item_key_result_add" />
-
                     <androidx.constraintlayout.utils.widget.ImageFilterButton
                         android:id="@+id/btn_add_key_result"
                         android:layout_width="match_parent"
@@ -323,9 +310,8 @@
                         android:layout_marginVertical="10dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/fl_key" />
-                </LinearLayout>
-
+                        app:layout_constraintTop_toBottomOf="@id/fl_key"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
