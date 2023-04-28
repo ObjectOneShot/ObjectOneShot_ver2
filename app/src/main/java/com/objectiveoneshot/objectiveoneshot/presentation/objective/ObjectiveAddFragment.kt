@@ -104,9 +104,10 @@ class ObjectiveAddFragment: BindingFragment<FragmentObjectiveAddBinding>(R.layou
     /**  Add Key Result   */
     private fun setAddKeyResult () {
         binding.btnAddKeyResult.setOnClickListener { //Add btn 을 눌렀을 때
-            viewModel.addKeyResult()
+            if (!viewModel.checkKeyResultEmpty()) {
+                viewModel.addKeyResult()
+            }
         }
-
     }
 
     private fun keyResultStateFragmentSetting() {

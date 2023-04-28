@@ -90,7 +90,7 @@ class ObjectiveModifyFragment: BindingFragment<FragmentObjectiveModifyBinding>(R
 
     /**  Add Key Result   */
     private fun setAddKeyResult () {
-        binding.btnAddKeyResult.setOnClickListener { //Add btn 을 눌렀을 때
+        if (!viewModel.checkKeyResultEmpty()) {
             viewModel.addKeyResult()
         }
     }

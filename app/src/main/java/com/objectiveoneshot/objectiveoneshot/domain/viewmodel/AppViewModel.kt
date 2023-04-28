@@ -218,6 +218,7 @@ class AppViewModel @Inject constructor(
     }
 
     fun checkKeyResultEmpty(): Boolean {
+        Log.d("TEST_checkKeyResultEmpty","${_keyResultWithTasks.value?.any { it.keyResult.title.isEmpty() }}")
         return _keyResultWithTasks.value?.any { it.keyResult.title.isEmpty() } ?: false
     }
 
