@@ -300,35 +300,19 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <LinearLayout
+                <androidx.constraintlayout.utils.widget.ImageFilterButton
+                    android:id="@+id/btn_add_key_result"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
+                    android:layout_height="40dp"
+                    android:background="@drawable/selector_key_result_btn"
+                    android:enabled="false"
+                    android:src="@drawable/ic_text_key_result_add"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginVertical="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/fl_key">
-
-                    <include
-                        android:id="@+id/key_add_item"
-
-                        android:visibility="gone"
-                        layout="@layout/item_key_result_add"/>
-                    <!--bind:viewmodel="@{viewmodel}" -->
-
-
-                    <androidx.constraintlayout.utils.widget.ImageFilterButton
-                        android:id="@+id/btn_add_key_result"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:background="@drawable/selector_key_result_btn"
-                        android:enabled="false"
-                        android:src="@drawable/ic_text_key_result_add"
-                        android:layout_marginHorizontal="16dp"
-                        android:layout_marginVertical="10dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/fl_key" />
-                </LinearLayout>
+                    app:layout_constraintTop_toBottomOf="@id/fl_key"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
