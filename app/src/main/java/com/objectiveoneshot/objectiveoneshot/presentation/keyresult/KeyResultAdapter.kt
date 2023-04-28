@@ -51,13 +51,6 @@ class KeyResultAdapter(
                     binding.btnExpand.rotation = 360f
                 }
             }
-            binding.swipeLayout.setOnTouchListener { v, event ->
-                if (binding.rvTaskList.visibility == View.VISIBLE) {
-                    return@setOnTouchListener true
-                } else {
-                    false
-                }
-            }
             binding.deleteItemView.setOnClickListener {
                 if (!binding.swipeLayout.isClosed) {
                     viewModel.deleteKeyResult(keyResult.keyResult.id)
