@@ -33,7 +33,8 @@ class AppViewModel @Inject constructor(
     fun insertObjectiveData() {
         viewModelScope.launch(Dispatchers.IO) {
             _objectiveData.value?.let { objectiveRepository.insertObjective(it) }
-            _keyResultWithTasks.value?.let { objectiveRepository.insertKeyResultsWithTasks(it) }
+            _keyResultWithTasks.value?.let { list ->
+                objectiveRepository.insertKeyResultsWithTasks(list.filter { it.keyResult.title.isNotEmpty() }) }
         }
     }
 
@@ -214,6 +215,10 @@ class AppViewModel @Inject constructor(
             _objectiveData.value?.title?.isEmpty()
 
         return (test1?:false || test2?:false || test3?:false)
+    }
+
+    fun checkKeyResultEmpty(): Boolean {
+        return _keyResultWithTasks.value?.any { it.keyResult.title.isEmpty() } ?: false
     }
 
     suspend fun checkIsChange(): Boolean { //변하면 true, 안변하면 false
