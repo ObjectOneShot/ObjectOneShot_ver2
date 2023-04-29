@@ -23,33 +23,32 @@ class KeyResultListUnEditFragment(val state: KeyResultState): BindingFragment<Fr
     }
 
     private fun setList() {
-        val adapterKeyResult = KeyResultUnEditAdapter(viewModel)
+        val adapterKeyResult = KeyResultAdapter(viewModel)
 
         binding.rvKeyList.apply {
             adapter = adapterKeyResult
             layoutManager = LinearLayoutManager(requireContext())
-
         }
 
         when (state) {
-            KeyResultState.BEFORE_PROGRESS -> {
+            KeyResultState.ALL -> {
                 viewModel.keyResultWithTasks.observe(viewLifecycleOwner) { item ->
                     viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
-                        adapterKeyResult.submitList(item?.filter { it.keyResult.progress <= 0.0 })
+                        adapterKeyResult.submitList(item)
                     }
                 }
             }
             KeyResultState.ON_PROGRESS -> {
                 viewModel.keyResultWithTasks.observe(viewLifecycleOwner) { item ->
                     viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
-                        adapterKeyResult.submitList(item?.filter { it.keyResult.progress in 1.0..99.0 })
+                        adapterKeyResult.submitList(item?.filter { it.keyResult.progress < 100.0 })
                     }
                 }
             }
             KeyResultState.COMPLETE -> {
                 viewModel.keyResultWithTasks.observe(viewLifecycleOwner) { item ->
                     viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
-                        adapterKeyResult.submitList(item?.filter { it.keyResult.progress >= 100.0 })
+                        adapterKeyResult.submitList(item?.filter { it.keyResult.progress  >= 100.0 })
                     }
                 }
             }

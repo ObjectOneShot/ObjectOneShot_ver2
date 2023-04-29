@@ -47,7 +47,7 @@ class ObjectiveAchieveViewFragment: BindingFragment<FragmentObjectiveAchieveView
     }
 
     private lateinit var transaction: FragmentTransaction
-    private val fragment1 = KeyResultListUnEditFragment(KeyResultState.BEFORE_PROGRESS)
+    private val fragment1 = KeyResultListUnEditFragment(KeyResultState.ALL)
     private val fragment2 = KeyResultListUnEditFragment(KeyResultState.ON_PROGRESS)
     private val fragment3 = KeyResultListUnEditFragment(KeyResultState.COMPLETE)
 
@@ -55,9 +55,7 @@ class ObjectiveAchieveViewFragment: BindingFragment<FragmentObjectiveAchieveView
         viewModel.setKeyResultState(KeyResultState.COMPLETE)
         keyResultStateFragmentSetting()
         transaction = childFragmentManager.beginTransaction()
-        transaction.add(R.id.fl_key, fragment1)
-        transaction.add(R.id.fl_key, fragment2)
-        transaction.add(R.id.fl_key, fragment3)
+        transaction.replace(R.id.fl_key, fragment3)
         transaction.commit()
     }
 
@@ -65,7 +63,7 @@ class ObjectiveAchieveViewFragment: BindingFragment<FragmentObjectiveAchieveView
         viewModel.keyResultState.observe(viewLifecycleOwner) {
             viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
                 when (it) {
-                    KeyResultState.BEFORE_PROGRESS -> {
+                    KeyResultState.ALL -> {
                         binding.btnBeforeProgress.isSelected = true
                         binding.btnOnProgress.isSelected = false
                         binding.btnComplete.isSelected = false
@@ -88,27 +86,21 @@ class ObjectiveAchieveViewFragment: BindingFragment<FragmentObjectiveAchieveView
 
     private fun showFragment(keyState: KeyResultState) {
         when (keyState) {
-            KeyResultState.BEFORE_PROGRESS -> {
+            KeyResultState.ALL -> {
                 transaction = childFragmentManager.beginTransaction().apply {
-                    show(fragment1)
-                    hide(fragment2)
-                    hide(fragment3)
+                    replace(R.id.fl_key, fragment1)
                     commit()
                 }
             }
             KeyResultState.ON_PROGRESS -> {
                 transaction = childFragmentManager.beginTransaction().apply {
-                    hide(fragment1)
-                    show(fragment2)
-                    hide(fragment3)
+                    replace(R.id.fl_key, fragment2)
                     commit()
                 }
             }
             KeyResultState.COMPLETE -> {
                 transaction = childFragmentManager.beginTransaction().apply {
-                    hide(fragment1)
-                    hide(fragment2)
-                    show(fragment3)
+                    replace(R.id.fl_key, fragment3)
                     commit()
                 }
             }
@@ -117,7 +109,7 @@ class ObjectiveAchieveViewFragment: BindingFragment<FragmentObjectiveAchieveView
 
     private fun setFragmentBtn() {
         binding.btnBeforeProgress.setOnClickListener {
-            if (!it.isSelected) viewModel.setKeyResultState(KeyResultState.BEFORE_PROGRESS)
+            if (!it.isSelected) viewModel.setKeyResultState(KeyResultState.ALL)
         }
         binding.btnOnProgress.setOnClickListener {
             if (!it.isSelected) viewModel.setKeyResultState(KeyResultState.ON_PROGRESS)

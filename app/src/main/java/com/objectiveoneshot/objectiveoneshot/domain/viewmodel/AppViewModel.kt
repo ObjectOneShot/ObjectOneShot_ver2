@@ -33,14 +33,21 @@ class AppViewModel @Inject constructor(
     fun insertObjectiveData() {
         viewModelScope.launch(Dispatchers.IO) {
             _objectiveData.value?.let { objectiveRepository.insertObjective(it) }
-            _keyResultWithTasks.value?.let { objectiveRepository.insertKeyResultsWithTasks(it) }
+            _keyResultWithTasks.value?.let { list ->
+                objectiveRepository.insertKeyResultsWithTasks(list.filter { it.keyResult.title.isNotEmpty() }) }
         }
     }
 
     fun updateObjectiveData() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.Main) {
+            _keyResultWithTasks.value?.forEach {
+                setKeyResultProgressFinish(it.keyResult.id)
+            }
+            setObjectiveProgressFinish()
             _objectiveData.value?.let { objectiveRepository.updateObjective(it) }
-            _keyResultWithTasks.value?.let { objectiveRepository.updateKeyResultsWithTasks(it, _objectiveData.value?.id?:"") }
+
+            _keyResultWithTasks.value?.let { list ->
+                objectiveRepository.updateKeyResultsWithTasks(list.filter { it.keyResult.title.isNotEmpty() }, _objectiveData.value?.id?:"") }
         }
     }
 
@@ -191,29 +198,74 @@ class AppViewModel @Inject constructor(
         setObjectiveProgress()
     }
 
+    private fun setKeyResultProgressFinish(keyResultId: String) {
+        val tasks = _keyResultWithTasks.value?.first { it.keyResult.id == keyResultId }?.tasks
+        val progress = if (!tasks.isNullOrEmpty()) {
+            val cnt = tasks.filter { it.content.isNotEmpty() }.size
+            if (cnt > 0) {
+                100 * tasks.filter { it.check }.size / cnt
+            } else {
+                0
+            }
+        } else {
+            0
+        }.toDouble()
+        val newList = _keyResultWithTasks.value.orEmpty().map { keyResultWithTasks ->
+            if (keyResultWithTasks.keyResult.id == keyResultId) {
+                keyResultWithTasks.copy(keyResult = keyResultWithTasks.keyResult.copy(progress = progress))
+            } else {
+                keyResultWithTasks
+            }
+        }
+        _keyResultWithTasks.value = newList
+
+        setObjectiveProgress()
+    } //마지막 빈칸은 제외하는 progress
+
     private fun setObjectiveProgress() {
         val keyResults = _keyResultWithTasks.value
+        var sum = 0.0
         val progress = if (!keyResults.isNullOrEmpty()) {
-            100 * keyResults.filter { it.keyResult.progress >= 100 }.size / keyResults.size
+            keyResults.forEach { sum += it.keyResult.progress }
+            sum / keyResults.size
         } else {
             0
         }.toDouble()
         val objective = _objectiveData.value
         _objectiveData.value = objective?.copy(progress = progress)
-        Log.d("TT_progress","$progress")
+        Log.d("TT_progress1","$progress")
     } //Objective 의 progress 계산. keyResult progress 가 100 인 개수
 
+    private fun setObjectiveProgressFinish() {
+        val keyResults = _keyResultWithTasks.value
+        var sum = 0.0
+        val progress = if (!keyResults.isNullOrEmpty()) {
+            keyResults.forEach { sum += it.keyResult.progress }
+            val cnt = keyResults.filter { it.keyResult.title.isNotEmpty() }.size
+            if (cnt > 0) sum / cnt else 0
+        } else {
+            0
+        }.toDouble()
+        val objective = _objectiveData.value
+        _objectiveData.value = objective?.copy(progress = progress)
+        Log.d("TT_progress2","$progress")
+    } //마지막에 빈칸은 제외하는 progress
+
     fun checkIsEmpty(): Boolean { //비었으면 true, 안비었으면 false
-        val test1 =
-            _keyResultWithTasks.value?.any { it.keyResult.title.isEmpty() }
         val test2 =
             _keyResultWithTasks.value?.any {
+                Log.d("TEST_checkIsEmpty","${it.tasks}")
                 it.tasks.isEmpty()
             }
         val test3 =
             _objectiveData.value?.title?.isEmpty()
+        Log.d("TEST_checkIsEmpty","$test2 / $test3")
+        return (test2?:false || test3?:false)
+    }
 
-        return (test1?:false || test2?:false || test3?:false)
+    fun checkKeyResultEmpty(): Boolean {
+        Log.d("TEST_checkKeyResultEmpty","${_keyResultWithTasks.value?.any { it.keyResult.title.isEmpty() }}")
+        return _keyResultWithTasks.value?.any { it.keyResult.title.isEmpty() } ?: false
     }
 
     suspend fun checkIsChange(): Boolean { //변하면 true, 안변하면 false

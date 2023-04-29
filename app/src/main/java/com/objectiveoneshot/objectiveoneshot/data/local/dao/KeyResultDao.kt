@@ -51,7 +51,8 @@ interface KeyResultDao {
             insertKeyResult(keyResultWithTasks.keyResult)
 
             for (task in keyResultWithTasks.tasks) {
-                insertTask(task)
+                if (task.content.isNotEmpty())
+                    insertTask(task)
             }
         }
     }
@@ -63,7 +64,8 @@ interface KeyResultDao {
             insertKeyResult(keyResultWithTasks.keyResult)
 
             for (task in keyResultWithTasks.tasks) {
-                insertTask(task)
+                if (task.content.isNotEmpty())
+                    insertTask(task)
             }
         }
     }
