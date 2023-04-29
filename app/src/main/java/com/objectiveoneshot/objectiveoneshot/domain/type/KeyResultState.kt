@@ -1,7 +1,7 @@
 package com.objectiveoneshot.objectiveoneshot.domain.type
 
 enum class KeyResultState {
-    BEFORE_PROGRESS,
+    ALL,
     ON_PROGRESS,
     COMPLETE
 }

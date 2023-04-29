@@ -207,16 +207,13 @@ class AppViewModel @Inject constructor(
     } //Objective 의 progress 계산. keyResult progress 가 100 인 개수
 
     fun checkIsEmpty(): Boolean { //비었으면 true, 안비었으면 false
-        val test1 =
-            _keyResultWithTasks.value?.any { it.keyResult.title.isEmpty() }
         val test2 =
             _keyResultWithTasks.value?.any {
                 it.tasks.isEmpty()
             }
         val test3 =
             _objectiveData.value?.title?.isEmpty()
-
-        return (test1?:false || test2?:false || test3?:false)
+        return (test2?:false || test3?:false)
     }
 
     fun checkKeyResultEmpty(): Boolean {

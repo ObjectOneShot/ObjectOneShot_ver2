@@ -168,7 +168,7 @@ class ObjectiveViewModel @Inject constructor(
      *  KeyResult State 값
      */
     fun initKeyResultState() {
-        _keyResultState.value = KeyResultState.BEFORE_PROGRESS //시작할 땐 _keyResultState를 BEFORE로 초기화
+        _keyResultState.value = KeyResultState.ALL //시작할 땐 _keyResultState를 BEFORE로 초기화
     }
 
     fun initAchieveKeyResultState() {
@@ -261,7 +261,7 @@ class ObjectiveViewModel @Inject constructor(
     private fun setKeyResultStateByProgress(progress: Double) {
         _keyResultState.value = when (progress) {
             0.0 -> {
-                KeyResultState.BEFORE_PROGRESS
+                KeyResultState.ALL
             }
             in 0.1..99.9 -> {
                 KeyResultState.ON_PROGRESS

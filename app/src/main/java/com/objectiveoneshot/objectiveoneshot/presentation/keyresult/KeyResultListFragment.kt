@@ -14,7 +14,7 @@ import com.objectiveoneshot.objectiveoneshot.util.BindingFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class KeyResultListFragment(val state: KeyResultState): BindingFragment<FragmentKeyResultListBinding>(R.layout.fragment_key_result_list) {
+class KeyResultListFragment(private val state: KeyResultState): BindingFragment<FragmentKeyResultListBinding>(R.layout.fragment_key_result_list) {
     private val viewModel: AppViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -33,17 +33,17 @@ class KeyResultListFragment(val state: KeyResultState): BindingFragment<Fragment
         }
 
         when (state) {
-            KeyResultState.BEFORE_PROGRESS -> {
+            KeyResultState.ALL -> {
                 viewModel.keyResultWithTasks.observe(viewLifecycleOwner) { item ->
                     viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
-                        adapterKeyResult.submitList(item?.filter { it.keyResult.progress <= 0.0 })
+                        adapterKeyResult.submitList(item)
                     }
                 }
             }
             KeyResultState.ON_PROGRESS -> {
                 viewModel.keyResultWithTasks.observe(viewLifecycleOwner) { item ->
                     viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
-                        adapterKeyResult.submitList(item?.filter { it.keyResult.progress  in 1.0..99.0 })
+                        adapterKeyResult.submitList(item?.filter { it.keyResult.progress < 100.0 })
                     }
                 }
             }
