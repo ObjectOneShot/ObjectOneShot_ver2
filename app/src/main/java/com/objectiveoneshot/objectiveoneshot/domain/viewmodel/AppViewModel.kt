@@ -39,7 +39,11 @@ class AppViewModel @Inject constructor(
     }
 
     fun updateObjectiveData() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.Main) {
+            _keyResultWithTasks.value?.forEach {
+                setKeyResultProgressFinish(it.keyResult.id)
+            }
+            setObjectiveProgressFinish( )
             _objectiveData.value?.let { objectiveRepository.updateObjective(it) }
 
             _keyResultWithTasks.value?.let { list ->
@@ -194,6 +198,30 @@ class AppViewModel @Inject constructor(
         setObjectiveProgress()
     }
 
+    private fun setKeyResultProgressFinish(keyResultId: String) {
+        val tasks = _keyResultWithTasks.value?.first { it.keyResult.id == keyResultId }?.tasks
+        val progress = if (!tasks.isNullOrEmpty()) {
+            val cnt = tasks.filter { it.content.isNotEmpty() }.size
+            if (cnt > 0) {
+                100 * tasks.filter { it.check }.size / cnt
+            } else {
+                0
+            }
+        } else {
+            0
+        }.toDouble()
+        val newList = _keyResultWithTasks.value.orEmpty().map { keyResultWithTasks ->
+            if (keyResultWithTasks.keyResult.id == keyResultId) {
+                keyResultWithTasks.copy(keyResult = keyResultWithTasks.keyResult.copy(progress = progress))
+            } else {
+                keyResultWithTasks
+            }
+        }
+        _keyResultWithTasks.value = newList
+
+        setObjectiveProgress()
+    } //마지막 빈칸은 제외하는 progress
+
     private fun setObjectiveProgress() {
         val keyResults = _keyResultWithTasks.value
         var sum = 0.0
@@ -207,6 +235,20 @@ class AppViewModel @Inject constructor(
         _objectiveData.value = objective?.copy(progress = progress)
         Log.d("TT_progress","$progress")
     } //Objective 의 progress 계산. keyResult progress 가 100 인 개수
+
+    private fun setObjectiveProgressFinish() {
+        val keyResults = _keyResultWithTasks.value
+        var sum = 0.0
+        val progress = if (!keyResults.isNullOrEmpty()) {
+            keyResults.forEach { sum += it.keyResult.progress }
+            sum / keyResults.filter { it.keyResult.title.isNotEmpty() }.size
+        } else {
+            0
+        }.toDouble()
+        val objective = _objectiveData.value
+        _objectiveData.value = objective?.copy(progress = progress)
+        Log.d("TT_progress","$progress")
+    } //마지막에 빈칸은 제외하는 progress
 
     fun checkIsEmpty(): Boolean { //비었으면 true, 안비었으면 false
         val test2 =
