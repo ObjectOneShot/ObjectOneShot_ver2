@@ -194,8 +194,10 @@ class AppViewModel @Inject constructor(
 
     private fun setObjectiveProgress() {
         val keyResults = _keyResultWithTasks.value
+        var sum = 0.0
         val progress = if (!keyResults.isNullOrEmpty()) {
-            100 * keyResults.filter { it.keyResult.progress >= 100 }.size / keyResults.size
+            keyResults.forEach { sum += it.keyResult.progress }
+            sum / keyResults.size
         } else {
             0
         }.toDouble()
