@@ -41,7 +41,9 @@ class AppViewModel @Inject constructor(
     fun updateObjectiveData() {
         viewModelScope.launch(Dispatchers.IO) {
             _objectiveData.value?.let { objectiveRepository.updateObjective(it) }
-            _keyResultWithTasks.value?.let { objectiveRepository.updateKeyResultsWithTasks(it, _objectiveData.value?.id?:"") }
+
+            _keyResultWithTasks.value?.let { list ->
+                objectiveRepository.updateKeyResultsWithTasks(list.filter { it.keyResult.title.isNotEmpty() }, _objectiveData.value?.id?:"") }
         }
     }
 
