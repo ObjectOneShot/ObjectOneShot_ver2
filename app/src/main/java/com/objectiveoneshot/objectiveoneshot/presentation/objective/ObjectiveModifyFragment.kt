@@ -180,8 +180,7 @@ class ObjectiveModifyFragment: BindingFragment<FragmentObjectiveModifyBinding>(R
     fun onBackPressed() {
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
             if (!viewModel.checkIsEmpty()) { //비어있는게 없을 때
-                if (viewModel.checkIsChange()
-                ) { //변경이 있으면 true
+                if (viewModel.checkIsChange()) { //변경이 있으면 true
                     Log.d("TEST_Modify", "내용에 변경이 있어요")
                     val dialog = Dialog(requireContext())
                     dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
