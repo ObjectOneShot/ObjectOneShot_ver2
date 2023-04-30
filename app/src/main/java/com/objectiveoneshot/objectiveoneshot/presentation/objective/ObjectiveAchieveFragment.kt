@@ -25,6 +25,9 @@ class ObjectiveAchieveFragment: BindingFragment<FragmentObjectiveAchieveListBind
                 commit()
             }
         }
+        binding.toolBarBackBtn.setOnClickListener {
+            parentFragmentManager.popBackStackImmediate()
+        }
     }
 
     @SuppressLint("ClickableViewAccessibility")
