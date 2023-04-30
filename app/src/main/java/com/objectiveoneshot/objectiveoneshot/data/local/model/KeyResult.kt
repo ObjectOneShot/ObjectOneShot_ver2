@@ -22,6 +22,7 @@ data class KeyResult(
     var title: String,
     var progress: Double,
     val objective_id: String,
+    var isExpand: Boolean = false,
     @PrimaryKey
     val id: String = UUID.randomUUID().toString()
 ) {

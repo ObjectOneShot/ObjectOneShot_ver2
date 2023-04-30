@@ -32,6 +32,7 @@ class AppViewModel @Inject constructor(
     /** 데이터 insert */
     fun insertObjectiveData() {
         viewModelScope.launch(Dispatchers.IO) {
+            setIsExpandFalse()
             _objectiveData.value?.let { objectiveRepository.insertObjective(it) }
             _keyResultWithTasks.value?.let { list ->
                 objectiveRepository.insertKeyResultsWithTasks(list.filter { it.keyResult.title.isNotEmpty() }) }
@@ -40,6 +41,7 @@ class AppViewModel @Inject constructor(
 
     fun updateObjectiveData() {
         viewModelScope.launch(Dispatchers.Main) {
+            setIsExpandFalse()
             _keyResultWithTasks.value?.forEach {
                 setKeyResultProgressFinish(it.keyResult.id)
             }
@@ -106,7 +108,7 @@ class AppViewModel @Inject constructor(
     fun addKeyResult(): String {
         val currentList = _keyResultWithTasks.value ?: mutableListOf()
         val newKeyResult = KeyResultWithTasks(
-            keyResult = KeyResult(title = "", progress = 0.0, objective_id = _objectiveData.value?.id?:""),
+            keyResult = KeyResult(title = "", progress = 0.0, objective_id = _objectiveData.value?.id?:"",isExpand = true),
             tasks = emptyList()
         )
         val newItem = newKeyResult.tasks.toMutableList().apply {
@@ -269,6 +271,7 @@ class AppViewModel @Inject constructor(
     }
 
     suspend fun checkIsChange(): Boolean { //변하면 true, 안변하면 false
+        setIsExpandFalse()
         val objectiveBefore = objectiveRepository.getObjectiveById(_objectiveData.value?.id?:"")
         val keyResultWithTasksBefore = objectiveRepository.getKeyResultWithTasksById(_objectiveData.value?.id?:"")
         Log.d("TT_keyResult_check","$keyResultWithTasksBefore\n${_keyResultWithTasks.value}")
@@ -296,5 +299,12 @@ class AppViewModel @Inject constructor(
             objectiveRepository.updateObjectiveComplete(list)
         }
         return check
+    }
+
+    private fun setIsExpandFalse() {
+        val keyResultWithTasksList = _keyResultWithTasks.value.orEmpty().map { keyResultWithTasks ->
+            keyResultWithTasks.copy(keyResult = keyResultWithTasks.keyResult.copy(isExpand = false))
+        }
+        _keyResultWithTasks.value = keyResultWithTasksList
     }
 }

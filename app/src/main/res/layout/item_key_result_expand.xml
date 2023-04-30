@@ -8,14 +8,9 @@
             name="keyResult"
             type="com.objectiveoneshot.objectiveoneshot.data.local.model.KeyResultWithTasks" />
     </data>
-    <com.zerobranch.layout.SwipeLayout
-        android:id="@+id/swipe_layout"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:draggedItem="@id/swipe_view"
-        app:rightItem="@id/delete_item_view"
-        app:swipeDirection="left"
-        app:isEnabledSwipe="true"
         android:layout_marginTop="10dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -125,7 +120,15 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/pg_objective_progress" />
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_task_list"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:visibility="visible"
+                tools:listitem="@layout/item_task"
+                app:layout_constraintTop_toBottomOf="@id/pg_objective_progress" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.zerobranch.layout.SwipeLayout>
+    </FrameLayout>
 
 </layout>
