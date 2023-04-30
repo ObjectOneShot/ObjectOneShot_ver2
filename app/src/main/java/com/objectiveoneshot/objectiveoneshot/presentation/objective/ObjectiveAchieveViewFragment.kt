@@ -52,11 +52,8 @@ class ObjectiveAchieveViewFragment: BindingFragment<FragmentObjectiveAchieveView
     private val fragment3 = KeyResultListUnEditFragment(KeyResultState.COMPLETE)
 
     private fun setFragment() {
-        viewModel.setKeyResultState(KeyResultState.COMPLETE)
         keyResultStateFragmentSetting()
-        transaction = childFragmentManager.beginTransaction()
-        transaction.replace(R.id.fl_key, fragment3)
-        transaction.commit()
+        viewModel.setKeyResultState(KeyResultState.ALL)
     }
 
     private fun keyResultStateFragmentSetting() {

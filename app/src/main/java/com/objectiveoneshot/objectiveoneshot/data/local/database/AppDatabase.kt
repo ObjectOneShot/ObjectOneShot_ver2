@@ -11,7 +11,7 @@ import com.objectiveoneshot.objectiveoneshot.data.local.model.Task
 
 @Database(
     entities = [Objective::class, KeyResult::class, Task::class],
-    version = 1
+    version = 2
 )
 abstract class AppDatabase: RoomDatabase(){
     abstract fun objectiveDao(): ObjectiveDao

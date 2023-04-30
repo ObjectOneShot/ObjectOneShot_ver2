@@ -1,6 +1,7 @@
 package com.objectiveoneshot.objectiveoneshot.presentation.keyresult
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.objectiveoneshot.objectiveoneshot.data.local.model.KeyResultWithTasks
 import com.objectiveoneshot.objectiveoneshot.databinding.ItemKeyResultBinding
+import com.objectiveoneshot.objectiveoneshot.databinding.ItemKeyResultExpandBinding
 import com.objectiveoneshot.objectiveoneshot.domain.viewmodel.AppViewModel
 import com.objectiveoneshot.objectiveoneshot.presentation.task.TaskListAdapter
 import com.objectiveoneshot.objectiveoneshot.util.ItemDiffCallback
@@ -23,8 +25,41 @@ class KeyResultAdapter(
         onItemsTheSame = {old, new -> old.keyResult.id == new.keyResult.id}
     )
 ) {
+    companion object {
+        const val TYPE_EXPAND = 0
+        const val TYPE_NORMAL = 1
+    }
     inner class KeyViewHolder(
         private val binding: ItemKeyResultBinding
+    ): RecyclerView.ViewHolder(binding.root) {
+        @SuppressLint("ClickableViewAccessibility")
+        fun bind(keyResult: KeyResultWithTasks) {
+            binding.keyResult = keyResult
+            binding.executePendingBindings()
+
+            binding.btnExpand.setOnClickListener {
+                getItem(adapterPosition).keyResult.isExpand = true
+                Log.d("TEST_keyResultAdapter","Expand ${viewModel.keyResultWithTasks.value}")
+                notifyItemChanged(adapterPosition)
+
+            }
+            binding.deleteItemView.setOnClickListener {
+                if (!binding.swipeLayout.isClosed) {
+                    viewModel.deleteKeyResult(keyResult.keyResult.id)
+                }
+            }
+            binding.etKeyName.setOnEditorActionListener { v, actionId, event ->
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    binding.etKeyName.clearFocus()
+                    return@setOnEditorActionListener true
+                }
+                false
+            }
+        }
+    }
+
+    inner class KeyViewExpandHolder(
+        private val binding: ItemKeyResultExpandBinding
     ): RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("ClickableViewAccessibility")
         fun bind(keyResult: KeyResultWithTasks) {
@@ -43,18 +78,9 @@ class KeyResultAdapter(
                 }
             }
             binding.btnExpand.setOnClickListener {
-                if (binding.rvTaskList.visibility == View.GONE) { //안 보일 때 보이게 하기
-                    binding.rvTaskList.visibility = View.VISIBLE
-                    binding.btnExpand.rotation = 180f
-                } else {
-                    binding.rvTaskList.visibility = View.GONE
-                    binding.btnExpand.rotation = 360f
-                }
-            }
-            binding.deleteItemView.setOnClickListener {
-                if (!binding.swipeLayout.isClosed) {
-                    viewModel.deleteKeyResult(keyResult.keyResult.id)
-                }
+                getItem(adapterPosition).keyResult.isExpand = false
+                Log.d("TEST_keyResultAdapter","Expand ${viewModel.keyResultWithTasks.value}")
+                notifyItemChanged(adapterPosition)
             }
             binding.etKeyName.setOnEditorActionListener { v, actionId, event ->
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -67,17 +93,34 @@ class KeyResultAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        return KeyViewHolder(ItemKeyResultBinding.inflate(inflater, parent, false))
+        return when(viewType) {
+            TYPE_NORMAL -> {
+                val inflater = LayoutInflater.from(parent.context)
+                Log.d("TEST_keyResultItem","CREATE TYPE_NORMAL")
+                KeyViewHolder(ItemKeyResultBinding.inflate(inflater, parent, false))
+            }
+            TYPE_EXPAND -> {
+                val inflater = LayoutInflater.from(parent.context)
+                Log.d("TEST_keyResultItem","CREATE TYPE_EXPAND")
+                KeyViewExpandHolder(ItemKeyResultExpandBinding.inflate(inflater, parent, false))
+            }
+            else -> throw IllegalArgumentException("Invalid view type")
+        }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val keyResult = getItem(position)
-        when (holder) {
-            is KeyViewHolder -> {
-                holder.bind(keyResult)
+        when (holder.itemViewType) {
+            TYPE_NORMAL -> {
+                (holder as KeyViewHolder).bind(keyResult)
+            }
+            TYPE_EXPAND -> {
+                (holder as KeyViewExpandHolder).bind(keyResult)
             }
         }
     }
 
+    override fun getItemViewType(position: Int): Int {
+        return if (getItem(position).keyResult.isExpand) TYPE_EXPAND else TYPE_NORMAL
+    }
 }
