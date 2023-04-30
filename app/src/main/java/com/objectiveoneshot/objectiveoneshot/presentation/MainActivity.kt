@@ -85,8 +85,17 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                     Log.d("TEST_MAIN","onBackPressed $fragment")
                     super.onBackPressed()
                 }
+                "ObjectiveAdd" -> {
+                    val currentTime = System.currentTimeMillis()
+                    if (currentTime - backPressedTime < 2000) {
+                        supportFragmentManager.popBackStackImmediate()
+                    } else {
+                        backPressedTime = currentTime
+                        this.showToast("한 번 더 누르면 페이지에서 나갑니다.")
+                    }
+                }
                 else -> {
-                    supportFragmentManager.popBackStackImmediate()
+
                 }
             }
         }
