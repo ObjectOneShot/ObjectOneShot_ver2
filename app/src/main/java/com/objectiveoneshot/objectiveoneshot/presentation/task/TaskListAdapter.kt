@@ -1,15 +1,20 @@
 package com.objectiveoneshot.objectiveoneshot.presentation.task
 
+import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.objectiveoneshot.objectiveoneshot.R
 import com.objectiveoneshot.objectiveoneshot.data.local.model.Task
 import com.objectiveoneshot.objectiveoneshot.databinding.ItemTaskBinding
 import com.objectiveoneshot.objectiveoneshot.domain.viewmodel.AppViewModel
 import com.objectiveoneshot.objectiveoneshot.util.ItemDiffCallback
+import com.objectiveoneshot.objectiveoneshot.util.showKeyboard
 
 class TaskListAdapter(
     private val keyResultId: String,
@@ -65,7 +70,12 @@ class TaskListAdapter(
                             binding.btnAddTask.visibility = View.VISIBLE
                         }
                     } else {
-                        if (adapterPosition == itemCount - 1) {
+                        if (itemCount == 1) {
+                            val dialog = Dialog(itemView.context)
+                            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                            dialog.setContentView(R.layout.dialog_task_alert)
+                            dialog.show()
+                        } else if (adapterPosition == itemCount - 1) {
                             deleteItem(item)
                             notifyItemChanged(adapterPosition - 1,)
                         } else {
@@ -116,7 +126,7 @@ class TaskListAdapter(
 
     override fun submitList(list: List<Task>?) {
         if (list.isNullOrEmpty()) {
-            super.submitList(listOf(Task("", key_result_id = keyResultId)))
+            viewModel.addTask(keyResultId)
         } else {
             super.submitList(list)
         }
