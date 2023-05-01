@@ -45,8 +45,9 @@
 
         <androidx.constraintlayout.utils.widget.ImageFilterButton
             android:id="@+id/btn_add_task"
-            android:layout_width="14dp"
-            android:layout_height="14dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/grey_50"
             android:src="@drawable/ic_task_add_enable"
             android:layout_marginEnd="13dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -55,8 +56,9 @@
 
         <androidx.constraintlayout.utils.widget.ImageFilterButton
             android:id="@+id/btn_delete_task"
-            android:layout_width="14dp"
-            android:layout_height="14dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/grey_50"
             android:src="@drawable/ic_task_delete"
             android:layout_marginEnd="13dp"
             android:visibility="gone"
