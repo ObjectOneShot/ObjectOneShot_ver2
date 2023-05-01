@@ -31,7 +31,7 @@ class AppViewModel @Inject constructor(
 
     /** 데이터 insert */
     fun insertObjectiveData() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.Main) {
             setIsExpandFalse()
             _objectiveData.value?.let { objectiveRepository.insertObjective(it) }
             _keyResultWithTasks.value?.let { list ->
