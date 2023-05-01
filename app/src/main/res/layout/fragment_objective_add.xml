@@ -50,6 +50,7 @@
                 android:layout_toEndOf="@+id/tool_bar_back_btn"
                 android:text="@string/title_objective_add"
                 android:textSize="18sp"
+                android:textStyle="bold"
                 android:fontFamily="@font/roboto_regular"
                 android:textColor="@color/black"/>
 
