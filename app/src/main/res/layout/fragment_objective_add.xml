@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="8dp"
                 android:background="@android:color/transparent"
                 android:src="@drawable/ic_back">
 
@@ -46,10 +46,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="8dp"
                 android:layout_toEndOf="@+id/tool_bar_back_btn"
                 android:text="@string/title_objective_add"
                 android:textSize="18sp"
+                android:textStyle="bold"
                 android:fontFamily="@font/roboto_regular"
                 android:textColor="@color/black"/>
 
