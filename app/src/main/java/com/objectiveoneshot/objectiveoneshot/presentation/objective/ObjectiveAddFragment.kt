@@ -110,6 +110,7 @@ class ObjectiveAddFragment: BindingFragment<FragmentObjectiveAddBinding>(R.layou
     private fun setAddKeyResult () {
         binding.btnAddKeyResult.setOnClickListener { //Add btn 을 눌렀을 때
             if (!viewModel.checkKeyResultEmpty()) {
+                analyticSelect(ItemId.BUTTON, ItemType.ADD_KEY_RESULT)
                 viewModel.addKeyResult()
             }
         }
