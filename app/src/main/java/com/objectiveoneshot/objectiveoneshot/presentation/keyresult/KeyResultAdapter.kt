@@ -3,18 +3,23 @@ package com.objectiveoneshot.objectiveoneshot.presentation.keyresult
 import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.ktx.Firebase
 import com.objectiveoneshot.objectiveoneshot.data.local.model.KeyResultWithTasks
 import com.objectiveoneshot.objectiveoneshot.databinding.ItemKeyResultBinding
 import com.objectiveoneshot.objectiveoneshot.databinding.ItemKeyResultExpandBinding
+import com.objectiveoneshot.objectiveoneshot.domain.type.ItemId
+import com.objectiveoneshot.objectiveoneshot.domain.type.ItemType
 import com.objectiveoneshot.objectiveoneshot.domain.viewmodel.AppViewModel
 import com.objectiveoneshot.objectiveoneshot.presentation.task.TaskListAdapter
 import com.objectiveoneshot.objectiveoneshot.util.ItemDiffCallback
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.analytics.ktx.logEvent
 
 
 class KeyResultAdapter(
@@ -46,6 +51,10 @@ class KeyResultAdapter(
             binding.deleteItemView.setOnClickListener {
                 if (!binding.swipeLayout.isClosed) {
                     viewModel.deleteKeyResult(keyResult.keyResult.id)
+                    Firebase.analytics.logEvent(FirebaseAnalytics.Event.SELECT_ITEM) {
+                        param(FirebaseAnalytics.Param.ITEM_ID, ItemId.BUTTON.toString())
+                        param(FirebaseAnalytics.Param.ITEM_NAME, ItemType.DELETE_KEY_RESULT.toString())
+                    }
                 }
             }
             binding.etKeyName.setOnEditorActionListener { v, actionId, event ->

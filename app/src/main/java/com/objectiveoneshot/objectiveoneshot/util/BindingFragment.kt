@@ -13,6 +13,8 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.analytics.ktx.logEvent
 import com.google.firebase.ktx.Firebase
+import com.objectiveoneshot.objectiveoneshot.domain.type.ItemId
+import com.objectiveoneshot.objectiveoneshot.domain.type.ItemType
 
 abstract class BindingFragment<B: ViewDataBinding>(@LayoutRes private val layoutRes: Int): Fragment() {
     private var _binding: B? = null
@@ -31,11 +33,10 @@ abstract class BindingFragment<B: ViewDataBinding>(@LayoutRes private val layout
         return binding.root
     }
 
-    private fun analyticSelect(id: String, name: String, contentType: String) {
+    fun analyticSelect(id: ItemId, name: ItemType) {
         firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_ITEM) {
-            param(FirebaseAnalytics.Param.ITEM_ID, id)
-            param(FirebaseAnalytics.Param.ITEM_NAME,name)
-            param(FirebaseAnalytics.Param.CONTENT_TYPE,contentType)
+            param(FirebaseAnalytics.Param.ITEM_ID, id.toString())
+            param(FirebaseAnalytics.Param.ITEM_NAME,name.toString())
         }
     }
 

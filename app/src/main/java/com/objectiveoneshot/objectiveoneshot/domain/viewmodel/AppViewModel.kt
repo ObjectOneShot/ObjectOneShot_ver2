@@ -254,12 +254,15 @@ class AppViewModel @Inject constructor(
     } //마지막에 빈칸은 제외하는 progress
 
     fun checkIsEmpty(): Boolean { //비었으면 true, 안비었으면 false
-
         val test2 =
             _keyResultWithTasks.value?.any {
-                Log.d("TEST_checkIsEmpty","${it.tasks}")
-                if (it.tasks.size == 1) {
-                    it.tasks.first().content.isEmpty()
+                if(it.keyResult.title.isNotEmpty()) {
+                    Log.d("TEST_checkIsEmpty", "${it.tasks}")
+                    if (it.tasks.size == 1) {
+                        it.tasks.first().content.isEmpty()
+                    } else {
+                        false
+                    }
                 } else {
                     false
                 }
@@ -281,7 +284,7 @@ class AppViewModel @Inject constructor(
         val keyResultWithTasksBefore = objectiveRepository.getKeyResultWithTasksById(_objectiveData.value?.id?:"")
         Log.d("TT_keyResult_check","$keyResultWithTasksBefore\n${_keyResultWithTasks.value}")
         return !(objectiveBefore == _objectiveData.value
-                && keyResultWithTasksBefore == _keyResultWithTasks.value)
+                && keyResultWithTasksBefore == _keyResultWithTasks.value?.filter { it.keyResult.title.isNotEmpty() })
     }
 
     suspend fun checkAchieveComplete(): Boolean {

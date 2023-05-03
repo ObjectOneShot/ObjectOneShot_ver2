@@ -14,6 +14,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.objectiveoneshot.objectiveoneshot.R
 import com.objectiveoneshot.objectiveoneshot.databinding.FragmentObjectiveListBinding
+import com.objectiveoneshot.objectiveoneshot.domain.type.ItemId
+import com.objectiveoneshot.objectiveoneshot.domain.type.ItemType
 import com.objectiveoneshot.objectiveoneshot.domain.viewmodel.AppViewModel
 import com.objectiveoneshot.objectiveoneshot.presentation.tips.TipsFragment
 import com.objectiveoneshot.objectiveoneshot.util.BindingFragment
@@ -75,6 +77,7 @@ class ObjectiveListFragment: BindingFragment<FragmentObjectiveListBinding>(R.lay
 
     private fun init() {
         binding.btnAddObjective.setOnClickListener {
+            analyticSelect(ItemId.BUTTON, ItemType.OBJECTIVE_ADD)
             parentFragmentManager.beginTransaction().apply {
                 viewModel.initObjectiveData() //ObjectiveData 빈 값 생성
                 replace(R.id.fl_main, ObjectiveAddFragment(),"ObjectiveAdd")
@@ -83,6 +86,7 @@ class ObjectiveListFragment: BindingFragment<FragmentObjectiveListBinding>(R.lay
             }
         }
         binding.btnAchieve.setOnClickListener {
+            analyticSelect(ItemId.BUTTON, ItemType.ACHIEVE)
             parentFragmentManager.beginTransaction().apply {
                 replace(R.id.fl_main, ObjectiveAchieveFragment(),"Achieve")
                 addToBackStack(null)
@@ -90,6 +94,7 @@ class ObjectiveListFragment: BindingFragment<FragmentObjectiveListBinding>(R.lay
             }
         }
         binding.btnHelp.setOnClickListener {
+            analyticSelect(ItemId.BUTTON, ItemType.HELP)
             parentFragmentManager.beginTransaction().apply {
                 replace(R.id.fl_main, TipsFragment(), "Tips")
                 addToBackStack(null)
@@ -103,6 +108,7 @@ class ObjectiveListFragment: BindingFragment<FragmentObjectiveListBinding>(R.lay
     @SuppressLint("ClickableViewAccessibility")
     private fun setRecyclerView() {
         val adapterObjective = ObjectiveListAdapter(ObjectiveListAdapter.ItemClickListener {
+            analyticSelect(ItemId.ITEM, ItemType.OBJECTIVE_ITEM)
             viewModel.getObjectiveData(it)
             parentFragmentManager.beginTransaction().apply {
                 replace(R.id.fl_main, ObjectiveModifyFragment(), "ObjectiveModify")

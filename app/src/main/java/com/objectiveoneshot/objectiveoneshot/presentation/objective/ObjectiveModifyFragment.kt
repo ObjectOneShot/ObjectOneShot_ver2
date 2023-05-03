@@ -16,6 +16,8 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.objectiveoneshot.objectiveoneshot.R
 import com.objectiveoneshot.objectiveoneshot.databinding.FragmentObjectiveModifyBinding
+import com.objectiveoneshot.objectiveoneshot.domain.type.ItemId
+import com.objectiveoneshot.objectiveoneshot.domain.type.ItemType
 import com.objectiveoneshot.objectiveoneshot.domain.type.KeyResultState
 import com.objectiveoneshot.objectiveoneshot.domain.viewmodel.AppViewModel
 import com.objectiveoneshot.objectiveoneshot.presentation.keyresult.KeyResultListFragment
@@ -59,6 +61,7 @@ class ObjectiveModifyFragment: BindingFragment<FragmentObjectiveModifyBinding>(R
         })
 
         binding.btnHelp.setOnClickListener {
+            analyticSelect(ItemId.BUTTON, ItemType.HELP)
             parentFragmentManager.beginTransaction().apply {
                 replace(R.id.fl_main, TipsFragment(), "Tips")
                 addToBackStack(null)
@@ -69,6 +72,7 @@ class ObjectiveModifyFragment: BindingFragment<FragmentObjectiveModifyBinding>(R
 
     private fun setCalendar() {
         binding.btnObjectiveDate.setOnClickListener {
+            analyticSelect(ItemId.BUTTON, ItemType.SET_CALENDAR)
             val datePicker = MaterialDatePicker.Builder.dateRangePicker()
                 .setTitleText("기간을 선택해주세요")
                 .build()
@@ -167,12 +171,15 @@ class ObjectiveModifyFragment: BindingFragment<FragmentObjectiveModifyBinding>(R
 
     private fun setFragmentBtn() {
         binding.btnBeforeProgress.setOnClickListener {
+            analyticSelect(ItemId.BUTTON, ItemType.SET_TAB_ALL)
             if (!it.isSelected) viewModel.setKeyResultState(KeyResultState.ALL)
         }
         binding.btnOnProgress.setOnClickListener {
+            analyticSelect(ItemId.BUTTON, ItemType.SET_TAB_PROGRESS)
             if (!it.isSelected) viewModel.setKeyResultState(KeyResultState.ON_PROGRESS)
         }
         binding.btnComplete.setOnClickListener {
+            analyticSelect(ItemId.BUTTON, ItemType.SET_TAB_COMPLETE)
             if (!it.isSelected) viewModel.setKeyResultState(KeyResultState.COMPLETE)
         }
     }
@@ -188,12 +195,14 @@ class ObjectiveModifyFragment: BindingFragment<FragmentObjectiveModifyBinding>(R
                     dialog.show()
                     dialog.findViewById<ImageFilterButton>(R.id.btn_save_dialog)
                         .setOnClickListener {
+                            analyticSelect(ItemId.BUTTON, ItemType.MODIFY_OBJECTIVE_YES)
                             viewModel.updateObjectiveData()
                             dialog.dismiss()
                             parentFragmentManager.popBackStackImmediate()
                         }
                     dialog.findViewById<ImageFilterButton>(R.id.btn_cancel_dialog)
                         .setOnClickListener {
+                            analyticSelect(ItemId.BUTTON, ItemType.MODIFY_OBJECTIVE_NO)
                             dialog.dismiss()
                             parentFragmentManager.popBackStackImmediate()
                         }
