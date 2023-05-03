@@ -254,7 +254,6 @@ class AppViewModel @Inject constructor(
     } //마지막에 빈칸은 제외하는 progress
 
     fun checkIsEmpty(): Boolean { //비었으면 true, 안비었으면 false
-
         val test2 =
             _keyResultWithTasks.value?.any {
                 Log.d("TEST_checkIsEmpty","${it.tasks}")

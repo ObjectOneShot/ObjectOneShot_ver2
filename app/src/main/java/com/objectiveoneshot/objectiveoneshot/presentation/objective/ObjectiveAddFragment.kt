@@ -13,6 +13,8 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.objectiveoneshot.objectiveoneshot.R
 import com.objectiveoneshot.objectiveoneshot.databinding.FragmentObjectiveAddBinding
+import com.objectiveoneshot.objectiveoneshot.domain.type.ItemId
+import com.objectiveoneshot.objectiveoneshot.domain.type.ItemType
 import com.objectiveoneshot.objectiveoneshot.domain.type.KeyResultState
 import com.objectiveoneshot.objectiveoneshot.domain.viewmodel.AppViewModel
 import com.objectiveoneshot.objectiveoneshot.presentation.keyresult.KeyResultListFragment
@@ -52,6 +54,7 @@ class ObjectiveAddFragment: BindingFragment<FragmentObjectiveAddBinding>(R.layou
         })
 
         binding.btnAddObjective.setOnClickListener {
+            analyticSelect(ItemId.BUTTON, ItemType.ADD_OBJECTIVE)
             if (true) {
                 viewModel.insertObjectiveData()
                 parentFragmentManager.popBackStackImmediate()
@@ -68,6 +71,7 @@ class ObjectiveAddFragment: BindingFragment<FragmentObjectiveAddBinding>(R.layou
         }
 
         binding.btnHelp.setOnClickListener {
+            analyticSelect(ItemId.BUTTON, ItemType.HELP)
             parentFragmentManager.beginTransaction().apply {
                 replace(R.id.fl_main, TipsFragment(), "Tips")
                 addToBackStack(null)
@@ -88,6 +92,7 @@ class ObjectiveAddFragment: BindingFragment<FragmentObjectiveAddBinding>(R.layou
 
     private fun setCalendar() {
         binding.btnObjectiveDate.setOnClickListener {
+            analyticSelect(ItemId.BUTTON, ItemType.SET_CALENDAR)
             val datePicker = MaterialDatePicker.Builder.dateRangePicker()
                 .setTitleText("기간을 선택해주세요")
                 .build()
@@ -174,12 +179,15 @@ class ObjectiveAddFragment: BindingFragment<FragmentObjectiveAddBinding>(R.layou
 
     private fun setFragmentBtn() {
         binding.btnBeforeProgress.setOnClickListener {
+            analyticSelect(ItemId.BUTTON, ItemType.SET_TAB_ALL)
             if (!it.isSelected) viewModel.setKeyResultState(KeyResultState.ALL)
         }
         binding.btnOnProgress.setOnClickListener {
+            analyticSelect(ItemId.BUTTON, ItemType.SET_TAB_PROGRESS)
             if (!it.isSelected) viewModel.setKeyResultState(KeyResultState.ON_PROGRESS)
         }
         binding.btnComplete.setOnClickListener {
+            analyticSelect(ItemId.BUTTON, ItemType.SET_TAB_COMPLETE)
             if (!it.isSelected) viewModel.setKeyResultState(KeyResultState.COMPLETE)
         }
     }
