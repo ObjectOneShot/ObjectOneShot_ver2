@@ -36,6 +36,8 @@ class AppViewModel @Inject constructor(
             _objectiveData.value?.let { objectiveRepository.insertObjective(it) }
             _keyResultWithTasks.value?.let { list ->
                 objectiveRepository.insertKeyResultsWithTasks(list.filter { it.keyResult.title.isNotEmpty() }) }
+
+            getObjectiveList()
         }
     }
 
@@ -50,6 +52,8 @@ class AppViewModel @Inject constructor(
 
             _keyResultWithTasks.value?.let { list ->
                 objectiveRepository.updateKeyResultsWithTasks(list.filter { it.keyResult.title.isNotEmpty() }, _objectiveData.value?.id?:"") }
+
+            getObjectiveList()
         }
     }
 
