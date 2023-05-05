@@ -14,32 +14,6 @@
         android:layout_marginTop="10dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/delete_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/shape_rectangle_round_right_corner_10"
-            android:backgroundTint="@color/error">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/delete_item_view"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintWidth_percent="@dimen/delete_btn_percent">
-
-                <androidx.constraintlayout.utils.widget.ImageFilterView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_delete"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/swipe_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

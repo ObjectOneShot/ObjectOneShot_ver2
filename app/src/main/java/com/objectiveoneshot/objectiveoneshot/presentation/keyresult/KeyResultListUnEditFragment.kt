@@ -23,7 +23,7 @@ class KeyResultListUnEditFragment(val state: KeyResultState): BindingFragment<Fr
     }
 
     private fun setList() {
-        val adapterKeyResult = KeyResultAdapter(viewModel)
+        val adapterKeyResult = KeyResultUnEditAdapter(viewModel)
 
         binding.rvKeyList.apply {
             adapter = adapterKeyResult
