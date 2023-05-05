@@ -6,9 +6,6 @@
         <variable
             name="task"
             type="com.objectiveoneshot.objectiveoneshot.data.local.model.Task" />
-        <variable
-            name="viewmodel"
-            type="com.objectiveoneshot.objectiveoneshot.domain.viewmodel.ObjectiveViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

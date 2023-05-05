@@ -95,7 +95,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                     }
                 }
                 else -> {
-
+                    supportFragmentManager.popBackStackImmediate()
                 }
             }
         }
