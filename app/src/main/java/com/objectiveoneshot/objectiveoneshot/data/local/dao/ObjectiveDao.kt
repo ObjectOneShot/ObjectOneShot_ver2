@@ -32,10 +32,6 @@ interface ObjectiveDao {
     @Query("SELECT * FROM objectives WHERE id = :id")
     suspend fun getObjectiveById(id: String) : Objective
 
-    @Transaction
-    @Query("SELECT * FROM objectives")
-    suspend fun getObjectiveWithKeyResult() : List<ObjectiveWithKeyResults>
-
     @Query("SELECT * FROM objectives WHERE complete = 0 AND (progress >= 100)")
     suspend fun getObjectiveComplete() : List<Objective>
 

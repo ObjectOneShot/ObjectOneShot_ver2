@@ -16,9 +16,6 @@ interface KeyResultDao {
     @Delete
     suspend fun delete(keyResult: KeyResult)
 
-    @Query("SELECT * FROM key_results WHERE objective_id = :objectiveId")
-    suspend fun getKeyResultsByObjective(objectiveId: Long): List<KeyResult>
-
     @Transaction
     @Query("SELECT * FROM KEY_RESULTS WHERE objective_id = :objectiveId ")
     suspend fun getKeyResultWithTasksById(objectiveId: String): List<KeyResultWithTasks>
