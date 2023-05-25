@@ -100,7 +100,9 @@ class TaskListAdapter(
             binding.etTaskName.setOnEditorActionListener { v, actionId, event ->
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     binding.etTaskName.clearFocus()
-                    addItem(item)
+                    if (binding.etTaskName.text.isNotEmpty()) {
+                        addItem(item)
+                    }
                     return@setOnEditorActionListener true
                 } else {
                     return@setOnEditorActionListener false
