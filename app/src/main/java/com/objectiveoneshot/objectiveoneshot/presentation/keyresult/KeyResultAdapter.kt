@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.analytics.ktx.logEvent
 import com.google.firebase.ktx.Firebase
 import com.objectiveoneshot.objectiveoneshot.data.local.model.KeyResultWithTasks
 import com.objectiveoneshot.objectiveoneshot.databinding.ItemKeyResultBinding
@@ -18,8 +20,6 @@ import com.objectiveoneshot.objectiveoneshot.domain.type.ItemType
 import com.objectiveoneshot.objectiveoneshot.domain.viewmodel.AppViewModel
 import com.objectiveoneshot.objectiveoneshot.presentation.task.TaskListAdapter
 import com.objectiveoneshot.objectiveoneshot.util.ItemDiffCallback
-import com.google.firebase.analytics.ktx.analytics
-import com.google.firebase.analytics.ktx.logEvent
 
 
 class KeyResultAdapter(
@@ -79,13 +79,15 @@ class KeyResultAdapter(
             binding.rvTaskList.apply {
                 adapter = taskListAdapter
                 layoutManager = LinearLayoutManager(context)
-
                 try {
                     taskListAdapter.submitList(viewModel.keyResultWithTasks.value?.first { (keyResult.keyResult.id) == it.keyResult.id }?.tasks)
+                    clearFocus()
                 } catch (e: NoSuchElementException){
                     e.printStackTrace()
                 }
             }
+
+
             binding.btnExpand.setOnClickListener {
                 getItem(adapterPosition).keyResult.isExpand = false
                 Log.d("TEST_keyResultAdapter","Expand ${viewModel.keyResultWithTasks.value}")

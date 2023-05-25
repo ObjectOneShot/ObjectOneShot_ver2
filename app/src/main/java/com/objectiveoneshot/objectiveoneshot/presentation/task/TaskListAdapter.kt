@@ -10,6 +10,8 @@ import android.view.inputmethod.EditorInfo
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.analytics.ktx.logEvent
 import com.google.firebase.ktx.Firebase
 import com.objectiveoneshot.objectiveoneshot.R
 import com.objectiveoneshot.objectiveoneshot.data.local.model.Task
@@ -18,9 +20,6 @@ import com.objectiveoneshot.objectiveoneshot.domain.type.ItemId
 import com.objectiveoneshot.objectiveoneshot.domain.type.ItemType
 import com.objectiveoneshot.objectiveoneshot.domain.viewmodel.AppViewModel
 import com.objectiveoneshot.objectiveoneshot.util.ItemDiffCallback
-import com.objectiveoneshot.objectiveoneshot.util.showKeyboard
-import com.google.firebase.analytics.ktx.analytics
-import com.google.firebase.analytics.ktx.logEvent
 
 class TaskListAdapter(
     private val keyResultId: String,
@@ -35,11 +34,14 @@ class TaskListAdapter(
         private val binding: ItemTaskBinding,
     ): RecyclerView.ViewHolder(binding.root) {
         init {
-
         }
 
         fun bind(item: Task) {
             binding.task = item
+
+            if (item.content.isEmpty()) {
+                binding.etTaskName.requestFocus()
+            }
 
             binding.btnDeleteTask.visibility = View.GONE
 
@@ -49,8 +51,7 @@ class TaskListAdapter(
                         param(FirebaseAnalytics.Param.ITEM_ID, ItemId.BUTTON.toString())
                         param(FirebaseAnalytics.Param.ITEM_NAME, ItemType.ADD_TASK.toString())
                     }
-                    viewModel.addTask(item.key_result_id)
-                    binding.btnAddTask.visibility = View.GONE
+                    addItem(item)
                 }
             }
 
@@ -77,27 +78,20 @@ class TaskListAdapter(
                     binding.btnDeleteTask.visibility = View.VISIBLE
                     binding.btnAddTask.visibility = View.GONE
                 } else {
-                    if (text.isNotEmpty()) {
-                        binding.btnDeleteTask.visibility = View.GONE
-
-                        if (adapterPosition == itemCount - 1) {
-                            binding.btnAddTask.visibility = View.VISIBLE
+                    if (adapterPosition == itemCount - 1) {
+                        if (text.isEmpty()) {
+                            deleteItem(item)
                         }
                     } else {
-                        Firebase.analytics.logEvent(FirebaseAnalytics.Event.SELECT_ITEM) {
-                            param(FirebaseAnalytics.Param.ITEM_ID, ItemId.ITEM.toString())
-                            param(FirebaseAnalytics.Param.ITEM_NAME, ItemType.DELETE_TASK.toString())
-                        }
-                        if (itemCount == 1) {
-                            val dialog = Dialog(itemView.context)
-                            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                            dialog.setContentView(R.layout.dialog_task_alert)
-                            dialog.show()
-                        } else if (adapterPosition == itemCount - 1) {
-                            deleteItem(item)
-                            notifyItemChanged(adapterPosition - 1,)
-                        } else {
-                            deleteItem(item)
+                        if (text.isEmpty()) {
+                            if (itemCount == 1) {
+                                val dialog = Dialog(itemView.context)
+                                dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                                dialog.setContentView(R.layout.dialog_task_alert)
+                                dialog.show()
+                            } else {
+                                deleteItem(item)
+                            }
                         }
                     }
                 }
@@ -106,6 +100,7 @@ class TaskListAdapter(
             binding.etTaskName.setOnEditorActionListener { v, actionId, event ->
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     binding.etTaskName.clearFocus()
+                    addItem(item)
                     return@setOnEditorActionListener true
                 } else {
                     return@setOnEditorActionListener false
@@ -127,9 +122,11 @@ class TaskListAdapter(
 
         private fun deleteItem(item: Task) {
             viewModel.deleteTask(item.key_result_id, item.id)
-            //TODO(하단 삭제해도 되나?)
-            //ubmitList(currentList.toMutableList().apply { removeAt(adapterPosition) })
-            binding.etTaskName.clearFocus()
+        }
+
+        private fun addItem(item: Task) {
+            viewModel.addTask(item.key_result_id)
+            binding.btnAddTask.visibility = View.GONE
         }
     }
 
