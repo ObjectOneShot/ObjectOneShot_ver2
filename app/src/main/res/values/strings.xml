@@ -13,4 +13,6 @@
     <string name="item_key_result_add">단계별 계획를 입력해주세요</string>
 
     <string name="item_task_add">할 일을 입력해주세요</string>
+
+    <string name="item_btn_key_result_add">단계별 계획 추가</string>
 </resources>
