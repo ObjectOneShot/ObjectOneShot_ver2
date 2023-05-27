@@ -24,7 +24,7 @@
                 android:id="@+id/et_key_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="Key Result 를 입력해주세요"
+                android:hint="@string/item_key_result_add"
                 android:background="@null"
                 android:inputType="text"
                 android:imeOptions="actionDone"
