@@ -7,9 +7,9 @@
     <string name="item_date_string_format">마감일 : %d</string>
     <string name="item_progress_string_format">%.0f %%</string>
 
-    <string name="title_objective_add">장기 목표 등록하기</string>
+    <string name="title_objective_add">장기 목표를 등록해주세요</string>
 
-    <string name="title_key_result_add">단계별 계획 등록하기</string>
+    <string name="title_key_result_add">단계별 계획를 등록해주세요</string>
     <string name="item_key_result_add">단계별 계획를 입력해주세요</string>
 
     <string name="item_task_add">할 일을 입력해주세요</string>
