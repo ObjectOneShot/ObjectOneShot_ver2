@@ -34,13 +34,15 @@ class TaskListAdapter(
         private val binding: ItemTaskBinding,
     ): RecyclerView.ViewHolder(binding.root) {
         init {
+
         }
 
         fun bind(item: Task) {
             binding.task = item
 
             if (item.content.isEmpty()) {
-                binding.etTaskName.requestFocus()
+                if (viewModel.keyResultWithTasks.value?.firstOrNull { it.keyResult.id == keyResultId }?.tasks?.size!! > 1)
+                    binding.etTaskName.requestFocus()
             }
 
             binding.btnDeleteTask.visibility = View.GONE
